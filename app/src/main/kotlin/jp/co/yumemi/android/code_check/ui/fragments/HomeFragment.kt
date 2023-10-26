@@ -12,13 +12,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
-import jp.co.yumemi.android.code_check.OneFragmentDirections
 import jp.co.yumemi.android.code_check.OneViewModel
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
 import jp.co.yumemi.android.code_check.item
 
-class OneFragment: Fragment(R.layout.fragment_one){
+class HomeFragment: Fragment(R.layout.fragment_one){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
@@ -60,7 +59,7 @@ class OneFragment: Fragment(R.layout.fragment_one){
     fun gotoRepositoryFragment(item: item)
     {
         val _action=
-            OneFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
+            HomeFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
         findNavController().navigate(_action)
     }
 }
