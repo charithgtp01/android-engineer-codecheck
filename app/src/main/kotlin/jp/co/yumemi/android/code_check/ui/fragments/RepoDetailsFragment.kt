@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
-import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.TwoFragmentArgs
+import jp.co.yumemi.android.code_check.ui.activities.MainActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.FragmentTwoBinding
 
 class TwoFragment : Fragment(R.layout.fragment_two) {
