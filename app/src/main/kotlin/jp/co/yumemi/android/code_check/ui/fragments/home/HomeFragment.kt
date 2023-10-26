@@ -4,10 +4,10 @@
 package jp.co.yumemi.android.code_check.ui.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,7 +22,7 @@ import jp.co.yumemi.android.code_check.models.GitHubRepoObject
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-
+    private val TAG: String = HomeFragment::class.java.simpleName
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
     private lateinit var repoListAdapter: RepoListAdapter
@@ -79,7 +79,9 @@ class HomeFragment : Fragment() {
     private fun viewModelObservers() {
         /* Show error message in the custom error dialog */
         viewModel.errorMessage.observe(requireActivity()) {
-
+            if (it != null) {
+                Log.d(TAG, it)
+            }
         }
 
         /* Observer to catch list data
