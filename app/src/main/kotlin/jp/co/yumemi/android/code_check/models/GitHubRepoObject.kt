@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
  * Data class for Git Hub Object
  */
 @Parcelize
-data class RepoObject(
+data class GitHubRepoObject(
     val name: String?,
     val owner: Owner?,
     @SerializedName("language")

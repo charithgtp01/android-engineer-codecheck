@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="jp.co.yumemi.android.code_check.models.RepoObject" />
+            type="jp.co.yumemi.android.code_check.models.GitHubRepoObject" />
     </data>
 
 
@@ -23,6 +23,7 @@
             android:layout_marginVertical="8dp"
             android:textColor="@color/black"
             android:textSize="12sp"
+            android:text="@{item.name}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

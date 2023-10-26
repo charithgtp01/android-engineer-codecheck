@@ -15,7 +15,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.item
-import jp.co.yumemi.android.code_check.models.RepoObject
+import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 
 /**
  * Home Page Fragment
@@ -26,7 +26,6 @@ class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
     private lateinit var repoListAdapter: RepoListAdapter
-    private var dialog: DialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +45,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initiateAdapter()
+        viewModelObservers()
     }
 
     /**
@@ -55,7 +55,7 @@ class HomeFragment : Fragment() {
         /* Initiate Adapter */
         repoListAdapter =
             RepoListAdapter(object : RepoListAdapter.OnItemClickListener {
-                override fun itemClick(item: RepoObject) {
+                override fun itemClick(item: GitHubRepoObject) {
                     val gson = Gson()
 //                    val prefMap = HashMap<String, String>()
 //                    prefMap[Constants.OBJECT_STRING] = gson.toJson(item)
@@ -70,6 +70,23 @@ class HomeFragment : Fragment() {
         /* Set Adapter to Recycle View */
         binding?.recyclerView.also { it2 ->
             it2?.adapter = repoListAdapter
+        }
+    }
+
+    /**
+     * Live Data Updates
+     */
+    private fun viewModelObservers() {
+        /* Show error message in the custom error dialog */
+        viewModel.errorMessage.observe(requireActivity()) {
+
+        }
+
+        /* Observer to catch list data
+        * Update Recycle View Items using Diff Utils
+        */
+        viewModel.gitHubRepoList.observe(requireActivity()) {
+            repoListAdapter.submitList(it)
         }
     }
 

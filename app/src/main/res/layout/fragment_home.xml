@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-
         <variable
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.fragments.home.HomeViewModel" />
@@ -50,6 +49,7 @@
                     android:hint="@string/searchInputText_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
+                    android:onEditorAction="@{(view,actionId,event) -> vm.onEditorAction(view,actionId)}"
                     android:textSize="12sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -60,6 +60,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

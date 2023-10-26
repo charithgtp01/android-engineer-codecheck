@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.LayoutRepoListItemBinding
-import jp.co.yumemi.android.code_check.models.RepoObject
+import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import javax.inject.Inject
 import androidx.databinding.library.baseAdapters.BR
 
@@ -14,19 +14,19 @@ import androidx.databinding.library.baseAdapters.BR
  * Git Repo List Adapter
  */
 class RepoListAdapter @Inject constructor(private val itemClickListener: OnItemClickListener) :
-    ListAdapter<RepoObject, RepoListAdapter.RepoListViewHolder>(diffUtil) {
+    ListAdapter<GitHubRepoObject, RepoListAdapter.RepoListViewHolder>(diffUtil) {
 
 
     /**
      * On Item Click Listener
      */
     interface OnItemClickListener {
-        fun itemClick(item: RepoObject)
+        fun itemClick(item: GitHubRepoObject)
     }
 
     inner class RepoListViewHolder(val binding: LayoutRepoListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(obj: RepoObject) {
+        fun bind(obj: GitHubRepoObject) {
             binding.setVariable(BR.item, obj)
             binding.executePendingBindings()
         }
@@ -51,12 +51,12 @@ class RepoListAdapter @Inject constructor(private val itemClickListener: OnItemC
 /**
  * Diff Util Interface
  */
-val diffUtil = object : DiffUtil.ItemCallback<RepoObject>() {
-    override fun areItemsTheSame(oldItem: RepoObject, newItem: RepoObject): Boolean {
+val diffUtil = object : DiffUtil.ItemCallback<GitHubRepoObject>() {
+    override fun areItemsTheSame(oldItem: GitHubRepoObject, newItem: GitHubRepoObject): Boolean {
         return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: RepoObject, newItem: RepoObject): Boolean {
+    override fun areContentsTheSame(oldItem: GitHubRepoObject, newItem: GitHubRepoObject): Boolean {
         return oldItem == newItem
     }
 }
