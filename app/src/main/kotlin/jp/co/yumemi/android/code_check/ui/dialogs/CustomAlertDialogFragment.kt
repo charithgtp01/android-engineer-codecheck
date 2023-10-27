@@ -87,6 +87,8 @@ class CustomAlertDialogFragment : DialogFragment() {
             binding.imageResId = R.mipmap.done
         else if (type == DialogConstants.FAIL.VALUE)
             binding.imageResId = R.mipmap.cancel
+        else if (type == DialogConstants.WARN.VALUE)
+            binding.imageResId = R.mipmap.warning
 
         binding.button.setOnClickListener {
             //Error Dialog should not want to return button click listener
