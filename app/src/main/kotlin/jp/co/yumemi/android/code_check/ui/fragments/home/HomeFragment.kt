@@ -8,13 +8,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.MessageConstants
+import jp.co.yumemi.android.code_check.constants.MessageConstants.PROGRESS_DIALOG_MESSAGE
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
 
 /**
  * Home Page Fragment
@@ -25,6 +30,7 @@ class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
     private lateinit var repoListAdapter: RepoListAdapter
+    private var dialog: DialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +81,23 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, it)
             }
         }
+
+        /* Live data observer to show/hide progress dialog */
+        viewModel.isDialogVisible.observe(requireActivity()) {
+            if (it) {
+                /* Show dialog when calling the API */
+                dialog =
+                    showProgressDialogInFragment(
+                        this@HomeFragment,
+                        PROGRESS_DIALOG_MESSAGE
+                    )
+
+            } else {
+                /* Dismiss dialog after updating the data list to recycle view */
+                dialog?.dismiss()
+            }
+        }
+
 
         /* Observer to catch list data
         * Update Recycle View Items using Diff Utils
