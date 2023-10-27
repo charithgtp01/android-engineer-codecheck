@@ -21,4 +21,9 @@
         <item name="boxBackgroundMode">none</item>
     </style>
 
+    <!-- Progress Dialog Style-->
+    <style name="progressBarStyle" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="colorAccent">@color/accent_color</item>
+    </style>
+
 </resources>
