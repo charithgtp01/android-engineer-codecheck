@@ -6,4 +6,5 @@ enum class DialogConstants(val VALUE: String) {
     WARN("warn"),
     PROGRESS_DIALOG_FRAGMENT_TAG("CustomProgressDialogFragmentTag"),
     ALERT_DIALOG_FRAGMENT_TAG("CustomAlertDialogFragmentTag"),
+    CONFIRM_DIALOG_FRAGMENT_TAG("CustomConfirmDialogFragmentTag"),
 }

@@ -10,6 +10,7 @@
     <!-- Border (stroke) -->
     <item>
         <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
             <solid android:color="#00000000" /> <!-- Transparent color -->
             <stroke
                 android:width="2dp"

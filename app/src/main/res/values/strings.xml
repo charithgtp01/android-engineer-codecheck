@@ -3,4 +3,6 @@
     <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
     <string name="written_language">Written in %s</string>
     <string name="ok">OK</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
 </resources>
