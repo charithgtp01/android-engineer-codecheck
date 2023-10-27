@@ -30,12 +30,18 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
+    //Dialog Visibility Live Data
+    private val _isDialogVisible = MutableLiveData<Boolean>()
+    val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
+
     /**
      * Get Server Response and Set values to live data
      * @param inputText Pass entered value
      */
     private fun getGitHubRepoList(inputText: String) {
         if (NetworkUtils.isNetworkAvailable()) {
+            //Show Progress Dialog when click on the search view submit button
+            _isDialogVisible.value = true
             /* View Model Scope - Coroutine */
             viewModelScope.launch {
                 val resource = gitHubRepository.getRepositories(inputText)
@@ -44,6 +50,9 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
                     _gitHubRepoList.value = resource.data.items
                 } else
                     _errorMessage.value = resource?.error?.error
+
+                /* Hide Progress Dialog after fetching the data list from the server */
+                _isDialogVisible.value = false
             }
         } else {
             _errorMessage.value = NO_INTERNET
