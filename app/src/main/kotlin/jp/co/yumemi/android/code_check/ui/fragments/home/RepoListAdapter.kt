@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.LayoutRepoListItemBinding
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import javax.inject.Inject
-import androidx.databinding.library.baseAdapters.BR
+import jp.co.yumemi.android.code_check.BR
 
 /**
  * Git Repo List Adapter

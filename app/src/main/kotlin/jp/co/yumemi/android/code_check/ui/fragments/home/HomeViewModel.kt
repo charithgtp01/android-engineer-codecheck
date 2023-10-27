@@ -8,8 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.constants.MessageConstants
+import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET
+import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
+import jp.co.yumemi.android.code_check.utils.NetworkUtils
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,14 +35,18 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
      * @param inputText Pass entered value
      */
     private fun getGitHubRepoList(inputText: String) {
-        /* View Model Scope - Coroutine */
-        viewModelScope.launch {
-            val resource = gitHubRepository.getRepositories(inputText)
+        if (NetworkUtils.isNetworkAvailable()) {
+            /* View Model Scope - Coroutine */
+            viewModelScope.launch {
+                val resource = gitHubRepository.getRepositories(inputText)
 
-            if (resource?.data != null) {
-                _gitHubRepoList.value = resource.data.items
-            } else
-                _errorMessage.value = resource?.error?.error
+                if (resource?.data != null) {
+                    _gitHubRepoList.value = resource.data.items
+                } else
+                    _errorMessage.value = resource?.error?.error
+            }
+        } else {
+            _errorMessage.value = NO_INTERNET
         }
     }
 
@@ -53,7 +60,7 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
 
             if (enteredValue.isNullOrBlank()) {
                 //Empty value error Alert
-                _errorMessage.value = MessageConstants.NO_INTERNET
+                _errorMessage.value = SEARCH_VIEW_VALUE_EMPTY_ERROR
             } else {
                 getGitHubRepoList(editeText?.text.toString())
             }

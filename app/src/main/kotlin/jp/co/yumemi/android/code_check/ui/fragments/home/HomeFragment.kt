@@ -4,17 +4,16 @@
 package jp.co.yumemi.android.code_check.ui.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
-import jp.co.yumemi.android.code_check.item
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 
 /**
@@ -22,7 +21,7 @@ import jp.co.yumemi.android.code_check.models.GitHubRepoObject
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-
+    private val TAG: String = HomeFragment::class.java.simpleName
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
     private lateinit var repoListAdapter: RepoListAdapter
@@ -56,14 +55,7 @@ class HomeFragment : Fragment() {
         repoListAdapter =
             RepoListAdapter(object : RepoListAdapter.OnItemClickListener {
                 override fun itemClick(item: GitHubRepoObject) {
-                    val gson = Gson()
-//                    val prefMap = HashMap<String, String>()
-//                    prefMap[Constants.OBJECT_STRING] = gson.toJson(item)
-//                    navigateToAnotherActivityWithExtras(
-//                        requireActivity(),
-//                        UserDetailsActivity::class.java,
-//                        prefMap
-//                    )
+                    gotoRepositoryFragment(item)
                 }
             })
 
@@ -79,7 +71,9 @@ class HomeFragment : Fragment() {
     private fun viewModelObservers() {
         /* Show error message in the custom error dialog */
         viewModel.errorMessage.observe(requireActivity()) {
-
+            if (it != null) {
+                Log.d(TAG, it)
+            }
         }
 
         /* Observer to catch list data
@@ -90,9 +84,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun gotoRepositoryFragment(item: item) {
-        val _action =
-            HomeFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
-        findNavController().navigate(_action)
+    /**
+     * Navigate to Next Fragment Using Navigation Controller
+     * Pass selected Git Hub Repo Object using Safe Args
+     */
+    fun gotoRepositoryFragment(gitHubRepo: GitHubRepoObject) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(
+                gitHubRepo
+            )
+        )
     }
 }
