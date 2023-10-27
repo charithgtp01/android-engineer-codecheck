@@ -34,6 +34,9 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
     private val _isDialogVisible = MutableLiveData<Boolean>()
     val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
 
+    private val _isSearchResultsEmpty = MutableLiveData<Boolean>()
+    val isSearchResultsEmpty: LiveData<Boolean> get() = _isSearchResultsEmpty
+
     /**
      * Get Server Response and Set values to live data
      * @param inputText Pass entered value
@@ -48,6 +51,7 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
 
                 if (resource?.data != null) {
                     _gitHubRepoList.value = resource.data.items
+                    _isSearchResultsEmpty.value = resource.data.items.isEmpty()
                 } else
                     _errorMessage.value = resource?.error?.error
 
