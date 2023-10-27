@@ -15,10 +15,14 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.PROGRESS_DIALOG_MESSAGE
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
+import jp.co.yumemi.android.code_check.interfaces.CustomAlertDialogListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialog
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showErrorDialogInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
 
 /**
@@ -78,7 +82,7 @@ class HomeFragment : Fragment() {
         /* Show error message in the custom error dialog */
         viewModel.errorMessage.observe(requireActivity()) {
             if (it != null) {
-                Log.d(TAG, it)
+                showErrorDialogInFragment(this@HomeFragment, it)
             }
         }
 
