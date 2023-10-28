@@ -22,26 +22,5 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Handle the back button press here
-                DialogUtils.showConfirmAlertDialog(
-                    this@MainActivity,
-                    EXIT_CONFIRMATION_MESSAGE,
-                    object : ConfirmDialogButtonClickListener {
-                        override fun onPositiveButtonClick() {
-                            finish()
-                        }
-
-                        override fun onNegativeButtonClick() {
-                        }
-                    })
-            }
-        }
-
-        onBackPressedDispatcher.addCallback(this, callback)
-    }
 
 }

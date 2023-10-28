@@ -8,4 +8,7 @@ import kotlinx.android.parcel.Parcelize
  * Data Class for Git Hub Owner's Account
  */
 @Parcelize
-data class Owner(@SerializedName("avatar_url") val avatarUrl: String?) : Parcelable
+data class Owner(
+    @SerializedName("avatar_url") val avatarUrl: String?,
+    val type: String
+) : Parcelable
