@@ -38,14 +38,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/content_margin_top"
                 android:text="@{value}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="20dp"
                 android:text="@{label}" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
