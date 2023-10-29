@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET
 import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR
+import jp.co.yumemi.android.code_check.models.ApiResponse
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import jp.co.yumemi.android.code_check.utils.NetworkUtils
@@ -27,8 +27,8 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
     val gitHubRepoList: LiveData<List<GitHubRepoObject>> get() = _gitHubRepoList
 
     //Error Message Live Data
-    private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> get() = _errorMessage
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> get() = _errorMessage
 
     //Dialog Visibility Live Data
     private val _isDialogVisible = MutableLiveData<Boolean>()
@@ -41,19 +41,19 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
      * Get Server Response and Set values to live data
      * @param inputText Pass entered value
      */
-    private fun getGitHubRepoList(inputText: String) {
+    fun getGitHubRepoList(inputText: String) {
         if (NetworkUtils.isNetworkAvailable()) {
             //Show Progress Dialog when click on the search view submit button
             _isDialogVisible.value = true
             /* View Model Scope - Coroutine */
             viewModelScope.launch {
-                val resource = gitHubRepository.getRepositories(inputText)
+                val apiResponse = gitHubRepository.getRepositories(inputText)
 
-                if (resource?.data != null) {
-                    _gitHubRepoList.value = resource.data.items
-                    _isSearchResultsEmpty.value = resource.data.items.isEmpty()
+                if (apiResponse.success) {
+                    _gitHubRepoList.value = apiResponse.items
+                    _isSearchResultsEmpty.value = apiResponse.items.isEmpty()
                 } else
-                    _errorMessage.value = resource?.error?.error
+                    _errorMessage.value = apiResponse.message
 
                 /* Hide Progress Dialog after fetching the data list from the server */
                 _isDialogVisible.value = false
@@ -77,10 +77,10 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
             } else {
                 getGitHubRepoList(editeText?.text.toString())
             }
-
-
             return true
         }
         return false
     }
+
+
 }

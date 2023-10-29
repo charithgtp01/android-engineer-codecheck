@@ -22,7 +22,7 @@ class RepoDetailsFragment : Fragment() {
 
     private val args: RepoDetailsFragmentArgs by navArgs()
     private var binding: FragmentRepoDetailsBinding? = null
-    private lateinit var viewModel: RepoDetailsViewModel
+    lateinit var viewModel: RepoDetailsViewModel
     private lateinit var gitHubRepo: GitHubRepoObject
 
     override fun onCreateView(

@@ -1,6 +1,6 @@
 package jp.co.yumemi.android.code_check.apiservices
 
-import jp.co.yumemi.android.code_check.models.ServerResponse
+import jp.co.yumemi.android.code_check.models.ApiResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,5 +18,6 @@ interface GitRepoApiService {
      * @see https://api.github.com/ to get Free APIs
      */
     @GET(REPOSITORIES_ENDPOINT)
-    suspend fun getRepositories(@Query("q") query: String): Response<ServerResponse>
+    suspend fun getRepositories(@Query("q") query: String): Response<ApiResponse>
+
 }
