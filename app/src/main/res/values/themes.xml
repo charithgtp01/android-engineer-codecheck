@@ -74,4 +74,16 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- Setting Page Text View Style -->
+    <style name="settingPageTextViewStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="settingsLabelStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
 </resources>

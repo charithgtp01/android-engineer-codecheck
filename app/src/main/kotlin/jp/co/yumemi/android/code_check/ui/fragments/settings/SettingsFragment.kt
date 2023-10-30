@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding
 
 /**
@@ -18,7 +19,7 @@ import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding
 class SettingsFragment : Fragment() {
 
     private var binding: FragmentSettingsBinding? = null
-    lateinit var viewModel: SettingsViewModel
+    private lateinit var viewModel: SettingsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +36,8 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setBgRes(R.drawable.selected_layout_bg)
 
     }
 

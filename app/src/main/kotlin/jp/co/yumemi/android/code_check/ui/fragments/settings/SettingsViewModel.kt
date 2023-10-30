@@ -12,5 +12,12 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SettingsViewModel @Inject constructor() : ViewModel() {
+    private val _bgRes = MutableLiveData<Int>(null)
+    val bgRes: LiveData<Int> get() = _bgRes
+
+    fun setBgRes(res: Int) {
+        _bgRes.value = res
+    }
+
 
 }
