@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:id="@+id/nav_home"
+        android:enabled="true"
+        android:icon="@mipmap/icon_home"
+        android:title="@string/menu_home" />
+    <item
+        android:id="@+id/nav_favourites"
+        android:icon="@mipmap/favourites_icon"
+        android:title="@string/menu_favourites" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@mipmap/settings_icon"
+        android:title="@string/menu_settings" />
+</menu>

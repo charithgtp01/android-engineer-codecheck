@@ -5,4 +5,7 @@
     <string name="ok">OK</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_favourites">Favourites</string>
+    <string name="menu_settings">Settings</string>
 </resources>
