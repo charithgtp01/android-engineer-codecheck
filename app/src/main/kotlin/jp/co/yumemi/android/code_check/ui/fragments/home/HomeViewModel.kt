@@ -67,7 +67,7 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
      * Search View Submit Button Click Event
      */
     fun onEditorAction(editeText: TextView?, actionId: Int): Boolean {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
             val enteredValue = editeText?.text.toString()
 
