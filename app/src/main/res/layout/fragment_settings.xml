@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="vm"
@@ -29,10 +30,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/content_margin_top"
+            android:clickable="true"
+            android:onClick="@{() -> vm.onEnglishLayoutClicked()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            bind:label='@{"English"}'
-            bind:imgRes='@{vm.bgRes}'/>
+            bind:itemBackground='@{vm.shouldSelectEnglish}'
+            bind:label='@{"English"}' />
+
 
         <include
             android:id="@+id/japaneseLayout"
@@ -40,8 +44,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/content_margin_top"
+            android:clickable="true"
+            android:onClick="@{() -> vm.onJapaneseLayoutClicked()}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/englishLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/englishLayout"
+            bind:itemBackground='@{vm.shouldSelectJapanese}'
+            bind:label='@{"Japanese"}' />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

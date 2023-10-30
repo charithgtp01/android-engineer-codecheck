@@ -4,10 +4,6 @@
 
     <data>
         <variable
-            name="imgRes"
-            type="Integer" />
-
-        <variable
             name="label"
             type="String" />
     </data>
@@ -16,7 +12,6 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:itemBackground="@{imgRes}"
         android:paddingTop="@dimen/mini_vertical_margin"
         android:paddingBottom="@dimen/mini_vertical_margin">
 
@@ -38,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:gravity="left"
+            android:text="@{label}"
             app:layout_constraintBottom_toBottomOf="@+id/selectBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/selectBox"

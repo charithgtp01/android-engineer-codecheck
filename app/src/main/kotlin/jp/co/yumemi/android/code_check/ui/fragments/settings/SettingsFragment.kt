@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding
+import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
+import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager.Companion.updateSelectedLanguage
 
 /**
  * Settings Page Fragment
@@ -37,8 +38,18 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setBgRes(R.drawable.selected_layout_bg)
+        //Get selected language form preference and set to live data
+        val language = SharedPreferencesManager.getSelectedLanguage()
 
+        viewModel.setSelectedLanguage(
+            language
+        )
+
+        //When click on the languages layout changing the live selected language live data value
+        //Updated value should save in the preference
+        viewModel.selectedLanguage.observe(requireActivity()) {
+            updateSelectedLanguage(it)
+        }
     }
 
     override fun onDestroyView() {
