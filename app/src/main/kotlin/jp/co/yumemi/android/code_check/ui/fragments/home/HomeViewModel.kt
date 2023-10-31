@@ -7,12 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET
 import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR
+import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.models.ApiResponse
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import jp.co.yumemi.android.code_check.utils.NetworkUtils
+import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,13 +70,18 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
      * Search View Submit Button Click Event
      */
     fun onEditorAction(editeText: TextView?, actionId: Int): Boolean {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
             val enteredValue = editeText?.text.toString()
 
             if (enteredValue.isNullOrBlank()) {
+                val language = SharedPreferencesManager.getSelectedLanguage()
+                var message = SEARCH_VIEW_VALUE_EMPTY_ERROR
+
+                if (language?.equals(StringConstants.JAPANESE.value) == true)
+                    message = MessageConstants.JP_SEARCH_VIEW_VALUE_EMPTY_ERROR
                 //Empty value error Alert
-                _errorMessage.value = SEARCH_VIEW_VALUE_EMPTY_ERROR
+                _errorMessage.value = message
             } else {
                 getGitHubRepoList(editeText?.text.toString())
             }

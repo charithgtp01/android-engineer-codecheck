@@ -19,7 +19,7 @@
             style="@style/settingsLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select App Language:"
+            android:text="@string/select_app_language"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +49,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/englishLayout"
             bind:itemBackground='@{vm.shouldSelectJapanese}'
-            bind:label='@{"Japanese"}' />
+            bind:label='@{"日本語"}' />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

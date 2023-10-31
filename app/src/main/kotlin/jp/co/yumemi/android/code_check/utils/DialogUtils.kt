@@ -61,15 +61,18 @@ class DialogUtils {
          */
         fun showErrorDialogInFragment(
             fragment: Fragment, message: String?
-        ) {
+        ): DialogFragment? {
+            var dialogFragment: DialogFragment? = null
             val fragmentManager = fragment.fragmentManager
             if (fragmentManager != null) {
-                val dialogFragment = CustomAlertDialogFragment.newInstance(message)
+                dialogFragment = CustomAlertDialogFragment.newInstance(message)
                 dialogFragment.show(
                     fragmentManager,
                     DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value
                 )
             }
+
+            return dialogFragment
         }
 
         /**
