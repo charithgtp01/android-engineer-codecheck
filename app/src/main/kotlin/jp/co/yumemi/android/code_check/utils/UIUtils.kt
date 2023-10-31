@@ -17,9 +17,11 @@ import jp.co.yumemi.android.code_check.R
 class UIUtils {
     companion object {
 
-
-        fun updateMenuValues(context: Context?, menu: Menu) {
-            if (context != null) {
+        /**
+         * Set bottom menu label values according to the language
+         */
+        fun updateMenuValues(context: Context?, menu: Menu?) {
+            if (context != null && menu != null) {
                 //Localize according to the selected app language
                 menu.findItem(R.id.homeFragment)?.title =
                     LocalHelper.setLanguage(context, R.string.menu_home)
