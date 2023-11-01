@@ -5,14 +5,22 @@ package jp.co.yumemi.android.code_check.ui.activities
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
+import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
+
 
 /**
  * Main Activity Page
@@ -21,10 +29,18 @@ import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: MainActivityViewModel
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        setSupportActionBar(binding.toolbar)
+
+        binding.btnFav.setOnClickListener {
+            // Handle the custom button click event
+            Toast.makeText(this, "Custom Button Clicked", Toast.LENGTH_SHORT).show()
+        }
         sharedViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         sharedViewModel.updateBottomMenuStatus.observe(this) {
@@ -45,4 +61,5 @@ class MainActivity : AppCompatActivity() {
         updateMenuValues(this@MainActivity, menu)
         bottomNavView.setupWithNavController(navController)
     }
+
 }
