@@ -9,10 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import jp.co.yumemi.android.code_check.LocalHelper
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.FragmentFavouritesBinding
+import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
+import jp.co.yumemi.android.code_check.utils.DialogUtils
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 
 /**
  * Settings Page Fragment
@@ -60,6 +65,24 @@ class FavouritesFragment : Fragment() {
             FavouriteListAdapter(object : FavouriteListAdapter.OnItemClickListener {
                 override fun itemClick(item: LocalGitHubRepoObject, isExpanded: Boolean) {
                     sharedViewModel.expandedStates[item.id] = !isExpanded
+                }
+
+                override fun deleteIconClick(item: LocalGitHubRepoObject) {
+                    showConfirmAlertDialog(
+                        requireActivity(),
+                        LocalHelper.setLanguage(
+                            requireActivity(),
+                            R.string.remove_fav_confirmation_message
+                        ),
+                        object : ConfirmDialogButtonClickListener {
+                            override fun onPositiveButtonClick() {
+                                viewModel.deleteFavourite(item.id)
+                            }
+
+                            override fun onNegativeButtonClick() {
+                            }
+                        }
+                    )
                 }
             })
 

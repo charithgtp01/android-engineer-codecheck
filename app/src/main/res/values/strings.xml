@@ -18,5 +18,6 @@
     <string name="exit_confirmation_message">Do you want to exit?</string>
     <string name="progress_dialog_message">Processing......</string>
     <string name="add_fav_confirmation_message">Do you want to add to favourites?</string>
+    <string name="remove_fav_confirmation_message">Do you want to remove this from favourites?</string>
 
 </resources>

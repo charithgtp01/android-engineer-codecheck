@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.DATA_ALREADY_EXIST_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.FAV_ADDED_SUCCESS_CODE
+import jp.co.yumemi.android.code_check.constants.MessageConstants.FAV_DELETE_SUCCESS_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.getMessage
 import jp.co.yumemi.android.code_check.db.GitHubObjectDao
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
@@ -42,7 +43,14 @@ open class LocalGitHubRepository @Inject constructor(private val gitHubObjectDao
         gitHubObjectDao.updateGitHubObject(gitHubDataClass)
     }
 
-//    suspend fun deleteGitHubObjectDao(id: Int) {
-//        gitHubObjectDao.deleteGitHubObject(id)
-//    }
+    suspend fun deleteGitHubObjectDao(id: Long): LocalDBQueryResponse  {
+        return try {
+            gitHubObjectDao.deleteGitHubObject(id)
+            LocalDBQueryResponse(true, getMessage(FAV_DELETE_SUCCESS_CODE))
+        } catch (e: SQLiteConstraintException) {
+            // Handle other SQLiteConstraintExceptions
+            // Return DB exception
+            LocalDBQueryResponse(false, e.message.toString())
+        }
+    }
 }

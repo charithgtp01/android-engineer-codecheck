@@ -32,6 +32,7 @@ class FavouriteListAdapter @Inject constructor(
      */
     interface OnItemClickListener {
         fun itemClick(item: LocalGitHubRepoObject, isExpanded: Boolean)
+        fun deleteIconClick(item: LocalGitHubRepoObject)
     }
 
     inner class FavouriteListViewHolder(val binding: LayoutFavListItemBinding) :
@@ -68,6 +69,10 @@ class FavouriteListAdapter @Inject constructor(
             notifyDataSetChanged()
 
             itemClickListener.itemClick(repoObject, isExpanded)
+        }
+
+        holder.binding.deleteBtn.setOnClickListener {
+            itemClickListener.deleteIconClick(repoObject)
         }
     }
 

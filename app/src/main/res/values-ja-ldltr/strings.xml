@@ -17,4 +17,5 @@
     <string name="exit_confirmation_message">退出しますか?</string>
     <string name="progress_dialog_message">待っている......</string>
     <string name="add_fav_confirmation_message">お気に入りに追加しますか?</string>
+    <string name="remove_fav_confirmation_message">これをお気に入りから削除しますか?</string>
 </resources>

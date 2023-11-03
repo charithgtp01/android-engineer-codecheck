@@ -23,6 +23,7 @@ import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListen
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.changeUiSize
 
 /**
@@ -94,7 +95,7 @@ class RepoDetailsFragment : Fragment() {
 
     private fun initView() {
         binding?.btnFav?.setOnClickListener {
-            DialogUtils.showConfirmAlertDialog(
+            showConfirmAlertDialog(
                 requireActivity(),
                 LocalHelper.setLanguage(requireActivity(),R.string.add_fav_confirmation_message),
                 object : ConfirmDialogButtonClickListener {
