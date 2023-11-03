@@ -10,6 +10,7 @@ data class LocalGitHubRepoObject(
     val id: Long,
     val name: String?,
     val avatarUrl: String?,
+    val ownerType: String?,
     val language: String,
     val stargazersCount: Long?,
     val watchersCount: Long?,

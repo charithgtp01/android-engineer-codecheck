@@ -34,7 +34,7 @@ open class LocalGitHubRepository @Inject constructor(private val gitHubObjectDao
 
     }
 
-    fun getAllContacts(): LiveData<List<LocalGitHubRepoObject>> {
+    fun getAllRepositories(): LiveData<List<LocalGitHubRepoObject>> {
         return gitHubObjectDao.getAllGitHubObjects()
     }
 

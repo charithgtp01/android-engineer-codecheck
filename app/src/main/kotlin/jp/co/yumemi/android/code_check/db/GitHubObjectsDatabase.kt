@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 
-@Database(entities = [LocalGitHubRepoObject::class], version = 1)
+@Database(entities = [LocalGitHubRepoObject::class], version = 2)
 abstract class GitHubObjectsDatabase : RoomDatabase() {
     abstract fun gitHubObjectDao(): GitHubObjectDao
 }

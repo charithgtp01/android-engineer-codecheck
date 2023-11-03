@@ -7,46 +7,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
+import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
 import javax.inject.Inject
 
 /**
  * Settings Fragment View Model
  */
 @HiltViewModel
-class FavouritesViewModel @Inject constructor() : ViewModel() {
-
-    private val _selectedLanguage = MutableLiveData<String?>(null)
-    val selectedLanguage: LiveData<String?> get() = _selectedLanguage
-
-    private val _shouldSelectJapanese = MutableLiveData<Boolean?>(null)
-    val shouldSelectJapanese: LiveData<Boolean?> get() = _shouldSelectJapanese
-
-    private val _shouldSelectEnglish = MutableLiveData<Boolean?>(null)
-    val shouldSelectEnglish: LiveData<Boolean?> get() = _shouldSelectEnglish
-
-
-    fun setSelectedLanguage(language: String?) {
-        _selectedLanguage.value = language
-        if (language.equals(StringConstants.JAPANESE)) {
-            _shouldSelectJapanese.value = true
-            _shouldSelectEnglish.value = false
-        } else {
-            _shouldSelectJapanese.value = false
-            _shouldSelectEnglish.value = true
-        }
-    }
-
-    fun onEnglishLayoutClicked() {
-        // Handle the click event for the English layout
-        _selectedLanguage.value = StringConstants.ENGLISH
-        _shouldSelectJapanese.value = false
-        _shouldSelectEnglish.value = true
-    }
-
-    fun onJapaneseLayoutClicked() {
-        // Handle the click event for the Japanese layout
-        _selectedLanguage.value = StringConstants.JAPANESE
-        _shouldSelectJapanese.value = true
-        _shouldSelectEnglish.value = false
-    }
+class FavouritesViewModel @Inject constructor(repository: LocalGitHubRepository) : ViewModel() {
+    val allFavourites: LiveData<List<LocalGitHubRepoObject>> = repository.getAllRepositories()
 }

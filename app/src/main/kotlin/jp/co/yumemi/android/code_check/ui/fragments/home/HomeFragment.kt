@@ -34,7 +34,6 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var repoListAdapter: RepoListAdapter
     private var dialog: DialogFragment? = null
-    var language = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

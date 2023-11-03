@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import jp.co.yumemi.android.code_check.databinding.FragmentFavouritesBinding
+import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 
 /**
@@ -23,6 +24,8 @@ class FavouritesFragment : Fragment() {
 
     //Main Activity view model
     private lateinit var sharedViewModel: MainActivityViewModel
+
+    private lateinit var favouriteListAdapter:  FavouriteListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +47,37 @@ class FavouritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    /**
+     * Recycle View data configuration
+     */
+    private fun initiateAdapter() {
+        /* Initiate Adapter */
+        favouriteListAdapter =
+            FavouriteListAdapter(object : FavouriteListAdapter.OnItemClickListener {
+                override fun itemClick(item: LocalGitHubRepoObject) {
+
+                }
+            })
+
+        /* Set Adapter to Recycle View */
+        binding?.recyclerView.also { it2 ->
+            it2?.adapter = favouriteListAdapter
+        }
+    }
+
+    /**
+     * Live Data Updates
+     */
+    private fun viewModelObservers() {
+
+        /* Observer to catch list data
+        * Update Recycle View Items using Diff Utils
+        */
+        viewModel.allFavourites.observe(requireActivity()) {
+            favouriteListAdapter.submitList(it)
+        }
     }
 
     override fun onDestroyView() {

@@ -28,7 +28,7 @@ data class GitHubRepoObject(
         get() = nullableLanguage ?: "No Language Data"
 }
 
-fun GitHubRepoObject.toGitHubDataClass(ownerURL: String?): LocalGitHubRepoObject {
+fun GitHubRepoObject.toGitHubDataClass(): LocalGitHubRepoObject {
     return LocalGitHubRepoObject(
         id = id, // Set the ID as needed
         name = name ?: "",
@@ -37,7 +37,8 @@ fun GitHubRepoObject.toGitHubDataClass(ownerURL: String?): LocalGitHubRepoObject
         watchersCount = watchersCount,
         forksCount = forksCount,
         openIssuesCount = openIssuesCount,
-        avatarUrl = ownerURL
+        avatarUrl = owner?.avatarUrl,
+        ownerType = owner?.type
     )
 }
 

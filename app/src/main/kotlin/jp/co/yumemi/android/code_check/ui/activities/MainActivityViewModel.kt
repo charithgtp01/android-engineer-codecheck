@@ -41,9 +41,7 @@ class MainActivityViewModel @Inject constructor(private val localGitHubRepositor
 
         if (gitHubRepoObject != null) {
             viewModelScope.launch {
-                val ownerURL: String? =
-                    gitHubRepoObject.owner?.avatarUrl // Extract ownerURL from the Owner object
-                val gitHubDataClass = gitHubRepoObject.toGitHubDataClass(ownerURL)
+                val gitHubDataClass = gitHubRepoObject.toGitHubDataClass()
                 _localDBResponse.value = localGitHubRepository.insertGitHubObject(gitHubDataClass)
             }
         }
