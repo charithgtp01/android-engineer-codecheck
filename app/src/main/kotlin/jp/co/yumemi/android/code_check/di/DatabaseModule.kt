@@ -6,6 +6,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import jp.co.yumemi.android.code_check.constants.Config
+import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.db.GitHubObjectDao
 import jp.co.yumemi.android.code_check.db.GitHubObjectsDatabase
 import javax.inject.Singleton
@@ -19,7 +21,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             application,
             GitHubObjectsDatabase::class.java,
-            "github_repo_table"
+            StringConstants.ROOM_DB_REPO_TABLE
         ).fallbackToDestructiveMigration().build()
     }
 

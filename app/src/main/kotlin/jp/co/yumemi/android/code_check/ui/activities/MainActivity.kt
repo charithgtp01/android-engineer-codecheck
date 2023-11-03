@@ -5,11 +5,7 @@ package jp.co.yumemi.android.code_check.ui.activities
 
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -17,8 +13,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
-import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding
+import jp.co.yumemi.android.code_check.interfaces.CustomAlertDialogListener
+import jp.co.yumemi.android.code_check.utils.DialogUtils
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialog
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialogWithoutAction
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 
 
@@ -48,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         setupNavController()
+        viewModelObservers()
+
     }
 
     private lateinit var menu: Menu
@@ -61,5 +64,30 @@ class MainActivity : AppCompatActivity() {
         updateMenuValues(this@MainActivity, menu)
         bottomNavView.setupWithNavController(navController)
     }
+
+    /**
+     * Live Data Observer
+     */
+    private fun viewModelObservers() {
+        /* According to the response show alert dialog(Error or Success) */
+        sharedViewModel.localDBResponse.observe(this@MainActivity) {
+            if (it != null) {
+
+                if (it.success) {
+                    showAlertDialogWithoutAction(
+                        this@MainActivity,
+                        DialogConstants.SUCCESS.value,
+                        it.message)
+                } else {
+                    showAlertDialogWithoutAction(
+                        this@MainActivity,
+                        DialogConstants.FAIL.value, it.message
+                    )
+                }
+
+            }
+        }
+    }
+
 
 }

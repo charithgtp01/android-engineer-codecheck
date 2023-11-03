@@ -6,8 +6,10 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET
-import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR
+import jp.co.yumemi.android.code_check.constants.MessageConstants
+import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET_ERROR_CODE
+import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE
+import jp.co.yumemi.android.code_check.constants.MessageConstants.getMessage
 import jp.co.yumemi.android.code_check.models.ApiResponse
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.models.Owner
@@ -28,7 +30,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -187,7 +188,7 @@ class HomeViewModelTest {
 
         // Assert
         // Verify that the errorMessage LiveData is updated with the expected error message
-        verify(errorMessageObserver).onChanged(NO_INTERNET)
+        verify(errorMessageObserver).onChanged(getMessage(NO_INTERNET_ERROR_CODE))
     }
 
     @Test
@@ -244,7 +245,10 @@ class HomeViewModelTest {
         // Verify that the method returns true (IME_ACTION_SEARCH)
         assertTrue(searchViewResult)
 
-        assertEquals(SEARCH_VIEW_VALUE_EMPTY_ERROR, viewModel.errorMessage.value)
+        assertEquals(
+            MessageConstants.getMessage(SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE),
+            viewModel.errorMessage.value
+        )
     }
 
 

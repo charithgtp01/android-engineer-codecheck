@@ -51,7 +51,7 @@ object LocalHelper {
 
 
     private fun getLocalLangFromSelectedLang(selectedLanguage: String): String {
-        return if (selectedLanguage == StringConstants.JAPANESE.value)
+        return if (selectedLanguage == StringConstants.JAPANESE)
             JAPANESE
         else
             ENGLISH

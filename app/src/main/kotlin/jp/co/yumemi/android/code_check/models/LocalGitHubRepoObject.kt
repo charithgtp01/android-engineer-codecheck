@@ -2,9 +2,10 @@ package jp.co.yumemi.android.code_check.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import jp.co.yumemi.android.code_check.constants.StringConstants
 
-@Entity(tableName = "github_repo_table")
-data class LocalGitHubRepoObject (
+@Entity(tableName = StringConstants.ROOM_DB_REPO_TABLE)
+data class LocalGitHubRepoObject(
     @PrimaryKey
     val id: Long,
     val name: String?,

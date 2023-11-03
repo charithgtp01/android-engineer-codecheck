@@ -27,7 +27,7 @@ class FavouritesViewModel @Inject constructor() : ViewModel() {
 
     fun setSelectedLanguage(language: String?) {
         _selectedLanguage.value = language
-        if (language.equals(StringConstants.JAPANESE.value)) {
+        if (language.equals(StringConstants.JAPANESE)) {
             _shouldSelectJapanese.value = true
             _shouldSelectEnglish.value = false
         } else {
@@ -38,14 +38,14 @@ class FavouritesViewModel @Inject constructor() : ViewModel() {
 
     fun onEnglishLayoutClicked() {
         // Handle the click event for the English layout
-        _selectedLanguage.value = StringConstants.ENGLISH.value
+        _selectedLanguage.value = StringConstants.ENGLISH
         _shouldSelectJapanese.value = false
         _shouldSelectEnglish.value = true
     }
 
     fun onJapaneseLayoutClicked() {
         // Handle the click event for the Japanese layout
-        _selectedLanguage.value = StringConstants.JAPANESE.value
+        _selectedLanguage.value = StringConstants.JAPANESE
         _shouldSelectJapanese.value = true
         _shouldSelectEnglish.value = false
     }

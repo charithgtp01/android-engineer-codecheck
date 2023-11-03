@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.models.toGitHubDataClass
 import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
 import kotlinx.coroutines.launch
@@ -24,6 +25,9 @@ class MainActivityViewModel @Inject constructor(private val localGitHubRepositor
     private val _selectedGitHubRepo = MutableLiveData<GitHubRepoObject>()
     val selectedGitHubRepo: LiveData<GitHubRepoObject> get() = _selectedGitHubRepo
 
+    private val _localDBResponse = MutableLiveData<LocalDBQueryResponse>()
+    val localDBResponse: LiveData<LocalDBQueryResponse> get() = _localDBResponse
+
     fun setUpdateBottomMenuStatus(isUpdateStatus: Boolean) {
         _updateBottomMenuStatus.value = isUpdateStatus;
     }
@@ -40,7 +44,7 @@ class MainActivityViewModel @Inject constructor(private val localGitHubRepositor
                 val ownerURL: String? =
                     gitHubRepoObject.owner?.avatarUrl // Extract ownerURL from the Owner object
                 val gitHubDataClass = gitHubRepoObject.toGitHubDataClass(ownerURL)
-                localGitHubRepository.insertGitHubObject(gitHubDataClass)
+                _localDBResponse.value = localGitHubRepository.insertGitHubObject(gitHubDataClass)
             }
         }
     }

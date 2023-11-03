@@ -31,7 +31,7 @@ class SharedPreferencesManager @Inject constructor() {
         ): String? {
             return sharedPreferences?.getString(
                 PreferenceKeys.LANGUAGE.value,
-                StringConstants.ENGLISH.value
+                StringConstants.ENGLISH
             )
         }
 

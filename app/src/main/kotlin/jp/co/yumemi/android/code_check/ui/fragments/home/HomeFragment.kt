@@ -15,11 +15,12 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showErrorDialogInFragment
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
 import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 
@@ -57,7 +58,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
-        val language = SharedPreferencesManager.getSelectedLanguage()
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -114,7 +114,11 @@ class HomeFragment : Fragment() {
             if (it != null) {
                 if (dialog != null)
                     dialog?.dismiss()
-                dialog = showErrorDialogInFragment(this@HomeFragment, it)
+                dialog = showDialogWithoutActionInFragment(
+                    this@HomeFragment,
+                    it,
+                    DialogConstants.FAIL.value
+                )
             }
         }
 
