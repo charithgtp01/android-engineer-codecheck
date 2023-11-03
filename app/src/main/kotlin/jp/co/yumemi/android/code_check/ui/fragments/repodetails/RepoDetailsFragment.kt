@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants.ACCOUNT_DETAILS_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
@@ -55,7 +56,7 @@ class RepoDetailsFragment : Fragment() {
 
         //This Shared view model is using to set selected git hub repo live data from this fragment
         sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
-        sharedViewModel.setFragment(StringConstants.ACCOUNT_DETAILS_FRAGMENT)
+        sharedViewModel.setFragment(ACCOUNT_DETAILS_FRAGMENT)
         binding?.vm = viewModel
         binding?.lifecycleOwner = this
 
@@ -66,10 +67,48 @@ class RepoDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         setData()
+        viewModelObservers()
+    }
+
+    private fun viewModelObservers() {
+
+        /* According to the response show alert dialog(Error or Success) */
+        viewModel.localDBResponse.observe(requireActivity()) {
+            if (it != null) {
+                if (it.success) {
+                    DialogUtils.showAlertDialogWithoutAction(
+                        requireActivity(),
+                        DialogConstants.SUCCESS.value,
+                        it.message
+                    )
+                } else {
+                    DialogUtils.showAlertDialogWithoutAction(
+                        requireActivity(),
+                        DialogConstants.FAIL.value, it.message
+                    )
+                }
+
+            }
+        }
     }
 
     private fun initView() {
+        binding?.btnFav?.setOnClickListener {
+            DialogUtils.showConfirmAlertDialog(
+                requireActivity(),
+                LocalHelper.setLanguage(requireActivity(),R.string.add_fav_confirmation_message),
+                object : ConfirmDialogButtonClickListener {
+                    override fun onPositiveButtonClick() {
+                        viewModel.addToFavourites()
+                    }
 
+                    override fun onNegativeButtonClick() {
+                    }
+                }
+            )
+        }
+
+        //Handle back pressed event
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigate(R.id.homeFragment)
@@ -87,7 +126,6 @@ class RepoDetailsFragment : Fragment() {
      */
     private fun setData() {
         viewModel.setGitRepoData(gitHubRepo)
-        sharedViewModel.setSelectedGitHubRepo(gitHubRepo)
         sharedViewModel.setFragment(ACCOUNT_DETAILS_FRAGMENT)
     }
 

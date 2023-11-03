@@ -76,24 +76,6 @@ class MainActivity : AppCompatActivity() {
      * Live Data Observer
      */
     private fun viewModelObservers() {
-        /* According to the response show alert dialog(Error or Success) */
-        sharedViewModel.localDBResponse.observe(this@MainActivity) {
-            if (it != null) {
-                if (it.success) {
-                    showAlertDialogWithoutAction(
-                        this@MainActivity,
-                        DialogConstants.SUCCESS.value,
-                        it.message
-                    )
-                } else {
-                    showAlertDialogWithoutAction(
-                        this@MainActivity,
-                        DialogConstants.FAIL.value, it.message
-                    )
-                }
-
-            }
-        }
 
         //Can write fragment related changes here(UI changes, Device Rotation status, etc)
         //When moving to out from the Favourite Fragment

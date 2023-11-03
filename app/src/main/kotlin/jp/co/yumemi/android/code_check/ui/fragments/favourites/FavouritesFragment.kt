@@ -8,11 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import jp.co.yumemi.android.code_check.constants.StringConstants
-import jp.co.yumemi.android.code_check.constants.StringConstants.EXPANDED_STATES_KEY
 import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.FragmentFavouritesBinding
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
@@ -31,8 +27,6 @@ class FavouritesFragment : Fragment() {
     private lateinit var sharedViewModel: MainActivityViewModel
 
     private lateinit var favouriteListAdapter: FavouriteListAdapter
-
-    private val expandedStates: MutableMap<Long, Boolean> = mutableMapOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,

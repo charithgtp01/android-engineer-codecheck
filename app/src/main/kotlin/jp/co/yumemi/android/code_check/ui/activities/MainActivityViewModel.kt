@@ -16,13 +16,12 @@ import javax.inject.Inject
 
 /**
  * Main Activity Shared View Model
- *
  * Multiple Fragments within the same Activity and we need them to communicate with each other,
  * A shared ViewModel can act as a communication channel.
  * It allows one Fragment to update data or trigger actions that affect another Fragment.
  */
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(private val localGitHubRepository: LocalGitHubRepository) :
+class MainActivityViewModel @Inject constructor() :
     ViewModel() {
 
     private val _fragment = MutableLiveData(HOME_FRAGMENT)
@@ -31,37 +30,11 @@ class MainActivityViewModel @Inject constructor(private val localGitHubRepositor
     private val _updateBottomMenuStatus = MutableLiveData<Boolean?>(null)
     val updateBottomMenuStatus: LiveData<Boolean?> get() = _updateBottomMenuStatus
 
-    private val _selectedGitHubRepo = MutableLiveData<GitHubRepoObject>()
-    val selectedGitHubRepo: LiveData<GitHubRepoObject> get() = _selectedGitHubRepo
-
-    private val _localDBResponse = MutableLiveData<LocalDBQueryResponse>()
-    val localDBResponse: LiveData<LocalDBQueryResponse> get() = _localDBResponse
-
-
     val expandedStates: MutableMap<Long, Boolean> = mutableMapOf()
     private val _expandedStates = MutableLiveData<MutableMap<Long, Boolean>>(mutableMapOf())
 
     fun setUpdateBottomMenuStatus(isUpdateStatus: Boolean) {
         _updateBottomMenuStatus.value = isUpdateStatus;
-    }
-
-    /**
-     * When click on fav button from the HomeFragment
-     * Selected Git Hub account adding to the fav local DB
-     */
-    fun addToFavourites() {
-        val gitHubRepoObject = selectedGitHubRepo.value
-
-        if (gitHubRepoObject != null) {
-            viewModelScope.launch {
-                val gitHubDataClass = gitHubRepoObject.toGitHubDataClass()
-                _localDBResponse.value = localGitHubRepository.insertGitHubObject(gitHubDataClass)
-            }
-        }
-    }
-
-    fun setSelectedGitHubRepo(gitHubRepo: GitHubRepoObject) {
-        _selectedGitHubRepo.value = gitHubRepo
     }
 
     fun setFragment(fragment: String) {
