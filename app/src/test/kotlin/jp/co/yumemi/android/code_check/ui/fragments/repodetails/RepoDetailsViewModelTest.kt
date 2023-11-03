@@ -22,6 +22,7 @@ class RepoDetailsViewModelTest {
         Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
 
     private val mockGitHubRepoObject = GitHubRepoObject(
+        id = 1,
         name = "charithvin",
         owner = mockOwnerObj,
         nullableLanguage = "CSS",
@@ -34,6 +35,7 @@ class RepoDetailsViewModelTest {
     private val expectedOwnerObj =
         Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
     private val expectedGitHubRepoObject = GitHubRepoObject(
+        id = 1,
         name = "charithvin",
         owner = expectedOwnerObj,
         nullableLanguage = "CSS",
@@ -42,10 +44,12 @@ class RepoDetailsViewModelTest {
         forksCount = 4,
         openIssuesCount = 25
     )
+
     @Before
     fun setup() {
         viewModel = RepoDetailsViewModel()
     }
+
     @Test
     fun `test set value to the live data using setGitRepoData`() {
 

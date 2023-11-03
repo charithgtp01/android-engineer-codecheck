@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.StringConstants
-import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import javax.inject.Inject
 
 /**

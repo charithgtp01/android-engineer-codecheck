@@ -63,6 +63,7 @@ class HomeViewModelTest {
     private val mockOwnerObj =
         Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
     private val mockGitHubRepoObject = GitHubRepoObject(
+        id = 1,
         name = "charithvin",
         owner = mockOwnerObj,
         nullableLanguage = "CSS",
@@ -76,6 +77,7 @@ class HomeViewModelTest {
     private val expectedOwnerObj =
         Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
     private val expectedGitHubRepoObject = GitHubRepoObject(
+        id = 1,
         name = "charithvin",
         owner = expectedOwnerObj,
         nullableLanguage = "CSS",
@@ -189,7 +191,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `test onEditorAction with search action`()  {
+    fun `test onEditorAction with search action`() {
         // Arrange
         val editText = mock(TextView::class.java)
         val actionId = EditorInfo.IME_ACTION_SEARCH
@@ -201,32 +203,34 @@ class HomeViewModelTest {
         // Verify that the method returns true (IME_ACTION_SEARCH)
         assertTrue(searchViewResult)
     }
-    @Test
-    fun `test onEditorAction when action is search and text not empty calls getGitHubRepoList method`() = runBlocking {
-        // Arrange
-        val editText = mock(TextView::class.java)
-        val actionId = EditorInfo.IME_ACTION_SEARCH
-        val enteredValue = "charith"
-
-        `when`(editText.text).thenReturn(enteredValue)
-        `when`(networkInfo.isConnected).thenReturn(true)
-        `when`(connectivityManager.activeNetworkInfo).thenReturn(networkInfo)
-        `when`(gitHubRepository.getRepositories(enteredValue))
-            .thenReturn(successServerResponse)
-        // Act
-        val searchViewResult = viewModel.onEditorAction(editText, actionId)
-
-        // Verify that the method returns true (IME_ACTION_SEARCH)
-        assertTrue(searchViewResult)
-
-        viewModel.getGitHubRepoList(enteredValue)
-        // Wait for LiveData changes
-        val result = viewModel.gitHubRepoList.getOrAwaitValue()
-        assertEquals(successServerResponse.items, result)
-    }
 
     @Test
-    fun `test onEditorAction with blank text sets error message`()  {
+    fun `test onEditorAction when action is search and text not empty calls getGitHubRepoList method`() =
+        runBlocking {
+            // Arrange
+            val editText = mock(TextView::class.java)
+            val actionId = EditorInfo.IME_ACTION_SEARCH
+            val enteredValue = "charith"
+
+            `when`(editText.text).thenReturn(enteredValue)
+            `when`(networkInfo.isConnected).thenReturn(true)
+            `when`(connectivityManager.activeNetworkInfo).thenReturn(networkInfo)
+            `when`(gitHubRepository.getRepositories(enteredValue))
+                .thenReturn(successServerResponse)
+            // Act
+            val searchViewResult = viewModel.onEditorAction(editText, actionId)
+
+            // Verify that the method returns true (IME_ACTION_SEARCH)
+            assertTrue(searchViewResult)
+
+            viewModel.getGitHubRepoList(enteredValue)
+            // Wait for LiveData changes
+            val result = viewModel.gitHubRepoList.getOrAwaitValue()
+            assertEquals(successServerResponse.items, result)
+        }
+
+    @Test
+    fun `test onEditorAction with blank text sets error message`() {
         // Arrange
         val editText = mock(TextView::class.java)
         val actionId = EditorInfo.IME_ACTION_SEARCH

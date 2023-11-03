@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import jp.co.yumemi.android.code_check.databinding.FragmentRepoDetailsBinding
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.changeUiSize
 
 /**
@@ -24,6 +25,8 @@ class RepoDetailsFragment : Fragment() {
     private var binding: FragmentRepoDetailsBinding? = null
     lateinit var viewModel: RepoDetailsViewModel
     private lateinit var gitHubRepo: GitHubRepoObject
+    //Main Activity view model
+    private lateinit var sharedViewModel: MainActivityViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +42,9 @@ class RepoDetailsFragment : Fragment() {
          */
         binding = FragmentRepoDetailsBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[RepoDetailsViewModel::class.java]
+
+        //This Shared view model is using to set selected git hub repo live data from this fragment
+        sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
         binding?.vm = viewModel
         binding?.lifecycleOwner = this
 
@@ -56,6 +62,7 @@ class RepoDetailsFragment : Fragment() {
      */
     private fun setData() {
         viewModel.setGitRepoData(gitHubRepo)
+        sharedViewModel.setSelectedGitHubRepo(gitHubRepo)
 
     }
 

@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.btnFav.setOnClickListener {
-            // Handle the custom button click event
-            Toast.makeText(this, "Custom Button Clicked", Toast.LENGTH_SHORT).show()
+            // Handle the fav button click event
+            sharedViewModel.addToFavourites()
         }
         sharedViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 

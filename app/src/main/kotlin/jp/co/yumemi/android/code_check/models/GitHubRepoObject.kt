@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class GitHubRepoObject(
+    val id: Long,
     val name: String?,
     val owner: Owner?,
     @SerializedName("language")
@@ -25,5 +26,18 @@ data class GitHubRepoObject(
     //Set Default Value to language variable
     val language: String
         get() = nullableLanguage ?: "No Language Data"
+}
+
+fun GitHubRepoObject.toGitHubDataClass(ownerURL: String?): LocalGitHubRepoObject {
+    return LocalGitHubRepoObject(
+        id = id, // Set the ID as needed
+        name = name ?: "",
+        language = language,
+        stargazersCount = stargazersCount,
+        watchersCount = watchersCount,
+        forksCount = forksCount,
+        openIssuesCount = openIssuesCount,
+        avatarUrl = ownerURL
+    )
 }
 
