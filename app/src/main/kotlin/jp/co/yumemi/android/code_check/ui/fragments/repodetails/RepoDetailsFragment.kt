@@ -7,12 +7,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import jp.co.yumemi.android.code_check.LocalHelper
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentRepoDetailsBinding
+import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
+import jp.co.yumemi.android.code_check.utils.DialogUtils
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.changeUiSize
 
 /**
@@ -25,6 +31,7 @@ class RepoDetailsFragment : Fragment() {
     private var binding: FragmentRepoDetailsBinding? = null
     lateinit var viewModel: RepoDetailsViewModel
     private lateinit var gitHubRepo: GitHubRepoObject
+
     //Main Activity view model
     private lateinit var sharedViewModel: MainActivityViewModel
 
@@ -53,7 +60,21 @@ class RepoDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         setData()
+    }
+
+    private fun initView() {
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.homeFragment)
+                // Handle back button press for Home Fragment
+                sharedViewModel.setHomeActivityStatus(true)
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     /**
@@ -63,7 +84,7 @@ class RepoDetailsFragment : Fragment() {
     private fun setData() {
         viewModel.setGitRepoData(gitHubRepo)
         sharedViewModel.setSelectedGitHubRepo(gitHubRepo)
-
+        sharedViewModel.setHomeActivityStatus(false)
     }
 
     override fun onDestroyView() {

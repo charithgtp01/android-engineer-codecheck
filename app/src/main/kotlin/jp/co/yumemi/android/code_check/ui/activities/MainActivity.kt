@@ -5,6 +5,7 @@ package jp.co.yumemi.android.code_check.ui.activities
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -31,7 +32,7 @@ import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var bottomNavView:BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation_menu)
+        bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation_menu)
         menu = bottomNavView.menu
         updateMenuValues(this@MainActivity, menu)
         bottomNavView.setupWithNavController(navController)
@@ -72,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         /* According to the response show alert dialog(Error or Success) */
         sharedViewModel.localDBResponse.observe(this@MainActivity) {
             if (it != null) {
-
                 if (it.success) {
                     showAlertDialogWithoutAction(
                         this@MainActivity,
@@ -85,6 +85,16 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
 
+            }
+        }
+
+        sharedViewModel.isHomeFragment.observe(this@MainActivity){
+            if(it == true){
+                binding.btnFav.visibility=View.GONE
+                bottomNavView.visibility=View.VISIBLE
+            }else{
+                binding.btnFav.visibility=View.VISIBLE
+                bottomNavView.visibility=View.GONE
             }
         }
     }

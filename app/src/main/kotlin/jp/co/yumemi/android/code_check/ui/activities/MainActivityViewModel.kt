@@ -19,6 +19,9 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(private val localGitHubRepository: LocalGitHubRepository) :
     ViewModel() {
 
+    private val _isHomeFragment = MutableLiveData<Boolean?>(true)
+    val isHomeFragment: LiveData<Boolean?> get() = _isHomeFragment
+
     private val _updateBottomMenuStatus = MutableLiveData<Boolean?>(null)
     val updateBottomMenuStatus: LiveData<Boolean?> get() = _updateBottomMenuStatus
 
@@ -49,6 +52,10 @@ class MainActivityViewModel @Inject constructor(private val localGitHubRepositor
 
     fun setSelectedGitHubRepo(gitHubRepo: GitHubRepoObject) {
         _selectedGitHubRepo.value = gitHubRepo
+    }
+
+    fun setHomeActivityStatus(status: Boolean) {
+        _isHomeFragment.value = status
     }
 
 }

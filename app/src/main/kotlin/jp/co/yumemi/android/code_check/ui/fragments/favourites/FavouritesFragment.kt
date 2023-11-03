@@ -25,7 +25,7 @@ class FavouritesFragment : Fragment() {
     //Main Activity view model
     private lateinit var sharedViewModel: MainActivityViewModel
 
-    private lateinit var favouriteListAdapter:  FavouriteListAdapter
+    private lateinit var favouriteListAdapter: FavouriteListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +46,8 @@ class FavouritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initiateAdapter()
+        viewModelObservers()
     }
 
     /**
@@ -76,6 +77,13 @@ class FavouritesFragment : Fragment() {
         * Update Recycle View Items using Diff Utils
         */
         viewModel.allFavourites.observe(requireActivity()) {
+            if(binding!=null){
+                if(it.isEmpty())
+                    binding!!.emptyImageView.visibility=View.VISIBLE
+                else
+                    binding!!.emptyImageView.visibility=View.GONE
+            }
+
             favouriteListAdapter.submitList(it)
         }
     }
