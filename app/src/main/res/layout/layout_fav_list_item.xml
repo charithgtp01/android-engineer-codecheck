@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="item"
             type="jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject" />
@@ -38,31 +41,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/mini_horizontal_margin"
-                android:layout_marginVertical="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/favIcon"
-                app:layout_constraintStart_toEndOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/repositoryNameView"
-                    style="@style/repoNameStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{item.name}" />
-
-                <TextView
-                    android:id="@+id/type"
-                    style="@style/repoTypeStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{item.ownerType}" />
-            </LinearLayout>
-
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
@@ -71,27 +49,162 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="79dp" />
 
-            <ImageView
-                android:id="@+id/favIcon"
-                android:layout_width="@dimen/fav_icon_size"
-                android:layout_height="@dimen/fav_icon_size"
-                android:layout_marginEnd="@dimen/mini_horizontal_margin"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/forwardArrowIcon"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/favourites_star" />
 
-            <ImageView
-                android:id="@+id/forwardArrowIcon"
-                android:layout_width="@dimen/forward_arrow_size"
-                android:layout_height="@dimen/forward_arrow_size"
-                android:layout_marginEnd="@dimen/horizontal_margin"
-                android:scaleType="centerCrop"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/mini_horizontal_margin"
+                android:padding="@dimen/mini_vertical_margin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/next" />
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <LinearLayout
+                    android:id="@+id/contextLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/forwardArrowIcon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <include
+                        layout="@layout/content_with_label_large_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toTopOf="@id/centerHorizontalCenterGuid"
+                        app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuid"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:label='@{"Name"}'
+                        bind:value="@{item.name}" />
+
+                    <include
+                        layout="@layout/content_with_label_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toTopOf="@id/centerHorizontalCenterGuid"
+                        app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuid"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:label='@{"Type"}'
+                        bind:value="@{item.ownerType}" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/forwardArrowIcon"
+                    android:layout_width="@dimen/forward_arrow_size"
+                    android:layout_height="@dimen/forward_arrow_size"
+                    android:layout_marginEnd="@dimen/horizontal_margin"
+                    android:layout_marginTop="@dimen/vertical_margin"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@mipmap/next" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/expandedContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contextLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/content_margin_top">
+
+                    <View
+                        android:id="@+id/separator"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/accent_color"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <include
+                        android:id="@+id/include2"
+                        layout="@layout/content_with_label_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuide25"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/separator"
+                        bind:label='@{"Starts"}'
+                        bind:value="@{item.stargazersCount.toString()}"
+                        android:layout_marginTop="@dimen/content_margin_top"/>
+
+
+                    <include
+                        layout="@layout/content_with_label_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuide50"
+                        app:layout_constraintStart_toEndOf="@+id/centerVerticalGuide25"
+                        app:layout_constraintTop_toBottomOf="@+id/separator"
+                        bind:label='@{"Forks"}'
+                        bind:value="@{item.forksCount.toString()}"
+
+                        android:layout_marginTop="@dimen/content_margin_top"/>
+
+                    <include
+                        android:id="@+id/include"
+                        layout="@layout/content_with_label_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuide75"
+                        app:layout_constraintStart_toEndOf="@+id/centerVerticalGuide50"
+                        app:layout_constraintTop_toBottomOf="@+id/separator"
+                        bind:label='@{"Watchers"}'
+                        bind:value="@{item.watchersCount.toString()}"
+
+                        android:layout_marginTop="@dimen/content_margin_top"/>
+
+                    <include
+                        layout="@layout/content_with_label_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/centerVerticalGuide75"
+                        app:layout_constraintTop_toBottomOf="@+id/separator"
+                        bind:label='@{"Open Issues"}'
+                        bind:value="@{item.openIssuesCount.toString()}"
+
+                        android:layout_marginTop="@dimen/content_margin_top"/>
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/centerVerticalGuide25"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.25" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/centerVerticalGuide50"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.50" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/centerVerticalGuide75"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 </layout>

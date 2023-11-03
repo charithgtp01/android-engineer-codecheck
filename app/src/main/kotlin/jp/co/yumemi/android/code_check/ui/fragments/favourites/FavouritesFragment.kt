@@ -8,7 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import jp.co.yumemi.android.code_check.constants.StringConstants
+import jp.co.yumemi.android.code_check.constants.StringConstants.EXPANDED_STATES_KEY
+import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.FragmentFavouritesBinding
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
@@ -27,6 +32,8 @@ class FavouritesFragment : Fragment() {
 
     private lateinit var favouriteListAdapter: FavouriteListAdapter
 
+    private val expandedStates: MutableMap<Long, Boolean> = mutableMapOf()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +44,7 @@ class FavouritesFragment : Fragment() {
 
         //This Shared view model is using to update Main Activity layout changes from this fragment
         sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
-
+        sharedViewModel.setFragment(FAVOURITE_FRAGMENT)
         binding?.vm = viewModel
         binding?.lifecycleOwner = this
 
@@ -57,8 +64,8 @@ class FavouritesFragment : Fragment() {
         /* Initiate Adapter */
         favouriteListAdapter =
             FavouriteListAdapter(object : FavouriteListAdapter.OnItemClickListener {
-                override fun itemClick(item: LocalGitHubRepoObject) {
-
+                override fun itemClick(item: LocalGitHubRepoObject, isExpanded: Boolean) {
+                    sharedViewModel.expandedStates[item.id] = !isExpanded
                 }
             })
 
@@ -66,6 +73,8 @@ class FavouritesFragment : Fragment() {
         binding?.recyclerView.also { it2 ->
             it2?.adapter = favouriteListAdapter
         }
+
+        favouriteListAdapter.updateStatus(sharedViewModel.expandedStates)
     }
 
     /**
@@ -77,11 +86,11 @@ class FavouritesFragment : Fragment() {
         * Update Recycle View Items using Diff Utils
         */
         viewModel.allFavourites.observe(requireActivity()) {
-            if(binding!=null){
-                if(it.isEmpty())
-                    binding!!.emptyImageView.visibility=View.VISIBLE
+            if (binding != null) {
+                if (it.isEmpty())
+                    binding!!.emptyImageView.visibility = View.VISIBLE
                 else
-                    binding!!.emptyImageView.visibility=View.GONE
+                    binding!!.emptyImageView.visibility = View.GONE
             }
 
             favouriteListAdapter.submitList(it)

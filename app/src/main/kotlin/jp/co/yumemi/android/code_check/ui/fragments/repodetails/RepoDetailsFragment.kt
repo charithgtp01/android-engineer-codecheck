@@ -14,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.StringConstants
+import jp.co.yumemi.android.code_check.constants.StringConstants.ACCOUNT_DETAILS_FRAGMENT
+import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.FragmentRepoDetailsBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
@@ -52,6 +55,7 @@ class RepoDetailsFragment : Fragment() {
 
         //This Shared view model is using to set selected git hub repo live data from this fragment
         sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
+        sharedViewModel.setFragment(StringConstants.ACCOUNT_DETAILS_FRAGMENT)
         binding?.vm = viewModel
         binding?.lifecycleOwner = this
 
@@ -70,7 +74,7 @@ class RepoDetailsFragment : Fragment() {
             override fun handleOnBackPressed() {
                 findNavController().navigate(R.id.homeFragment)
                 // Handle back button press for Home Fragment
-                sharedViewModel.setHomeActivityStatus(true)
+                sharedViewModel.setFragment(HOME_FRAGMENT)
             }
         }
 
@@ -84,7 +88,7 @@ class RepoDetailsFragment : Fragment() {
     private fun setData() {
         viewModel.setGitRepoData(gitHubRepo)
         sharedViewModel.setSelectedGitHubRepo(gitHubRepo)
-        sharedViewModel.setHomeActivityStatus(false)
+        sharedViewModel.setFragment(ACCOUNT_DETAILS_FRAGMENT)
     }
 
     override fun onDestroyView() {

@@ -15,6 +15,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.DialogConstants
+import jp.co.yumemi.android.code_check.constants.StringConstants
+import jp.co.yumemi.android.code_check.constants.StringConstants.ACCOUNT_DETAILS_FRAGMENT
+import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
+import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
+import jp.co.yumemi.android.code_check.constants.StringConstants.SETTINGS_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
 import jp.co.yumemi.android.code_check.interfaces.CustomAlertDialogListener
 import jp.co.yumemi.android.code_check.utils.DialogUtils
@@ -32,26 +37,27 @@ import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
-    private lateinit var bottomNavView:BottomNavigationView
+    private lateinit var bottomNavView: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        setSupportActionBar(binding.toolbar)
-
-        binding.btnFav.setOnClickListener {
-            // Handle the fav button click event
-            sharedViewModel.addToFavourites()
-        }
-        sharedViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-
-        sharedViewModel.updateBottomMenuStatus.observe(this) {
-            updateMenuValues(this@MainActivity, menu)
-        }
-
-        setupNavController()
+        setDataBinding()
         viewModelObservers()
+        initView()
+    }
 
+    private fun initView() {
+        setupNavController()
+        setSupportActionBar(binding.toolbar)
+        binding.btnBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    private fun setDataBinding() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        sharedViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
     }
 
     private lateinit var menu: Menu
@@ -77,7 +83,8 @@ class MainActivity : AppCompatActivity() {
                     showAlertDialogWithoutAction(
                         this@MainActivity,
                         DialogConstants.SUCCESS.value,
-                        it.message)
+                        it.message
+                    )
                 } else {
                     showAlertDialogWithoutAction(
                         this@MainActivity,
@@ -88,16 +95,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        sharedViewModel.isHomeFragment.observe(this@MainActivity){
-            if(it == true){
-                binding.btnFav.visibility=View.GONE
-                bottomNavView.visibility=View.VISIBLE
-            }else{
-                binding.btnFav.visibility=View.VISIBLE
-                bottomNavView.visibility=View.GONE
+        //Can write fragment related changes here(UI changes, Device Rotation status, etc)
+        //When moving to out from the Favourite Fragment
+        //Need to remove saved expanded status by calling sharedViewModel.expandedStates.clear()
+        //No need to do call sharedViewModel.expandedStates.clear() in Favourite Fragment.
+        //It will keep expanded status and show expanded items by getting it from sharedView model
+        sharedViewModel.fragment.observe(this@MainActivity) {
+            when (it) {
+                HOME_FRAGMENT -> {
+                    binding.btnBack.visibility = View.GONE
+                    bottomNavView.visibility = View.VISIBLE
+                }
+                ACCOUNT_DETAILS_FRAGMENT -> {
+                    binding.btnBack.visibility = View.VISIBLE
+                    bottomNavView.visibility = View.GONE
+                }
+                FAVOURITE_FRAGMENT -> {
+                    binding.btnBack.visibility = View.GONE
+                    bottomNavView.visibility = View.VISIBLE
+                }
+                SETTINGS_FRAGMENT -> {
+                    sharedViewModel.expandedStates.clear()
+                    binding.btnBack.visibility = View.GONE
+                    bottomNavView.visibility = View.VISIBLE
+                }
             }
         }
+
+        sharedViewModel.updateBottomMenuStatus.observe(this) {
+            updateMenuValues(this@MainActivity, menu)
+        }
     }
-
-
 }

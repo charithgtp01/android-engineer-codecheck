@@ -1,7 +1,10 @@
 package jp.co.yumemi.android.code_check.ui.fragments.favourites
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,17 +16,22 @@ import jp.co.yumemi.android.code_check.databinding.LayoutFavListItemBinding
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 
 /**
- * Git Repo List Adapter
+ * Favorites Repo List Adapter
  */
-class FavouriteListAdapter @Inject constructor(private val itemClickListener: OnItemClickListener) :
-    ListAdapter<LocalGitHubRepoObject, FavouriteListAdapter.FavouriteListViewHolder>(favDiffUtil) {
+class FavouriteListAdapter @Inject constructor(
+    private val itemClickListener: OnItemClickListener
+) :
+    RecyclerView.Adapter<FavouriteListAdapter.FavouriteListViewHolder>() {
 
+    private val items: MutableList<LocalGitHubRepoObject> = mutableListOf()
+    private var expandedStates: MutableMap<Long, Boolean> =
+        mutableMapOf() // Map to store the expanded state
 
     /**
      * On Item Click Listener
      */
     interface OnItemClickListener {
-        fun itemClick(item: LocalGitHubRepoObject)
+        fun itemClick(item: LocalGitHubRepoObject, isExpanded: Boolean)
     }
 
     inner class FavouriteListViewHolder(val binding: LayoutFavListItemBinding) :
@@ -31,6 +39,14 @@ class FavouriteListAdapter @Inject constructor(private val itemClickListener: On
         fun bind(obj: LocalGitHubRepoObject) {
             binding.setVariable(BR.item, obj)
             binding.executePendingBindings()
+
+            val isExpanded = expandedStates[obj.id] == true
+
+            // Set the visibility of your expanded content based on the state
+            binding.expandedContent.visibility = if (isExpanded) View.VISIBLE else View.GONE
+
+            //Normal View down arrow. Expanded view up arrow
+            binding.forwardArrowIcon.rotation = if (isExpanded) 270F else 90F
         }
     }
 
@@ -41,24 +57,29 @@ class FavouriteListAdapter @Inject constructor(private val itemClickListener: On
     }
 
     override fun onBindViewHolder(holder: FavouriteListViewHolder, position: Int) {
-        val repoObject = getItem(position)
+        val repoObject = items[position]
         holder.bind(repoObject)
         holder.binding.root.setOnClickListener {
-            itemClickListener.itemClick(repoObject)
+            // Toggle the expanded state when an item is clicked
+            val isExpanded = expandedStates[repoObject.id] ?: false
+            expandedStates[repoObject.id] = !isExpanded
+
+            // Notify the adapter to refresh the view
+            notifyDataSetChanged()
+
+            itemClickListener.itemClick(repoObject, isExpanded)
         }
     }
 
-}
+    override fun getItemCount(): Int = items.size
 
-/**
- * Diff Util Interface
- */
-val favDiffUtil = object : DiffUtil.ItemCallback<LocalGitHubRepoObject>() {
-    override fun areItemsTheSame(oldItem: LocalGitHubRepoObject, newItem: LocalGitHubRepoObject): Boolean {
-        return oldItem.name == newItem.name
+    fun submitList(newList: List<LocalGitHubRepoObject>) {
+        items.clear()
+        items.addAll(newList)
+        notifyDataSetChanged()
     }
 
-    override fun areContentsTheSame(oldItem: LocalGitHubRepoObject, newItem: LocalGitHubRepoObject): Boolean {
-        return oldItem == newItem
+    fun updateStatus(status: MutableMap<Long, Boolean>) {
+        expandedStates = status
     }
 }

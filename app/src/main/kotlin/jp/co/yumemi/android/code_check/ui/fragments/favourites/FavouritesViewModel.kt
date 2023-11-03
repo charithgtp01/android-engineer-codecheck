@@ -16,5 +16,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class FavouritesViewModel @Inject constructor(repository: LocalGitHubRepository) : ViewModel() {
-    val allFavourites: LiveData<List<LocalGitHubRepoObject>> = repository.getAllRepositories()
+
+   val allFavourites: LiveData<List<LocalGitHubRepoObject>> = repository.getAllRepositories()
+
+
 }

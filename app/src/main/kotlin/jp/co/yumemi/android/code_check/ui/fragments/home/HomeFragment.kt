@@ -16,9 +16,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.DialogConstants
+import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
@@ -32,6 +34,7 @@ class HomeFragment : Fragment() {
     private val TAG: String = HomeFragment::class.java.simpleName
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
+    private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var repoListAdapter: RepoListAdapter
     private var dialog: DialogFragment? = null
     override fun onCreateView(
@@ -44,6 +47,9 @@ class HomeFragment : Fragment() {
         */
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
+        sharedViewModel.setFragment(StringConstants.HOME_FRAGMENT)
+
         binding?.vm = viewModel
         binding?.lifecycleOwner = this
         return binding?.root
