@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.co.yumemi.android.code_check.SingleLiveEvent
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.models.toGitHubDataClass
@@ -13,17 +14,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Home Fragment View Model
+ * GitHub Details View Fragment View Model
  */
 @HiltViewModel
-class RepoDetailsViewModel @Inject constructor(private val localGitHubRepository: LocalGitHubRepository) : ViewModel() {
+class RepoDetailsViewModel @Inject constructor(private val localGitHubRepository: LocalGitHubRepository) :
+    ViewModel() {
 
-    private val _localDBResponse = MutableLiveData<LocalDBQueryResponse>()
+    //SingleLiveEvent is a custom LiveData that only delivers events once.
+    private val _localDBResponse = SingleLiveEvent<LocalDBQueryResponse>()
     val localDBResponse: LiveData<LocalDBQueryResponse> get() = _localDBResponse
 
 
     private val _gitRepoData = MutableLiveData<GitHubRepoObject>(null)
     val gitRepoData: LiveData<GitHubRepoObject> get() = _gitRepoData
+
+    private val _favouriteStatus = MutableLiveData<Boolean>(false)
+    val favouriteStatus: LiveData<Boolean> get() = _favouriteStatus
+
 
     /**
      * Set Git Hub Object to Live Data
@@ -46,6 +53,10 @@ class RepoDetailsViewModel @Inject constructor(private val localGitHubRepository
                 _localDBResponse.value = localGitHubRepository.insertGitHubObject(gitHubDataClass)
             }
         }
+    }
+
+    fun checkFavStatus(isFavourite: Boolean) {
+        _favouriteStatus.value = isFavourite
     }
 
 }
