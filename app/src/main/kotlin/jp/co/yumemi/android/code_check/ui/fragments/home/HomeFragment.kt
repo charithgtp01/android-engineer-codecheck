@@ -15,13 +15,15 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.DialogConstants
+import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showErrorDialogInFragment
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
-import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 
 /**
  * Home Page Fragment
@@ -31,9 +33,9 @@ class HomeFragment : Fragment() {
     private val TAG: String = HomeFragment::class.java.simpleName
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
+    private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var repoListAdapter: RepoListAdapter
     private var dialog: DialogFragment? = null
-    var language = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +46,9 @@ class HomeFragment : Fragment() {
         */
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
+        sharedViewModel.setFragment(StringConstants.HOME_FRAGMENT)
+
         binding?.vm = viewModel
         binding?.lifecycleOwner = this
         return binding?.root
@@ -57,7 +62,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
-        val language = SharedPreferencesManager.getSelectedLanguage()
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -90,8 +94,8 @@ class HomeFragment : Fragment() {
         /* Initiate Adapter */
         repoListAdapter =
             RepoListAdapter(object : RepoListAdapter.OnItemClickListener {
-                override fun itemClick(item: GitHubRepoObject) {
-                    gotoRepositoryFragment(item)
+                override fun itemClick(item: GitHubRepoObject, isFavorite: Boolean) {
+                    gotoRepositoryFragment(item, isFavorite)
                 }
             })
 
@@ -114,7 +118,11 @@ class HomeFragment : Fragment() {
             if (it != null) {
                 if (dialog != null)
                     dialog?.dismiss()
-                dialog = showErrorDialogInFragment(this@HomeFragment, it)
+                dialog = showDialogWithoutActionInFragment(
+                    this@HomeFragment,
+                    it,
+                    DialogConstants.FAIL.value
+                )
             }
         }
 
@@ -136,6 +144,17 @@ class HomeFragment : Fragment() {
             }
         }
 
+        sharedViewModel.allFavourites.observe(requireActivity()) {
+            if (binding != null) {
+                if (it.isEmpty())
+                    binding!!.emptyImageView.visibility = View.VISIBLE
+                else
+                    binding!!.emptyImageView.visibility = View.GONE
+            }
+
+            repoListAdapter.setFavouriteList(it)
+        }
+
 
         /* Observer to catch list data
         * Update Recycle View Items using Diff Utils
@@ -149,10 +168,10 @@ class HomeFragment : Fragment() {
      * Navigate to Next Fragment Using Navigation Controller
      * Pass selected Git Hub Repo Object using Safe Args
      */
-    fun gotoRepositoryFragment(gitHubRepo: GitHubRepoObject) {
+    fun gotoRepositoryFragment(gitHubRepo: GitHubRepoObject, isFavorite: Boolean) {
         findNavController().navigate(
             HomeFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(
-                gitHubRepo
+                gitHubRepo, isFavorite
             )
         )
     }

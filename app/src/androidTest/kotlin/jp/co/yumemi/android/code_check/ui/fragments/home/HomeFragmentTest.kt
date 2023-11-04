@@ -43,6 +43,7 @@ class HomeFragmentTest {
     private val mockOwnerObj =
         Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
     private val mockGitHubRepoObject = GitHubRepoObject(
+        id = 1,
         name = "charithvin",
         owner = mockOwnerObj,
         nullableLanguage = "CSS",

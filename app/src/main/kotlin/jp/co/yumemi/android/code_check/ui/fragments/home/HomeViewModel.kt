@@ -8,14 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.constants.MessageConstants
-import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET
-import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR
-import jp.co.yumemi.android.code_check.constants.StringConstants
-import jp.co.yumemi.android.code_check.models.ApiResponse
+import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET_ERROR_CODE
+import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import jp.co.yumemi.android.code_check.utils.NetworkUtils
-import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -62,7 +59,7 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
                 _isDialogVisible.value = false
             }
         } else {
-            _errorMessage.value = NO_INTERNET
+            _errorMessage.value = MessageConstants.getMessage(NO_INTERNET_ERROR_CODE)
         }
     }
 
@@ -75,13 +72,9 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
             val enteredValue = editeText?.text.toString()
 
             if (enteredValue.isNullOrBlank()) {
-                val language = SharedPreferencesManager.getSelectedLanguage()
-                var message = SEARCH_VIEW_VALUE_EMPTY_ERROR
-
-                if (language?.equals(StringConstants.JAPANESE.value) == true)
-                    message = MessageConstants.JP_SEARCH_VIEW_VALUE_EMPTY_ERROR
                 //Empty value error Alert
-                _errorMessage.value = message
+                _errorMessage.value =
+                    MessageConstants.getMessage(SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE)
             } else {
                 getGitHubRepoList(editeText?.text.toString())
             }

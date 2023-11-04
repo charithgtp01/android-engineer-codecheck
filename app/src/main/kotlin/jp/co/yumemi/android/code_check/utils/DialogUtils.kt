@@ -37,16 +37,17 @@ class DialogUtils {
         }
 
         /**
-         * Custom Alert Dialog with icon Inside Activity
+         * Custom Alert Dialog without button click event
          * @param message Message body
          * @param type Type of the Dialog Success,Fail or Warn Alert
          */
-        fun showErrorDialog(
-            context: Context, message: String?
+        fun showAlertDialogWithoutAction(
+            context: Context, type: String, message: String?
         ) {
             val fragmentManager = (context as? AppCompatActivity)?.supportFragmentManager
             if (fragmentManager != null) {
-                val dialogFragment = CustomAlertDialogFragment.newInstance(message)
+                val dialogFragment =
+                    CustomAlertDialogFragment.newInstance(message, type)
                 dialogFragment.show(
                     fragmentManager,
                     DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value
@@ -54,18 +55,19 @@ class DialogUtils {
             }
         }
 
+
         /**
          * Custom Alert Dialog with icon Inside Fragment
          * @param message Message body
          * @param type Type of the Dialog Success,Fail or Warn Alert
          */
-        fun showErrorDialogInFragment(
-            fragment: Fragment, message: String?
+        fun showDialogWithoutActionInFragment(
+            fragment: Fragment, message: String?, type: String
         ): DialogFragment? {
             var dialogFragment: DialogFragment? = null
             val fragmentManager = fragment.fragmentManager
             if (fragmentManager != null) {
-                dialogFragment = CustomAlertDialogFragment.newInstance(message)
+                dialogFragment = CustomAlertDialogFragment.newInstance(message, type)
                 dialogFragment.show(
                     fragmentManager,
                     DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value

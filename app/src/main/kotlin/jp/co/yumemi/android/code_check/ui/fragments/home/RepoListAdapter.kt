@@ -1,7 +1,9 @@
 package jp.co.yumemi.android.code_check.ui.fragments.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,19 +11,20 @@ import jp.co.yumemi.android.code_check.databinding.LayoutRepoListItemBinding
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import javax.inject.Inject
 import jp.co.yumemi.android.code_check.BR
+import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 
 /**
  * Git Repo List Adapter
  */
-class RepoListAdapter @Inject constructor(private val itemClickListener: OnItemClickListener) :
+class RepoListAdapter @Inject constructor(
+    private val itemClickListener: OnItemClickListener
+) :
     ListAdapter<GitHubRepoObject, RepoListAdapter.RepoListViewHolder>(diffUtil) {
 
+    private var favoriteItems: List<LocalGitHubRepoObject>? = null
 
-    /**
-     * On Item Click Listener
-     */
     interface OnItemClickListener {
-        fun itemClick(item: GitHubRepoObject)
+        fun itemClick(item: GitHubRepoObject, isFavorite: Boolean)
     }
 
     inner class RepoListViewHolder(val binding: LayoutRepoListItemBinding) :
@@ -40,11 +43,24 @@ class RepoListAdapter @Inject constructor(private val itemClickListener: OnItemC
 
     override fun onBindViewHolder(holder: RepoListViewHolder, position: Int) {
         val repoObject = getItem(position)
+
+        var isFavorite: Boolean = favoriteItems?.any { it.id == repoObject.id } == true
         holder.bind(repoObject)
         holder.binding.root.setOnClickListener {
-            itemClickListener.itemClick(repoObject)
+            itemClickListener.itemClick(repoObject, isFavorite)
         }
+
+        if (isFavorite)
+            holder.binding.favIcon.visibility = View.VISIBLE
+        else
+            holder.binding.favIcon.visibility = View.GONE
+
     }
+
+    fun setFavouriteList(it: List<LocalGitHubRepoObject>?) {
+        favoriteItems = it
+    }
+
 
 }
 

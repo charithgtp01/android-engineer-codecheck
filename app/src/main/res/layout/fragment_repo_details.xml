@@ -28,6 +28,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
+            <ImageButton
+                android:id="@+id/btnFav"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ownerIconView"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="@dimen/page_padding"
+                android:layout_marginEnd="@dimen/page_padding"
+                android:background="@drawable/image_button_bg"
+                bind:favIcon="@{vm.favouriteStatus}"/>
+
             <TextView
                 android:id="@+id/nameView"
                 style="@style/nameTextViewStyle"

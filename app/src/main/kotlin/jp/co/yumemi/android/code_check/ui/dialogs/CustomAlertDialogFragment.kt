@@ -40,12 +40,13 @@ class CustomAlertDialogFragment : DialogFragment() {
         }
 
         fun newInstance(
-            message: String?
+            message: String?,
+            type: String
         ): CustomAlertDialogFragment {
             val fragment = CustomAlertDialogFragment()
             val args = Bundle().apply {
                 putString(ARG_MESSAGE, message)
-                putString(ARG_TYPE, DialogConstants.FAIL.value)
+                putString(ARG_TYPE, type)
             }
             fragment.arguments = args
             return fragment
