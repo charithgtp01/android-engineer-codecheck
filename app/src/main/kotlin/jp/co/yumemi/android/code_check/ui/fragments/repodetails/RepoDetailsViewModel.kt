@@ -28,7 +28,7 @@ class RepoDetailsViewModel @Inject constructor(private val localGitHubRepository
     private val _gitRepoData = MutableLiveData<GitHubRepoObject>(null)
     val gitRepoData: LiveData<GitHubRepoObject> get() = _gitRepoData
 
-    private val _favouriteStatus = MutableLiveData<Boolean>(false)
+    private val _favouriteStatus = MutableLiveData(false)
     val favouriteStatus: LiveData<Boolean> get() = _favouriteStatus
 
 
@@ -50,8 +50,24 @@ class RepoDetailsViewModel @Inject constructor(private val localGitHubRepository
         if (gitHubRepoObject != null) {
             viewModelScope.launch {
                 val gitHubDataClass = gitHubRepoObject.toGitHubDataClass()
-                _localDBResponse.value = localGitHubRepository.insertGitHubObject(gitHubDataClass)
+                val response = localGitHubRepository.insertGitHubObject(gitHubDataClass)
+                _localDBResponse.value = response
+                if (response.success)
+                    _favouriteStatus.value = true
+
             }
+        }
+    }
+
+    /**
+     * Selected Git Hub account will delete to the fav local DB
+     */
+    fun deleteFavourite(id: Long) {
+        viewModelScope.launch {
+            val response = localGitHubRepository.deleteGitHubObjectDao(id)
+            _localDBResponse.value = response
+            if (response.success)
+                _favouriteStatus.value = false
         }
     }
 

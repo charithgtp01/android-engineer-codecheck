@@ -24,7 +24,7 @@ import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListen
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
-import jp.co.yumemi.android.code_check.utils.DialogUtils
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialogWithoutAction
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 
 /**
@@ -37,6 +37,7 @@ class RepoDetailsFragment : Fragment() {
     private var binding: FragmentRepoDetailsBinding? = null
     lateinit var viewModel: RepoDetailsViewModel
     private lateinit var gitHubRepo: GitHubRepoObject
+    private var isFavourite: Boolean = false
 
     //Main Activity view model
     private lateinit var sharedViewModel: MainActivityViewModel
@@ -57,13 +58,22 @@ class RepoDetailsFragment : Fragment() {
          */
         binding = FragmentRepoDetailsBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[RepoDetailsViewModel::class.java]
-        viewModel.checkFavStatus(args.isFavourite)
 
         //This Shared view model is using to set selected git hub repo live data from this fragment
         sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
         sharedViewModel.setFragment(ACCOUNT_DETAILS_FRAGMENT)
         binding?.vm = viewModel
         binding?.lifecycleOwner = this
+
+        isFavourite = if (savedInstanceState == null) {
+            // If savedInstanceState is null, it means the fragment is being created for the first time.
+            // In this case, set isFavourite from the arguments.
+            args.isFavourite
+        } else {
+            // If savedInstanceState is not null, it means the fragment is being recreated.
+            // In this case, get isFavourite from the ViewModel or wherever you are storing it.
+            viewModel.favouriteStatus.value ?: false
+        }
 
         return binding?.root
     }
@@ -80,13 +90,13 @@ class RepoDetailsFragment : Fragment() {
         /* According to the response show alert dialog(Error or Success) */
         localDBResponseObserver = Observer { response ->
             if (response.success) {
-                DialogUtils.showAlertDialogWithoutAction(
+                showAlertDialogWithoutAction(
                     requireActivity(),
                     DialogConstants.SUCCESS.value,
                     response.message
                 )
             } else {
-                DialogUtils.showAlertDialogWithoutAction(
+                showAlertDialogWithoutAction(
                     requireActivity(),
                     DialogConstants.FAIL.value, response.message
                 )
@@ -105,12 +115,21 @@ class RepoDetailsFragment : Fragment() {
 
     private fun initView() {
         binding?.btnFav?.setOnClickListener {
+
+            var confirmationMessage = R.string.add_fav_confirmation_message
+
+            if (viewModel.favouriteStatus.value == true)
+                confirmationMessage = R.string.remove_fav_confirmation_message
+
             showConfirmAlertDialog(
                 requireActivity(),
-                LocalHelper.setLanguage(requireActivity(), R.string.add_fav_confirmation_message),
+                LocalHelper.setLanguage(requireActivity(), confirmationMessage),
                 object : ConfirmDialogButtonClickListener {
                     override fun onPositiveButtonClick() {
-                        viewModel.addToFavourites()
+                        if (viewModel.favouriteStatus.value == true)
+                            viewModel.deleteFavourite(gitHubRepo.id)
+                        else
+                            viewModel.addToFavourites()
                     }
 
                     override fun onNegativeButtonClick() {
@@ -132,11 +151,12 @@ class RepoDetailsFragment : Fragment() {
     }
 
     /**
-     * Pass selected Git Repo Object to view model
+     * Pass selected Git Repo Object and Favourite status to view model
      * Set data to view
      */
     private fun setData() {
         viewModel.setGitRepoData(gitHubRepo)
+        viewModel.checkFavStatus(isFavourite)
         sharedViewModel.setFragment(ACCOUNT_DETAILS_FRAGMENT)
     }
 

@@ -13,6 +13,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageButton
+                android:id="@+id/btnFav"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/page_padding"
+                android:layout_marginStart="@dimen/page_padding"
+                android:background="@drawable/image_button_bg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:favIcon="@{vm.favouriteStatus}" />
+
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ownerIconView"
                 android:layout_width="0dp"
