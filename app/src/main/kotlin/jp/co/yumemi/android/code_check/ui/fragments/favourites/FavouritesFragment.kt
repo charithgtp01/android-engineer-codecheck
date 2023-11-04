@@ -16,7 +16,6 @@ import jp.co.yumemi.android.code_check.databinding.FragmentFavouritesBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
-import jp.co.yumemi.android.code_check.utils.DialogUtils
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 
 /**

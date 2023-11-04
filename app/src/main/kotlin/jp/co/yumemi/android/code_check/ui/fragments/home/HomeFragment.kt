@@ -24,7 +24,6 @@ import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
-import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 
 /**
  * Home Page Fragment
@@ -95,8 +94,8 @@ class HomeFragment : Fragment() {
         /* Initiate Adapter */
         repoListAdapter =
             RepoListAdapter(object : RepoListAdapter.OnItemClickListener {
-                override fun itemClick(item: GitHubRepoObject) {
-                    gotoRepositoryFragment(item)
+                override fun itemClick(item: GitHubRepoObject, isFavorite: Boolean) {
+                    gotoRepositoryFragment(item, isFavorite)
                 }
             })
 
@@ -145,6 +144,17 @@ class HomeFragment : Fragment() {
             }
         }
 
+        sharedViewModel.allFavourites.observe(requireActivity()) {
+            if (binding != null) {
+                if (it.isEmpty())
+                    binding!!.emptyImageView.visibility = View.VISIBLE
+                else
+                    binding!!.emptyImageView.visibility = View.GONE
+            }
+
+            repoListAdapter.setFavouriteList(it)
+        }
+
 
         /* Observer to catch list data
         * Update Recycle View Items using Diff Utils
@@ -158,10 +168,10 @@ class HomeFragment : Fragment() {
      * Navigate to Next Fragment Using Navigation Controller
      * Pass selected Git Hub Repo Object using Safe Args
      */
-    fun gotoRepositoryFragment(gitHubRepo: GitHubRepoObject) {
+    fun gotoRepositoryFragment(gitHubRepo: GitHubRepoObject, isFavorite: Boolean) {
         findNavController().navigate(
             HomeFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(
-                gitHubRepo
+                gitHubRepo, isFavorite
             )
         )
     }

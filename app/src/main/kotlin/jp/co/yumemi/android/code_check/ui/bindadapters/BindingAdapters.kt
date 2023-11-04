@@ -36,4 +36,15 @@ object BindingAdapters {
             view.setBackgroundResource(R.drawable.deselected_layout_bg)
         }
     }
+
+    @BindingAdapter("favIcon")
+    @JvmStatic
+    fun setFavIcon(view: View, isFavourite: Boolean) {
+        val icon = view.findViewById<ImageView>(R.id.btnFav)
+        if (isFavourite) {
+            icon.setImageResource(R.mipmap.favourites_icon)
+        } else {
+            icon.setImageResource(R.mipmap.no_favourites_icon)
+        }
+    }
 }

@@ -23,7 +23,12 @@
         tools:layout="@layout/fragment_repo_details">
         <argument
             android:name="item"
-            app:argType="jp.co.yumemi.android.code_check.models.GitHubRepoObject" />
+            app:argType="jp.co.yumemi.android.code_check.models.GitHubRepoObject"
+            />
+        <argument
+            android:name="isFavourite"
+            app:argType="boolean"
+            />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

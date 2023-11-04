@@ -38,7 +38,7 @@
                 android:layout_marginTop="@dimen/page_padding"
                 android:layout_marginEnd="@dimen/page_padding"
                 android:background="@drawable/image_button_bg"
-                android:src="@mipmap/no_favourites_icon"/>
+                bind:favIcon="@{vm.favouriteStatus}"/>
 
             <TextView
                 android:id="@+id/nameView"

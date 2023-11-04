@@ -80,7 +80,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/forwardArrowIcon"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/favourites_star" />
+                app:srcCompat="@mipmap/favourites_icon" />
 
             <ImageView
                 android:id="@+id/forwardArrowIcon"

@@ -3,15 +3,10 @@ package jp.co.yumemi.android.code_check.ui.activities
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
-import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
-import jp.co.yumemi.android.code_check.models.toGitHubDataClass
+import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -21,7 +16,7 @@ import javax.inject.Inject
  * It allows one Fragment to update data or trigger actions that affect another Fragment.
  */
 @HiltViewModel
-class MainActivityViewModel @Inject constructor() :
+class MainActivityViewModel @Inject constructor(val localGitHubRepository: LocalGitHubRepository) :
     ViewModel() {
 
     private val _fragment = MutableLiveData(HOME_FRAGMENT)
@@ -31,7 +26,8 @@ class MainActivityViewModel @Inject constructor() :
     val updateBottomMenuStatus: LiveData<Boolean?> get() = _updateBottomMenuStatus
 
     val expandedStates: MutableMap<Long, Boolean> = mutableMapOf()
-    private val _expandedStates = MutableLiveData<MutableMap<Long, Boolean>>(mutableMapOf())
+
+    val allFavourites: LiveData<List<LocalGitHubRepoObject>> = localGitHubRepository.getAllRepositories()
 
     fun setUpdateBottomMenuStatus(isUpdateStatus: Boolean) {
         _updateBottomMenuStatus.value = isUpdateStatus;
