@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.co.yumemi.android.code_check.SingleLiveEvent
 import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET_ERROR_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE
@@ -27,14 +28,14 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
     val gitHubRepoList: LiveData<List<GitHubRepoObject>> get() = _gitHubRepoList
 
     //Error Message Live Data
-    private val _errorMessage = MutableLiveData<String>()
+    private val _errorMessage = SingleLiveEvent<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
 
     //Dialog Visibility Live Data
     private val _isDialogVisible = MutableLiveData<Boolean>()
     val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
 
-    private val _isSearchResultsEmpty = MutableLiveData<Boolean>()
+    private val _isSearchResultsEmpty = MutableLiveData(true)
     val isSearchResultsEmpty: LiveData<Boolean> get() = _isSearchResultsEmpty
 
     /**

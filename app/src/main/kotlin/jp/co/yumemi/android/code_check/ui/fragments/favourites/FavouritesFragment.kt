@@ -17,6 +17,7 @@ import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListen
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
+import jp.co.yumemi.android.code_check.utils.UIUtils
 
 /**
  * Settings Page Fragment
@@ -51,8 +52,15 @@ class FavouritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         initiateAdapter()
         viewModelObservers()
+    }
+
+    private fun initView() {
+        //Set Empty image size
+        if (binding != null)
+            UIUtils.changeUiSize(requireContext(), binding!!.emptyImageView, 2, 3)
     }
 
     /**

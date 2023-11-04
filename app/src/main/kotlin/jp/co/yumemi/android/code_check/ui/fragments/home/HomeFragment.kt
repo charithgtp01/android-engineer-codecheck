@@ -10,20 +10,24 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.SingleLiveEvent.Companion.observeOnce
 import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
+import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
+import jp.co.yumemi.android.code_check.utils.UIUtils
 
 /**
  * Home Page Fragment
@@ -36,6 +40,8 @@ class HomeFragment : Fragment() {
     private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var repoListAdapter: RepoListAdapter
     private var dialog: DialogFragment? = null
+    private var dialogVisibleObserver: Observer<String>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +68,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
+        //Set Empty image size
+        if (binding != null)
+            UIUtils.changeUiSize(requireContext(), binding!!.emptyImageView, 2, 3)
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -114,7 +123,7 @@ class HomeFragment : Fragment() {
             R.string.progress_dialog_message
         )
         /* Show error message in the custom error dialog */
-        viewModel.errorMessage.observe(requireActivity()) {
+        dialogVisibleObserver = Observer { it ->
             if (it != null) {
                 if (dialog != null)
                     dialog?.dismiss()
@@ -144,23 +153,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        sharedViewModel.allFavourites.observe(requireActivity()) {
-            if (binding != null) {
-                if (it.isEmpty())
-                    binding!!.emptyImageView.visibility = View.VISIBLE
-                else
-                    binding!!.emptyImageView.visibility = View.GONE
-            }
-
-            repoListAdapter.setFavouriteList(it)
-        }
-
-
         /* Observer to catch list data
         * Update Recycle View Items using Diff Utils
         */
         viewModel.gitHubRepoList.observe(requireActivity()) {
             repoListAdapter.submitList(it)
+        }
+
+        if (dialogVisibleObserver != null) {
+            // Observe the LiveData using a helper function observeOnce
+            viewModel.errorMessage.observeOnce(viewLifecycleOwner, dialogVisibleObserver!!)
         }
     }
 
@@ -179,5 +181,10 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+
+        if (dialogVisibleObserver != null) {
+            // Remove the observer when the Fragment is destroyed
+            viewModel.errorMessage.removeObserver(dialogVisibleObserver!!)
+        }
     }
 }

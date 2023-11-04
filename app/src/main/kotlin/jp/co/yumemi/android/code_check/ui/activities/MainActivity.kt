@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // add the default theme here which we want
+        // to display after the splash screen is shown
 
         setDataBinding()
         viewModelObservers()

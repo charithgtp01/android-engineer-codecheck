@@ -16,7 +16,7 @@ import javax.inject.Inject
  * It allows one Fragment to update data or trigger actions that affect another Fragment.
  */
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(val localGitHubRepository: LocalGitHubRepository) :
+class MainActivityViewModel @Inject constructor(private val localGitHubRepository: LocalGitHubRepository) :
     ViewModel() {
 
     private val _fragment = MutableLiveData(HOME_FRAGMENT)
