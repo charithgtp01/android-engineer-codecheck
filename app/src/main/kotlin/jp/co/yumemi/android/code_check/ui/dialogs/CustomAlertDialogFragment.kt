@@ -45,7 +45,7 @@ class CustomAlertDialogFragment : DialogFragment() {
             val fragment = CustomAlertDialogFragment()
             val args = Bundle().apply {
                 putString(ARG_MESSAGE, message)
-                putString(ARG_TYPE, DialogConstants.FAIL.VALUE)
+                putString(ARG_TYPE, DialogConstants.FAIL.value)
             }
             fragment.arguments = args
             return fragment
@@ -83,11 +83,11 @@ class CustomAlertDialogFragment : DialogFragment() {
         changeUiSize(context, binding.icon, 1, 5)
         // Set data to the data binding variables
         binding.dialogMessage = message
-        if (type == DialogConstants.SUCCESS.VALUE)
+        if (type == DialogConstants.SUCCESS.value)
             binding.imageResId = R.mipmap.done
-        else if (type == DialogConstants.FAIL.VALUE)
+        else if (type == DialogConstants.FAIL.value)
             binding.imageResId = R.mipmap.cancel
-        else if (type == DialogConstants.WARN.VALUE)
+        else if (type == DialogConstants.WARN.value)
             binding.imageResId = R.mipmap.warning
 
         binding.button.setOnClickListener {

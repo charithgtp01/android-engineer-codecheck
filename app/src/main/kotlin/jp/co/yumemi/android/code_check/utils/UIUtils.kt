@@ -5,7 +5,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Menu
 import android.view.View
+import jp.co.yumemi.android.code_check.LocalHelper
+import jp.co.yumemi.android.code_check.R
 
 
 /**
@@ -13,6 +16,22 @@ import android.view.View
  */
 class UIUtils {
     companion object {
+
+        /**
+         * Set bottom menu label values according to the language
+         */
+        fun updateMenuValues(context: Context?, menu: Menu?) {
+            if (context != null && menu != null) {
+                //Localize according to the selected app language
+                menu.findItem(R.id.homeFragment)?.title =
+                    LocalHelper.setLanguage(context, R.string.menu_home)
+                menu.findItem(R.id.favouritesFragment)?.title =
+                    LocalHelper.setLanguage(context, R.string.menu_favourites)
+                menu.findItem(R.id.settingsFragment)?.title =
+                    LocalHelper.setLanguage(context, R.string.menu_settings)
+            }
+        }
+
         /**
          * Convert dp values to px
          */

@@ -31,7 +31,7 @@ class DialogUtils {
                     CustomAlertDialogFragment.newInstance(message, type, dialogButtonClickListener)
                 dialogFragment.show(
                     fragmentManager,
-                    DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.VALUE
+                    DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value
                 )
             }
         }
@@ -49,7 +49,7 @@ class DialogUtils {
                 val dialogFragment = CustomAlertDialogFragment.newInstance(message)
                 dialogFragment.show(
                     fragmentManager,
-                    DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.VALUE
+                    DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value
                 )
             }
         }
@@ -61,15 +61,18 @@ class DialogUtils {
          */
         fun showErrorDialogInFragment(
             fragment: Fragment, message: String?
-        ) {
+        ): DialogFragment? {
+            var dialogFragment: DialogFragment? = null
             val fragmentManager = fragment.fragmentManager
             if (fragmentManager != null) {
-                val dialogFragment = CustomAlertDialogFragment.newInstance(message)
+                dialogFragment = CustomAlertDialogFragment.newInstance(message)
                 dialogFragment.show(
                     fragmentManager,
-                    DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.VALUE
+                    DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value
                 )
             }
+
+            return dialogFragment
         }
 
         /**
@@ -89,7 +92,7 @@ class DialogUtils {
                     CustomConfirmAlertDialogFragment.newInstance(message, dialogButtonClickListener)
                 dialogFragment.show(
                     fragmentManager,
-                    DialogConstants.CONFIRM_DIALOG_FRAGMENT_TAG.VALUE
+                    DialogConstants.CONFIRM_DIALOG_FRAGMENT_TAG.value
                 )
             }
         }
@@ -108,7 +111,7 @@ class DialogUtils {
                         CustomProgressDialogFragment.newInstance(message)
                     dialogFragment.show(
                         fragmentManager,
-                        DialogConstants.PROGRESS_DIALOG_FRAGMENT_TAG.VALUE
+                        DialogConstants.PROGRESS_DIALOG_FRAGMENT_TAG.value
                     )
                 }
             }
@@ -128,7 +131,7 @@ class DialogUtils {
                         CustomProgressDialogFragment.newInstance(message)
                     dialogFragment.show(
                         fragmentManager,
-                        DialogConstants.PROGRESS_DIALOG_FRAGMENT_TAG.VALUE
+                        DialogConstants.PROGRESS_DIALOG_FRAGMENT_TAG.value
                     )
                 }
             }

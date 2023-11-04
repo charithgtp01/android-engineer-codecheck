@@ -1,6 +1,6 @@
 package jp.co.yumemi.android.code_check.constants
 
-enum class DialogConstants(val VALUE: String) {
+enum class DialogConstants(val value: String) {
     SUCCESS("success"),
     FAIL("fail"),
     WARN("warn"),

@@ -13,14 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.constants.MessageConstants
-import jp.co.yumemi.android.code_check.constants.MessageConstants.PROGRESS_DIALOG_MESSAGE
+import jp.co.yumemi.android.code_check.LocalHelper
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showErrorDialogInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
+import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 
 /**
  * Home Page Fragment
@@ -32,7 +33,7 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var repoListAdapter: RepoListAdapter
     private var dialog: DialogFragment? = null
-
+    var language = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,12 +57,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
+        val language = SharedPreferencesManager.getSelectedLanguage()
+
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle back button press for Home Fragment
                 showConfirmAlertDialog(
                     requireActivity(),
-                    MessageConstants.EXIT_CONFIRMATION_MESSAGE,
+                    LocalHelper.setLanguage(
+                        requireActivity(),
+                        R.string.exit_confirmation_message
+                    ),
                     object : ConfirmDialogButtonClickListener {
                         override fun onPositiveButtonClick() {
                             requireActivity().finish()
@@ -99,21 +105,29 @@ class HomeFragment : Fragment() {
      * Live Data Updates
      */
     private fun viewModelObservers() {
+        var progressDialogMessage = LocalHelper.setLanguage(
+            requireContext(),
+            R.string.progress_dialog_message
+        )
         /* Show error message in the custom error dialog */
         viewModel.errorMessage.observe(requireActivity()) {
             if (it != null) {
-                showErrorDialogInFragment(this@HomeFragment, it)
+                if (dialog != null)
+                    dialog?.dismiss()
+                dialog = showErrorDialogInFragment(this@HomeFragment, it)
             }
         }
 
         /* Live data observer to show/hide progress dialog */
         viewModel.isDialogVisible.observe(requireActivity()) {
             if (it) {
+                if (dialog != null)
+                    dialog?.dismiss()
                 /* Show dialog when calling the API */
                 dialog =
                     showProgressDialogInFragment(
                         this@HomeFragment,
-                        PROGRESS_DIALOG_MESSAGE
+                        progressDialogMessage
                     )
 
             } else {
