@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
     <string name="preference_file_key">Android Engineer CodeCheck Pref</string>
-    <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <string name="searchInputText_hint">You can search GitHub repositories</string>
     <string name="written_language">Written in %s</string>
     <string name="ok">OK</string>
     <string name="no">NO</string>

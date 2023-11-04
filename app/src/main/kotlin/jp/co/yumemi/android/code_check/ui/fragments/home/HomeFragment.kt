@@ -69,9 +69,11 @@ class HomeFragment : Fragment() {
 
     private fun initView() {
         //Set Empty image size
-        if (binding != null)
+        if (binding != null) {
             UIUtils.changeUiSize(requireContext(), binding!!.emptyImageView, 2, 3)
-
+            binding!!.searchInputText.hint =
+                LocalHelper.setLanguage(requireContext(), R.string.searchInputText_hint)
+        }
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle back button press for Home Fragment
