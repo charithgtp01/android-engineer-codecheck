@@ -4,7 +4,6 @@
 package jp.co.yumemi.android.code_check.ui.fragments.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +12,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.PROGRESS_DIALOG_MESSAGE
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
-import jp.co.yumemi.android.code_check.interfaces.CustomAlertDialogListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showErrorDialogInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment

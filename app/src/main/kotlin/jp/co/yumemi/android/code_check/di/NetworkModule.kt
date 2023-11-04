@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import jp.co.yumemi.android.code_check.apiservices.GitRepoApiService
 import jp.co.yumemi.android.code_check.constants.Config
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
+import jp.co.yumemi.android.code_check.repository.GitHubRepositoryImpl
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -86,6 +87,6 @@ object NetworkModule {
     fun provideGithubAccountRepository(
         gitHubRepoApiService: GitRepoApiService
     ): GitHubRepository {
-        return GitHubRepository(gitHubRepoApiService)
+        return GitHubRepositoryImpl(gitHubRepoApiService)
     }
 }
