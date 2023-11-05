@@ -29,6 +29,6 @@
     <dimen name="page_padding">16dp</dimen>
 
     /* Action Bar Dimensions */
-    <dimen name="action_bar_image_button_icon_padding">16dp</dimen>
+    <dimen name="action_bar_image_button_icon_padding">12dp</dimen>
     <dimen name="image_button_size">30dp</dimen>
 </resources>
