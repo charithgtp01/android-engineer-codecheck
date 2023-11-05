@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="jp.co.yumemi.android.code_check.ui.fragments.repodetails.RepoDetailsViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btnFav"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginStart="@dimen/page_padding"
+                android:layout_marginTop="@dimen/page_padding"
+                android:background="@drawable/image_button_bg"
+                android:contentDescription="@string/favourite_button_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:favIcon="@{vm.favouriteStatus}" />
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ownerIconView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:contentDescription="@null"
+                app:imageUrl="@{vm.gitRepoData.owner.avatarUrl}"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/imageSectionHorizontalGuide"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnFav"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+
+            <TextView
+                android:id="@+id/nameView"
+                style="@style/nameTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vertical_margin"
+                android:gravity="center"
+                android:text='@{vm.gitRepoData.name}'
+                app:layout_constraintEnd_toEndOf="@+id/ownerIconView"
+                app:layout_constraintStart_toStartOf="@+id/ownerIconView"
+                app:layout_constraintTop_toBottomOf="@+id/ownerIconView" />
+
+            <TextView
+                android:id="@+id/languageView"
+                style="@style/languageTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin_top"
+                android:paddingBottom="@dimen/page_padding"
+                android:text='@{"Language : "+vm.gitRepoData.language}'
+                app:layout_constraintEnd_toEndOf="@+id/nameView"
+                app:layout_constraintStart_toStartOf="@+id/nameView"
+                app:layout_constraintTop_toBottomOf="@+id/nameView" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imageSectionHorizontalGuide"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:baselineAligned="false">
+
+                    <include
+                        android:id="@+id/include2"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Starts"}'
+                        bind:value="@{vm.gitRepoData.stargazersCount.toString()}" />
+
+                    <include
+                        android:id="@+id/include"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Watchers"}'
+                        bind:value="@{vm.gitRepoData.watchersCount.toString()}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:baselineAligned="false">
+
+                    <include
+                        android:id="@+id/include3"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Forks"}'
+                        bind:value="@{vm.gitRepoData.forksCount.toString()}" />
+
+
+                    <include
+                        android:id="@+id/include4"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Open Issues"}'
+                        bind:value="@{vm.gitRepoData.openIssuesCount.toString()}" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imageSectionHorizontalGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.30" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/centerHorizontalGuid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.50" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/contentVerticalCenterGuid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.7" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

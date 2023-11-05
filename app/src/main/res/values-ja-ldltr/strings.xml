@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android エンジニア コードチェック</string>
+    <string name="preference_file_key">Android Engineer CodeCheck Pref</string>
+    <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <string name="ok">わかりました</string>
+    <string name="no">いいえ</string>
+    <string name="yes">はい</string>
+
+    <!-- Fragment Labels -->
+    <string name="menu_home">家</string>
+    <string name="menu_favourites">お気に入り</string>
+    <string name="menu_settings">設定</string>
+    <string name="details">詳細</string>
+    <string name="select_app_language">アプリの言語</string>
+    <string name="exit_confirmation_message">退出しますか?</string>
+    <string name="progress_dialog_message">待っている......</string>
+    <string name="add_fav_confirmation_message">お気に入りに追加しますか?</string>
+    <string name="remove_fav_confirmation_message">これをお気に入りから削除しますか?</string>
+
+    <!-- Image content Descriptions -->
+    <string name="app_logo">App Logo</string>
+    <string name="default_image_for_list">Default Image for recycle view</string>
+    <string name="back_button_image">Action Bar back button image</string>
+    <string name="alert_dialog_image">Alert Dialog Icon</string>
+    <string name="progress_dialog_image">Progress Dialog Icon</string>
+    <string name="favourite_button_image">Favourite button Icon</string>
+    <string name="forward_arrow_icon">Forward Arrow Icon</string>
+    <string name="fav_delete_icon">Favourite Delete Icon</string>
+    <string name="radio_button_custom_icon">Radio Button Icon</string>
+
+</resources>

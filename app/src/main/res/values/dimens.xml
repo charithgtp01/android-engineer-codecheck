@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="vertical_margin">16dp</dimen>
+    <dimen name="mini_horizontal_margin">8dp</dimen>
+    <dimen name="mini_vertical_margin">8dp</dimen>
+    <dimen name="content_margin_top">8dp</dimen>
+    <dimen name="search_view_horizontal_margin">24dp</dimen>
+
+    /* Dialog View Dimensions */
+    <dimen name="dialog_horizontal_padding">16dp</dimen>
+    <dimen name="dialog_top_padding">40dp</dimen>
+    <dimen name="dialog_icon_size">100dp</dimen>
+
+    /* Recycle View Dimensions */
+    <dimen name="recycle_view_margin">8dp</dimen>
+    <dimen name="forward_arrow_size">15dp</dimen>
+    <dimen name="fav_icon_size">24dp</dimen>
+
+    /* Card Views Dimensions */
+    <dimen name="profile_icon_width">60dp</dimen>
+    <dimen name="content_card_view_corner_radius">20dp</dimen>
+    <dimen name="content_card_view_elevation">10dp</dimen>
+    <dimen name="list_card_view_corner_radius">12dp</dimen>
+    <dimen name="avatar_margin">16dp</dimen>
+    <dimen name="page_padding">16dp</dimen>
+
+    /* Action Bar Dimensions */
+    <dimen name="action_bar_image_button_icon_padding">12dp</dimen>
+    <dimen name="image_button_size">30dp</dimen>
+</resources>
