@@ -9,16 +9,22 @@
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.fragments.repodetails.RepoDetailsViewModel" />
     </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/btnFav"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="@dimen/page_padding"
                 android:layout_marginStart="@dimen/page_padding"
+                android:layout_marginTop="@dimen/page_padding"
                 android:background="@drawable/image_button_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -29,14 +35,14 @@
                 android:id="@+id/ownerIconView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_margin="@dimen/avatar_margin"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:contentDescription="@null"
                 app:imageUrl="@{vm.gitRepoData.owner.avatarUrl}"
-                app:layout_constraintBottom_toTopOf="@+id/imageSectionVerticalGuide"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/imageSectionHorizontalGuide"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnFav"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
             <TextView
@@ -44,9 +50,9 @@
                 style="@style/nameTextViewStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vertical_margin"
                 android:gravity="center"
                 android:text='@{vm.gitRepoData.name}'
-                android:layout_marginTop="@dimen/vertical_margin"
                 app:layout_constraintEnd_toEndOf="@+id/ownerIconView"
                 app:layout_constraintStart_toStartOf="@+id/ownerIconView"
                 app:layout_constraintTop_toBottomOf="@+id/ownerIconView" />
@@ -60,56 +66,70 @@
                 android:text='@{"Language : "+vm.gitRepoData.language}'
                 app:layout_constraintEnd_toEndOf="@+id/nameView"
                 app:layout_constraintStart_toStartOf="@+id/nameView"
-                app:layout_constraintTop_toBottomOf="@+id/nameView" />
+                app:layout_constraintTop_toBottomOf="@+id/nameView"
+                android:paddingBottom="@dimen/page_padding"/>
 
 
-            <include
-                android:id="@+id/include2"
-                layout="@layout/context_vew_layout"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/centerHorizontalGuid"
-                app:layout_constraintEnd_toStartOf="@+id/contentVerticalCenterGuid"
-                app:layout_constraintStart_toEndOf="@+id/imageSectionHorizontalGuide"
-                app:layout_constraintTop_toTopOf="parent"
-                bind:label='@{"Starts"}'
-                bind:value="@{vm.gitRepoData.stargazersCount.toString()}" />
-
-            <include
-                android:id="@+id/include3"
-                layout="@layout/context_vew_layout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/contentVerticalCenterGuid"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/imageSectionHorizontalGuide"
-                app:layout_constraintTop_toBottomOf="@+id/include2"
-                bind:label='@{"Forks"}'
-                bind:value="@{vm.gitRepoData.forksCount.toString()}" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <include
-                android:id="@+id/include"
-                layout="@layout/context_vew_layout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/include4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/include2"
-                app:layout_constraintTop_toTopOf="parent"
-                bind:label='@{"Watchers"}'
-                bind:value="@{vm.gitRepoData.watchersCount.toString()}" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-            <include
-                android:id="@+id/include4"
-                layout="@layout/context_vew_layout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/include3"
-                app:layout_constraintTop_toTopOf="@+id/centerHorizontalGuid"
-                bind:label='@{"Open Issues"}'
-                bind:value="@{vm.gitRepoData.openIssuesCount.toString()}" />
+                    <include
+                        android:id="@+id/include2"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Starts"}'
+                        bind:value="@{vm.gitRepoData.stargazersCount.toString()}" />
+
+                    <include
+                        android:id="@+id/include"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Watchers"}'
+                        bind:value="@{vm.gitRepoData.watchersCount.toString()}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+
+                    <include
+                        android:id="@+id/include3"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Forks"}'
+                        bind:value="@{vm.gitRepoData.forksCount.toString()}" />
+
+
+                    <include
+                        android:id="@+id/include4"
+                        layout="@layout/context_vew_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        bind:label='@{"Open Issues"}'
+                        bind:value="@{vm.gitRepoData.openIssuesCount.toString()}" />
+                </LinearLayout>
+            </LinearLayout>
+
 
 
             <androidx.constraintlayout.widget.Guideline
@@ -117,14 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.40" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/imageSectionVerticalGuide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.60" />
+                app:layout_constraintGuide_percent="0.30" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/centerHorizontalGuid"
@@ -140,4 +153,5 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.7" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
