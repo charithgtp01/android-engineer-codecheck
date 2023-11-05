@@ -17,9 +17,10 @@ object LocalHelper {
                 getLocalLangFromSelectedLang(SharedPreferencesManager.getSelectedLanguage()!!)
             val locale = Locale(lang)
             Locale.setDefault(locale)
-            val configuration = context.resources.configuration
-            configuration.setLocale(locale)
-            configuration.setLayoutDirection(locale)
+            val configuration = context.resources.configuration.apply {
+                setLocale(locale)
+                setLayoutDirection(locale)
+            }
             context.createConfigurationContext(configuration)
         }
     }
@@ -33,9 +34,10 @@ object LocalHelper {
             val locale = Locale(lang)
             Locale.setDefault(locale)
             val resources = context.resources
-            val configuration = resources.configuration
-            configuration.setLocale(locale)
-            configuration.setLayoutDirection(locale)
+            val configuration = resources.configuration.apply {
+                setLocale(locale)
+                setLayoutDirection(locale)
+            }
             resources.updateConfiguration(configuration, resources.displayMetrics)
             context
         }

@@ -56,7 +56,7 @@ class CustomAlertDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext(), theme)
         //Remove dialog unwanted bg color in the corners
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         //Disable outside click dialog dismiss event
         dialog.setCanceledOnTouchOutside(false)
         return dialog
@@ -64,9 +64,9 @@ class CustomAlertDialogFragment : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         //Disable back button pressed dialog dismiss event
-        isCancelable = false;
+        isCancelable = false
         binding = FragmentCustomAlertDialogBinding.inflate(inflater, container, false)
 //        binding.vm = viewModel
         binding.lifecycleOwner = this
@@ -84,12 +84,11 @@ class CustomAlertDialogFragment : DialogFragment() {
         changeUiSize(context, binding.icon, 1, 5)
         // Set data to the data binding variables
         binding.dialogMessage = message
-        if (type == DialogConstants.SUCCESS.value)
-            binding.imageResId = R.mipmap.done
-        else if (type == DialogConstants.FAIL.value)
-            binding.imageResId = R.mipmap.cancel
-        else if (type == DialogConstants.WARN.value)
-            binding.imageResId = R.mipmap.warning
+        when (type) {
+            DialogConstants.SUCCESS.value -> binding.imageResId = R.mipmap.done
+            DialogConstants.FAIL.value -> binding.imageResId = R.mipmap.cancel
+            DialogConstants.WARN.value -> binding.imageResId = R.mipmap.warning
+        }
 
         binding.button.setOnClickListener {
             //Error Dialog should not want to return button click listener

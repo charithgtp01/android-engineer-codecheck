@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="label"
             type="String" />
@@ -19,11 +20,12 @@
             android:id="@+id/selectBox"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:src="@mipmap/radio"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/radio_button_custom_icon" />
 
 
         <TextView
@@ -32,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:gravity="left"
+            android:gravity="start"
             android:text="@{label}"
             app:layout_constraintBottom_toBottomOf="@+id/selectBox"
             app:layout_constraintEnd_toEndOf="parent"

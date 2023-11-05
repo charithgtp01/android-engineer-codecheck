@@ -34,7 +34,7 @@ class RepoDetailsViewModel @Inject constructor(private val localGitHubRepository
 
     /**
      * Set Git Hub Object to Live Data
-     * @param Selected Git Hub Repo Object
+     * Selected Git Hub Repo Object
      */
     fun setGitRepoData(gitHubRepo: GitHubRepoObject) {
         _gitRepoData.value = gitHubRepo

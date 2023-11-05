@@ -4,17 +4,11 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import jp.co.yumemi.android.code_check.databinding.LayoutRepoListItemBinding
-import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import javax.inject.Inject
+import jp.co.yumemi.android.code_check.BR
 import jp.co.yumemi.android.code_check.databinding.LayoutFavListItemBinding
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
-import jp.co.yumemi.android.code_check.BR
+import javax.inject.Inject
 
 /**
  * Favorites Repo List Adapter

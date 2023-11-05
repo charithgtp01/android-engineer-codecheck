@@ -6,7 +6,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET_ERROR_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.getMessage
@@ -246,7 +245,7 @@ class HomeViewModelTest {
         assertTrue(searchViewResult)
 
         assertEquals(
-            MessageConstants.getMessage(SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE),
+            getMessage(SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE),
             viewModel.errorMessage.value
         )
     }

@@ -38,7 +38,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/page_padding"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="@string/app_name"
                     android:textAllCaps="true"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -56,13 +56,15 @@
                     android:src="@mipmap/left_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/back_button_image" />
 
                 <ImageView
                     android:id="@+id/logo"
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@drawable/image_button_bg"
+                    android:contentDescription="@string/app_logo"
                     android:padding="4dp"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/ic_launcher"
@@ -90,6 +92,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/default_image_for_list"
             android:padding="@dimen/page_padding"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_menu"
             app:layout_constraintLeft_toLeftOf="parent"

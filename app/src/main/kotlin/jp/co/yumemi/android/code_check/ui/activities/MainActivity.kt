@@ -14,19 +14,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.constants.ImageResources
-import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants.ACCOUNT_DETAILS_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.SETTINGS_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
-import jp.co.yumemi.android.code_check.interfaces.CustomAlertDialogListener
-import jp.co.yumemi.android.code_check.utils.DialogUtils
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialog
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialogWithoutAction
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 
 
@@ -69,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation_menu)
+        bottomNavView = findViewById(R.id.bottom_navigation_menu)
         menu = bottomNavView.menu
         updateMenuValues(this@MainActivity, menu)
         bottomNavView.setupWithNavController(navController)
@@ -91,11 +84,7 @@ class MainActivity : AppCompatActivity() {
                 HOME_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
-                    binding.emptyImageView.setImageResource(
-                        ImageResources.getImageResources(
-                            ImageResources.GIT_ACCOUNT_SEARCH_IMAGE_CODE
-                        )
-                    )
+                    sharedViewModel.setEmptyDataImage(true)
                 }
 
                 ACCOUNT_DETAILS_FRAGMENT -> {
@@ -106,18 +95,14 @@ class MainActivity : AppCompatActivity() {
                 FAVOURITE_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
-                    binding.emptyImageView.setImageResource(
-                        ImageResources.getImageResources(
-                            ImageResources.NO_DATA_IMAGE_CODE
-                        )
-                    )
+                    sharedViewModel.setEmptyDataImage(true)
                 }
 
                 SETTINGS_FRAGMENT -> {
                     sharedViewModel.expandedStates.clear()
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
-                    binding.emptyImageView.visibility = View.GONE
+                    sharedViewModel.setEmptyDataImage(false)
                 }
             }
         }
@@ -128,7 +113,6 @@ class MainActivity : AppCompatActivity() {
             if (isSearchResultsEmpty == null) {
                 binding.emptyImageView.visibility = View.VISIBLE
                 binding.emptyImageView.setImageResource(R.mipmap.search_account)
-
             } else {
                 if (isSearchResultsEmpty) {
                     // Data is empty, show the emptyImageView

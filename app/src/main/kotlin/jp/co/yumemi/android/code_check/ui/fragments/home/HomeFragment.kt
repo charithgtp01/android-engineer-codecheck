@@ -32,7 +32,7 @@ import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressD
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-//    private val TAG: String = HomeFragment::class.java.simpleName
+    //    private val TAG: String = HomeFragment::class.java.simpleName
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
     private lateinit var sharedViewModel: MainActivityViewModel
@@ -121,7 +121,7 @@ class HomeFragment : Fragment() {
             R.string.progress_dialog_message
         )
         /* Show error message in the custom error dialog */
-        dialogVisibleObserver = Observer { it ->
+        dialogVisibleObserver = Observer {
             if (dialog != null)
                 dialog?.dismiss()
             dialog = showDialogWithoutActionInFragment(
@@ -153,7 +153,8 @@ class HomeFragment : Fragment() {
         * Update Recycle View Items using Diff Utils
         */
         viewModel.gitHubRepoList.observe(requireActivity()) {
-            if(it.isEmpty())
+
+            if (it.isEmpty())
                 sharedViewModel.setEmptyDataImage(true)
             else
                 sharedViewModel.setEmptyDataImage(false)

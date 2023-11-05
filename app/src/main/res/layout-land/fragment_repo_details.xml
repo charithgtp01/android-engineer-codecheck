@@ -4,6 +4,7 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.fragments.repodetails.RepoDetailsViewModel" />
@@ -25,6 +26,7 @@
                 android:layout_marginStart="@dimen/page_padding"
                 android:layout_marginTop="@dimen/page_padding"
                 android:background="@drawable/image_button_bg"
+                android:contentDescription="@string/favourite_button_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 bind:favIcon="@{vm.favouriteStatus}" />
@@ -62,11 +64,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/content_margin_top"
+                android:paddingBottom="@dimen/page_padding"
                 android:text='@{"Language : "+vm.gitRepoData.language}'
                 app:layout_constraintEnd_toEndOf="@+id/nameView"
                 app:layout_constraintStart_toStartOf="@+id/nameView"
-                app:layout_constraintTop_toBottomOf="@+id/nameView"
-                android:paddingBottom="@dimen/page_padding"/>
+                app:layout_constraintTop_toBottomOf="@+id/nameView" />
 
 
             <LinearLayout
@@ -81,7 +83,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:baselineAligned="false">
 
                     <include
                         android:id="@+id/include2"
@@ -105,8 +108,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
-
+                    android:layout_weight="1"
+                    android:baselineAligned="false">
 
                     <include
                         android:id="@+id/include3"
@@ -128,7 +131,6 @@
                         bind:value="@{vm.gitRepoData.openIssuesCount.toString()}" />
                 </LinearLayout>
             </LinearLayout>
-
 
 
             <androidx.constraintlayout.widget.Guideline

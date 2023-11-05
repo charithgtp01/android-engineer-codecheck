@@ -34,12 +34,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/content_margin_top"
             android:clickable="true"
+            android:focusable="true"
             android:onClick="@{() -> vm.onEnglishLayoutClicked()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             bind:itemBackground='@{vm.shouldSelectEnglish}'
-            bind:label='@{"English"}'
-            android:focusable="true" />
+            bind:label='@{"English"}' />
 
 
         <include
@@ -49,12 +49,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/content_margin_top"
             android:clickable="true"
+            android:focusable="true"
             android:onClick="@{() -> vm.onJapaneseLayoutClicked()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/englishLayout"
             bind:itemBackground='@{vm.shouldSelectJapanese}'
-            bind:label='@{"日本語"}'
-            android:focusable="true" />
+            bind:label='@{"日本語"}' />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

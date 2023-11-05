@@ -1,10 +1,7 @@
 package jp.co.yumemi.android.code_check.utils
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import jp.co.yumemi.android.code_check.LocalHelper

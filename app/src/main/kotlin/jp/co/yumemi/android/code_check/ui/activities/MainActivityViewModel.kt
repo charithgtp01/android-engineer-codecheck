@@ -29,14 +29,14 @@ class MainActivityViewModel @Inject constructor() :
     val isSearchResultsEmpty: LiveData<Boolean> get() = _isSearchResultsEmpty
 
     fun setUpdateBottomMenuStatus(isUpdateStatus: Boolean) {
-        _updateBottomMenuStatus.value = isUpdateStatus;
+        _updateBottomMenuStatus.value = isUpdateStatus
     }
 
     fun setFragment(fragment: String) {
         _fragment.value = fragment
     }
 
-    fun setEmptyDataImage(shouldShow:Boolean){
+    fun setEmptyDataImage(shouldShow: Boolean) {
         _isSearchResultsEmpty.value = shouldShow
     }
 }

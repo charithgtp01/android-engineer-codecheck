@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
+            android:gravity="start"
             android:orientation="horizontal"
             android:text="@{label}" />
 
@@ -34,8 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
+            android:gravity="start"
             android:orientation="horizontal"
-            android:text="@{value}"/>
+            android:text="@{value}" />
     </LinearLayout>
 </layout>

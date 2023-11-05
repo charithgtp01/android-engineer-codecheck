@@ -31,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            android:paddingLeft="@dimen/page_padding">
+            android:paddingStart="@dimen/page_padding"
+            android:paddingEnd="@dimen/page_padding">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -103,11 +104,11 @@
                     android:layout_width="@dimen/forward_arrow_size"
                     android:layout_height="@dimen/forward_arrow_size"
                     android:layout_marginTop="@dimen/vertical_margin"
-                    android:layout_marginEnd="@dimen/horizontal_margin"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/next" />
+                    app:srcCompat="@mipmap/next"
+                    android:contentDescription="@string/forward_arrow_icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -134,7 +135,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/fav_delete_icon" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline"

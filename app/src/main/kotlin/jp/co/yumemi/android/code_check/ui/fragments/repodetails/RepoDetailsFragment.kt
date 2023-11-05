@@ -107,10 +107,8 @@ class RepoDetailsFragment : Fragment() {
          * Success dialog will only be shown once when the localDBResponse LiveData is triggered,
          * even if rotate the device. This ensures that the dialog doesn't reappear on device rotation.
          */
-        if (localDBResponseObserver != null) {
-            // Observe the LiveData using a helper function observeOnce
-            viewModel.localDBResponse.observeOnce(viewLifecycleOwner, localDBResponseObserver!!)
-        }
+        // Observe the LiveData using a helper function observeOnce
+        viewModel.localDBResponse.observeOnce(viewLifecycleOwner, localDBResponseObserver!!)
     }
 
     private fun initView() {

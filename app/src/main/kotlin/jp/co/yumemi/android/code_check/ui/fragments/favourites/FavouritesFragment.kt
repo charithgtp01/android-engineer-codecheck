@@ -106,7 +106,7 @@ class FavouritesFragment : Fragment() {
             if (it.isEmpty())
                 sharedViewModel.setEmptyDataImage(true)
             else
-               sharedViewModel.setEmptyDataImage(false)
+                sharedViewModel.setEmptyDataImage(false)
 
             favouriteListAdapter.submitList(it)
         }

@@ -36,7 +36,6 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
     val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
 
 
-
     /**
      * Get Server Response and Set values to live data
      * @param inputText Pass entered value

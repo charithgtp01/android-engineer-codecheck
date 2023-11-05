@@ -23,8 +23,8 @@
             android:id="@+id/dialogMainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@drawable/dialog_content_border_bg"
+            android:orientation="vertical"
             android:paddingLeft="@dimen/dialog_horizontal_padding"
             android:paddingTop="@dimen/dialog_top_padding"
             android:paddingRight="@dimen/dialog_horizontal_padding"
@@ -41,7 +41,8 @@
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/question_mark" />
+                android:src="@mipmap/question_mark"
+                android:contentDescription="@string/alert_dialog_image"/>
 
             <TextView
                 android:id="@+id/tvMessage"

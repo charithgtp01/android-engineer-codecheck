@@ -28,11 +28,11 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         }
 
         // Observe the internal MutableLiveData
-        super.observe(owner, Observer { value ->
+        super.observe(owner) { value ->
             if (pending.compareAndSet(true, false)) {
                 observer.onChanged(value)
             }
-        })
+        }
     }
 
     @MainThread
@@ -46,15 +46,14 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         value = null
     }
 
-    companion object{
-
+    companion object {
 
 
         fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: Observer<T>) {
-            observe(owner, Observer {
+            observe(owner) {
                 observer.onChanged(it)
                 removeObserver(observer)
-            })
+            }
         }
     }
 }

@@ -10,15 +10,12 @@
     /* Dialog View Dimensions */
     <dimen name="dialog_horizontal_padding">16dp</dimen>
     <dimen name="dialog_top_padding">40dp</dimen>
-    <dimen name="dialog_bottom_padding">40dp</dimen>
-    <dimen name="shadowBorderRadius">5dp</dimen>
     <dimen name="dialog_icon_size">100dp</dimen>
 
     /* Recycle View Dimensions */
     <dimen name="recycle_view_margin">8dp</dimen>
     <dimen name="forward_arrow_size">15dp</dimen>
     <dimen name="fav_icon_size">24dp</dimen>
-    <dimen name="round_icon_stroke_width">0.5dp</dimen>
 
     /* Card Views Dimensions */
     <dimen name="profile_icon_width">60dp</dimen>

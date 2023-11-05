@@ -1,10 +1,6 @@
 package jp.co.yumemi.android.code_check.utils
 
-import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
-import jp.co.yumemi.android.code_check.MyApplication
-import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.PreferenceKeys
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import javax.inject.Inject

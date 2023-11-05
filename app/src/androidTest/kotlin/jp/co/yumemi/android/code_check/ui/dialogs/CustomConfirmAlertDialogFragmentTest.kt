@@ -9,26 +9,27 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import jp.co.yumemi.android.code_check.MyIdlingResource
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.ui.activities.MainActivity
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
+import org.junit.After
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
-import jp.co.yumemi.android.code_check.R
-import org.junit.After
-import org.junit.Before
-import org.mockito.Mockito.verify
 
 @RunWith(AndroidJUnit4::class)
 class CustomConfirmAlertDialogFragmentTest {
 
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
+
     // In your test, use the IdlingResource
-    val idlingResource = MyIdlingResource()
+    private val idlingResource = MyIdlingResource()
+
     @Test
     fun testShowConfirmAlertDialog() {
 
@@ -44,7 +45,6 @@ class CustomConfirmAlertDialogFragmentTest {
         onView(withId(R.id.dialogMainLayout)).check(
             matches(isDisplayed())
         )
-
 
 
         // Simulate a click on the "Yes" button and verify that the positive button click callback is invoked

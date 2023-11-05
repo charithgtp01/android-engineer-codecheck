@@ -1,13 +1,10 @@
 package jp.co.yumemi.android.code_check.ui.bindadapters
 
-import android.media.Image
 import android.view.View
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import coil.load
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.constants.StringConstants
 
 /**
  * Bind Adapter to set custom attributes

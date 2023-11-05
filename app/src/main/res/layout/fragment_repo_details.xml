@@ -4,7 +4,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.fragments.repodetails.RepoDetailsViewModel" />
@@ -38,7 +37,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ownerIconView"
             app:layout_constraintTop_toTopOf="parent"
-            bind:favIcon="@{vm.favouriteStatus}" />
+            bind:favIcon="@{vm.favouriteStatus}"
+            android:contentDescription="@string/favourite_button_image" />
 
         <TextView
             android:id="@+id/nameView"

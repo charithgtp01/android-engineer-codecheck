@@ -20,7 +20,7 @@ interface GitHubObjectDao {
     fun updateGitHubObject(gitHubRepoObject: LocalGitHubRepoObject)
 
     @Query("DELETE FROM $ROOM_DB_REPO_TABLE WHERE id = :id")
-    suspend fun deleteGitHubObject(id:Long)
+    suspend fun deleteGitHubObject(id: Long)
 
 //    @Query("DELETE FROM github_repo_table")
 //    suspend fun deleteAllGitHubObject()
