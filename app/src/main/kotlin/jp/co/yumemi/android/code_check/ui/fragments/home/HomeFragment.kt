@@ -22,19 +22,17 @@ import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
 import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListener
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialogInFragment
-import jp.co.yumemi.android.code_check.utils.UIUtils
 
 /**
  * Home Page Fragment
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private val TAG: String = HomeFragment::class.java.simpleName
+//    private val TAG: String = HomeFragment::class.java.simpleName
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
     private lateinit var sharedViewModel: MainActivityViewModel
@@ -118,21 +116,19 @@ class HomeFragment : Fragment() {
      * Live Data Updates
      */
     private fun viewModelObservers() {
-        var progressDialogMessage = LocalHelper.setLanguage(
+        val progressDialogMessage = LocalHelper.setLanguage(
             requireContext(),
             R.string.progress_dialog_message
         )
         /* Show error message in the custom error dialog */
         dialogVisibleObserver = Observer { it ->
-            if (it != null) {
-                if (dialog != null)
-                    dialog?.dismiss()
-                dialog = showDialogWithoutActionInFragment(
-                    this@HomeFragment,
-                    it,
-                    DialogConstants.FAIL.value
-                )
-            }
+            if (dialog != null)
+                dialog?.dismiss()
+            dialog = showDialogWithoutActionInFragment(
+                this@HomeFragment,
+                it,
+                DialogConstants.FAIL.value
+            )
         }
 
         /* Live data observer to show/hide progress dialog */
@@ -157,6 +153,11 @@ class HomeFragment : Fragment() {
         * Update Recycle View Items using Diff Utils
         */
         viewModel.gitHubRepoList.observe(requireActivity()) {
+            if(it.isEmpty())
+                sharedViewModel.setEmptyDataImage(true)
+            else
+                sharedViewModel.setEmptyDataImage(false)
+
             repoListAdapter.submitList(it)
         }
 

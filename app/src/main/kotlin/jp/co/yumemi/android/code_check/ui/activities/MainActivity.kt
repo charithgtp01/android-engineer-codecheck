@@ -15,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.DialogConstants
+import jp.co.yumemi.android.code_check.constants.ImageResources
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants.ACCOUNT_DETAILS_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
@@ -85,24 +86,71 @@ class MainActivity : AppCompatActivity() {
         //No need to do call sharedViewModel.expandedStates.clear() in Favourite Fragment.
         //It will keep expanded status and show expanded items by getting it from sharedView model
         sharedViewModel.fragment.observe(this@MainActivity) {
-            binding.title.text= it
+            binding.title.text = it
             when (it) {
                 HOME_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
+                    binding.emptyImageView.setImageResource(
+                        ImageResources.getImageResources(
+                            ImageResources.GIT_ACCOUNT_SEARCH_IMAGE_CODE
+                        )
+                    )
                 }
+
                 ACCOUNT_DETAILS_FRAGMENT -> {
                     binding.btnBack.visibility = View.VISIBLE
                     bottomNavView.visibility = View.GONE
                 }
+
                 FAVOURITE_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
+                    binding.emptyImageView.setImageResource(
+                        ImageResources.getImageResources(
+                            ImageResources.NO_DATA_IMAGE_CODE
+                        )
+                    )
                 }
+
                 SETTINGS_FRAGMENT -> {
                     sharedViewModel.expandedStates.clear()
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
+                    binding.emptyImageView.visibility = View.GONE
+                }
+            }
+        }
+
+        sharedViewModel.isSearchResultsEmpty.observe(
+            this
+        ) { isSearchResultsEmpty ->
+            if (isSearchResultsEmpty == null) {
+                binding.emptyImageView.visibility = View.VISIBLE
+                binding.emptyImageView.setImageResource(R.mipmap.search_account)
+
+            } else {
+                if (isSearchResultsEmpty) {
+                    // Data is empty, show the emptyImageView
+                    binding.emptyImageView.visibility = View.VISIBLE
+                    if (sharedViewModel.fragment.value == HOME_FRAGMENT) {
+                        //In Home Fragment showing Account Search Image
+                        binding.emptyImageView.setImageResource(
+                            ImageResources.getImageResources(
+                                ImageResources.GIT_ACCOUNT_SEARCH_IMAGE_CODE
+                            )
+                        )
+                    } else {
+                        //Other Fragments showing No Data Image according to the language
+                        binding.emptyImageView.setImageResource(
+                            ImageResources.getImageResources(
+                                ImageResources.NO_DATA_IMAGE_CODE
+                            )
+                        )
+                    }
+                } else {
+                    // Data is not empty, hide the emptyImageView
+                    binding.emptyImageView.visibility = View.GONE
                 }
             }
         }

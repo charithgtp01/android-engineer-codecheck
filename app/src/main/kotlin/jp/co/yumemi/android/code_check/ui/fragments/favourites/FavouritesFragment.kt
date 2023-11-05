@@ -17,7 +17,7 @@ import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListen
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
-import jp.co.yumemi.android.code_check.utils.UIUtils
+
 
 /**
  * Settings Page Fragment
@@ -103,15 +103,14 @@ class FavouritesFragment : Fragment() {
         * Update Recycle View Items using Diff Utils
         */
         viewModel.allFavourites.observe(requireActivity()) {
-            if (binding != null) {
-                if (it.isEmpty())
-                    binding!!.emptyImageView.visibility = View.VISIBLE
-                else
-                    binding!!.emptyImageView.visibility = View.GONE
-            }
+            if (it.isEmpty())
+                sharedViewModel.setEmptyDataImage(true)
+            else
+               sharedViewModel.setEmptyDataImage(false)
 
             favouriteListAdapter.submitList(it)
         }
+
     }
 
     override fun onDestroyView() {
