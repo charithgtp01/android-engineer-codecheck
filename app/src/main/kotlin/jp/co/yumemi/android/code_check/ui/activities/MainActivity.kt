@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
         //No need to do call sharedViewModel.expandedStates.clear() in Favourite Fragment.
         //It will keep expanded status and show expanded items by getting it from sharedView model
         sharedViewModel.fragment.observe(this@MainActivity) {
+            binding.title.text= it
             when (it) {
                 HOME_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE

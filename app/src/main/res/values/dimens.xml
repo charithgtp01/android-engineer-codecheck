@@ -5,6 +5,7 @@
     <dimen name="mini_horizontal_margin">8dp</dimen>
     <dimen name="mini_vertical_margin">8dp</dimen>
     <dimen name="content_margin_top">8dp</dimen>
+    <dimen name="search_view_horizontal_margin">24dp</dimen>
 
     /* Dialog View Dimensions */
     <dimen name="dialog_horizontal_padding">16dp</dimen>

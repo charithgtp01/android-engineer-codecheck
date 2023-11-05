@@ -68,9 +68,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
-        //Set Empty image size
         if (binding != null) {
-            UIUtils.changeUiSize(requireContext(), binding!!.emptyImageView, 2, 3)
             binding!!.searchInputText.hint =
                 LocalHelper.setLanguage(requireContext(), R.string.searchInputText_hint)
         }

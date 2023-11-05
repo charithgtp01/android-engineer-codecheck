@@ -6,10 +6,10 @@ object StringConstants {
 
     const val  ROOM_DB_REPO_TABLE="github_repo_table"
 
-    const val HOME_FRAGMENT = "home_fragment"
-    const val FAVOURITE_FRAGMENT = "favourite_fragment"
-    const val SETTINGS_FRAGMENT = "settings_fragment"
-    const val ACCOUNT_DETAILS_FRAGMENT = "account_details_fragment"
+    const val HOME_FRAGMENT = "HOME FRAGMENT"
+    const val FAVOURITE_FRAGMENT = "FAVOURITES FRAGMENT"
+    const val SETTINGS_FRAGMENT = "SETTINGS FRAGMENT"
+    const val ACCOUNT_DETAILS_FRAGMENT = "ACCOUNT DETAILS FRAGMENT"
 
 
 }

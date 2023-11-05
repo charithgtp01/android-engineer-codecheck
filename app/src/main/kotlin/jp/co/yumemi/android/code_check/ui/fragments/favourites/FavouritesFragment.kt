@@ -52,15 +52,8 @@ class FavouritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         initiateAdapter()
         viewModelObservers()
-    }
-
-    private fun initView() {
-        //Set Empty image size
-        if (binding != null)
-            UIUtils.changeUiSize(requireContext(), binding!!.emptyImageView, 2, 3)
     }
 
     /**
