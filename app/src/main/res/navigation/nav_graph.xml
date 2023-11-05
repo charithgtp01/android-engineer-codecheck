@@ -23,23 +23,21 @@
         tools:layout="@layout/fragment_repo_details">
         <argument
             android:name="item"
-            app:argType="jp.co.yumemi.android.code_check.models.GitHubRepoObject"
-            />
+            app:argType="jp.co.yumemi.android.code_check.models.GitHubRepoObject" />
         <argument
             android:name="isFavourite"
-            app:argType="boolean"
-            />
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="jp.co.yumemi.android.code_check.ui.fragments.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools1:layout="@layout/fragment_settings"/>
+        tools1:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="jp.co.yumemi.android.code_check.ui.fragments.favourites.FavouritesFragment"
         android:label="@string/menu_favourites"
-        tools1:layout="@layout/fragment_favourites"/>
+        tools1:layout="@layout/fragment_favourites" />
 
 </navigation>

@@ -64,7 +64,7 @@ class SettingsFragment : Fragment() {
             binding?.textView?.text =
                 LocalHelper.setLanguage(this.context, R.string.select_app_language)
 
-            //Update Main Activity bottom menu lables
+            //Update Main Activity bottom menu labels
             sharedViewModel.setUpdateBottomMenuStatus(true)
         }
     }

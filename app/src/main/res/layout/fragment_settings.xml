@@ -4,6 +4,7 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.fragments.settings.SettingsViewModel" />
@@ -12,7 +13,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/page_padding">
+        android:paddingStart="@dimen/page_padding"
+        android:paddingEnd="@dimen/page_padding"
+        android:paddingBottom="@dimen/page_padding">
 
         <TextView
             android:id="@+id/textView"
@@ -31,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/content_margin_top"
             android:clickable="true"
+            android:focusable="true"
             android:onClick="@{() -> vm.onEnglishLayoutClicked()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -45,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/content_margin_top"
             android:clickable="true"
+            android:focusable="true"
             android:onClick="@{() -> vm.onJapaneseLayoutClicked()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/englishLayout"

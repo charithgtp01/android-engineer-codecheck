@@ -18,7 +18,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 @RunWith(AndroidJUnit4::class)
-class DialogUtilsTest{
+class DialogUtilsTest {
     @Mock
     private lateinit var context: Context
 
@@ -53,6 +53,9 @@ class DialogUtilsTest{
 //        verify(fragmentManager).commit()
 
         // Optionally, you can verify that newInstance was called with the correct parameters
-        verify(CustomConfirmAlertDialogFragment).newInstance(eq(message), eq(dialogButtonClickListener))
+        verify(CustomConfirmAlertDialogFragment).newInstance(
+            eq(message),
+            eq(dialogButtonClickListener)
+        )
     }
 }

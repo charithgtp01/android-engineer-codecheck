@@ -14,8 +14,8 @@ interface GitRepoApiService {
     }
 
     /**
-     * @param q: String part of the repository name
-     * @see https://api.github.com/ to get Free APIs
+     * @param "q" String part of the repository name
+     * @see "https://api.github.com/" to get Free APIs
      */
     @GET(REPOSITORIES_ENDPOINT)
     suspend fun getRepositories(@Query("q") query: String): Response<ApiResponse>

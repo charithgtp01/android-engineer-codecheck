@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
     <string name="preference_file_key">Android Engineer CodeCheck Pref</string>
-    <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
-    <string name="written_language">Written in %s</string>
+    <string name="searchInputText_hint">You can search GitHub repositories</string>
     <string name="ok">OK</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
@@ -19,5 +18,17 @@
     <string name="progress_dialog_message">Processing......</string>
     <string name="add_fav_confirmation_message">Do you want to add to favourites?</string>
     <string name="remove_fav_confirmation_message">Do you want to remove this from favourites?</string>
+
+    <!-- Image content Descriptions -->
+    <string name="app_logo">App Logo</string>
+    <string name="default_image_for_list">Default Image for recycle view</string>
+    <string name="back_button_image">Action Bar back button image</string>
+    <string name="alert_dialog_image">Alert Dialog Icon</string>
+    <string name="progress_dialog_image">Progress Dialog Icon</string>
+    <string name="favourite_button_image">Favourite button Icon</string>
+    <string name="forward_arrow_icon">Forward Arrow Icon</string>
+    <string name="fav_delete_icon">Favourite Delete Icon</string>
+    <string name="radio_button_custom_icon">Radio Button Icon</string>
+
 
 </resources>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="item"
             type="jp.co.yumemi.android.code_check.models.GitHubRepoObject" />
@@ -43,16 +45,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/mini_horizontal_margin"
                 android:layout_marginVertical="8dp"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/favIcon"
                 app:layout_constraintStart_toEndOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="vertical">
+                app:layout_constraintTop_toTopOf="parent">
+
                 <TextView
                     android:id="@+id/repositoryNameView"
                     style="@style/repoNameStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
                     android:text="@{item.name}" />
 
                 <TextView
@@ -80,7 +85,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/forwardArrowIcon"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/favourites_icon" />
+                app:srcCompat="@mipmap/favourites_icon"
+                android:contentDescription="@string/favourite_button_image" />
 
             <ImageView
                 android:id="@+id/forwardArrowIcon"
@@ -91,7 +97,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/next" />
+                app:srcCompat="@mipmap/next"
+                android:contentDescription="@string/forward_arrow_icon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

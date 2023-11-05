@@ -3,15 +3,14 @@ package jp.co.yumemi.android.code_check.ui.fragments.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import jp.co.yumemi.android.code_check.BR
 import jp.co.yumemi.android.code_check.databinding.LayoutRepoListItemBinding
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import javax.inject.Inject
-import jp.co.yumemi.android.code_check.BR
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
+import javax.inject.Inject
 
 /**
  * Git Repo List Adapter
@@ -43,8 +42,7 @@ class RepoListAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: RepoListViewHolder, position: Int) {
         val repoObject = getItem(position)
-
-        var isFavorite: Boolean = favoriteItems?.any { it.id == repoObject.id } == true
+        val isFavorite: Boolean = favoriteItems?.any { it.id == repoObject.id } == true
         holder.bind(repoObject)
         holder.binding.root.setOnClickListener {
             itemClickListener.itemClick(repoObject, isFavorite)
@@ -56,12 +54,6 @@ class RepoListAdapter @Inject constructor(
             holder.binding.favIcon.visibility = View.GONE
 
     }
-
-    fun setFavouriteList(it: List<LocalGitHubRepoObject>?) {
-        favoriteItems = it
-    }
-
-
 }
 
 /**

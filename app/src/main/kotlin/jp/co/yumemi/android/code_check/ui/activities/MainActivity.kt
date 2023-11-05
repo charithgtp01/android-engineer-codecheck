@@ -14,18 +14,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.constants.DialogConstants
-import jp.co.yumemi.android.code_check.constants.StringConstants
+import jp.co.yumemi.android.code_check.constants.ImageResources
 import jp.co.yumemi.android.code_check.constants.StringConstants.ACCOUNT_DETAILS_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.SETTINGS_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
-import jp.co.yumemi.android.code_check.interfaces.CustomAlertDialogListener
-import jp.co.yumemi.android.code_check.utils.DialogUtils
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialog
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialogWithoutAction
-import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showDialogWithoutActionInFragment
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 
 
@@ -41,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // add the default theme here which we want
+        // to display after the splash screen is shown
 
         setDataBinding()
         viewModelObservers()
@@ -66,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation_menu)
+        bottomNavView = findViewById(R.id.bottom_navigation_menu)
         menu = bottomNavView.menu
         updateMenuValues(this@MainActivity, menu)
         bottomNavView.setupWithNavController(navController)
@@ -83,23 +79,62 @@ class MainActivity : AppCompatActivity() {
         //No need to do call sharedViewModel.expandedStates.clear() in Favourite Fragment.
         //It will keep expanded status and show expanded items by getting it from sharedView model
         sharedViewModel.fragment.observe(this@MainActivity) {
+            binding.title.text = it
             when (it) {
                 HOME_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
+                    sharedViewModel.setEmptyDataImage(true)
                 }
+
                 ACCOUNT_DETAILS_FRAGMENT -> {
                     binding.btnBack.visibility = View.VISIBLE
                     bottomNavView.visibility = View.GONE
                 }
+
                 FAVOURITE_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
+                    sharedViewModel.setEmptyDataImage(true)
                 }
+
                 SETTINGS_FRAGMENT -> {
                     sharedViewModel.expandedStates.clear()
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
+                    sharedViewModel.setEmptyDataImage(false)
+                }
+            }
+        }
+
+        sharedViewModel.isSearchResultsEmpty.observe(
+            this
+        ) { isSearchResultsEmpty ->
+            if (isSearchResultsEmpty == null) {
+                binding.emptyImageView.visibility = View.VISIBLE
+                binding.emptyImageView.setImageResource(R.mipmap.search_account)
+            } else {
+                if (isSearchResultsEmpty) {
+                    // Data is empty, show the emptyImageView
+                    binding.emptyImageView.visibility = View.VISIBLE
+                    if (sharedViewModel.fragment.value == HOME_FRAGMENT) {
+                        //In Home Fragment showing Account Search Image
+                        binding.emptyImageView.setImageResource(
+                            ImageResources.getImageResources(
+                                ImageResources.GIT_ACCOUNT_SEARCH_IMAGE_CODE
+                            )
+                        )
+                    } else {
+                        //Other Fragments showing No Data Image according to the language
+                        binding.emptyImageView.setImageResource(
+                            ImageResources.getImageResources(
+                                ImageResources.NO_DATA_IMAGE_CODE
+                            )
+                        )
+                    }
+                } else {
+                    // Data is not empty, hide the emptyImageView
+                    binding.emptyImageView.visibility = View.GONE
                 }
             }
         }

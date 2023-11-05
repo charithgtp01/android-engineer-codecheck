@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.SingleLiveEvent.Companion.observeOnce
 import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding
@@ -30,12 +32,14 @@ import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressD
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private val TAG: String = HomeFragment::class.java.simpleName
+    //    private val TAG: String = HomeFragment::class.java.simpleName
     private var binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
     private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var repoListAdapter: RepoListAdapter
     private var dialog: DialogFragment? = null
+    private var dialogVisibleObserver: Observer<String>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,7 +66,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun initView() {
-
+        if (binding != null) {
+            binding!!.searchInputText.hint =
+                LocalHelper.setLanguage(requireContext(), R.string.searchInputText_hint)
+        }
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle back button press for Home Fragment
@@ -109,21 +116,19 @@ class HomeFragment : Fragment() {
      * Live Data Updates
      */
     private fun viewModelObservers() {
-        var progressDialogMessage = LocalHelper.setLanguage(
+        val progressDialogMessage = LocalHelper.setLanguage(
             requireContext(),
             R.string.progress_dialog_message
         )
         /* Show error message in the custom error dialog */
-        viewModel.errorMessage.observe(requireActivity()) {
-            if (it != null) {
-                if (dialog != null)
-                    dialog?.dismiss()
-                dialog = showDialogWithoutActionInFragment(
-                    this@HomeFragment,
-                    it,
-                    DialogConstants.FAIL.value
-                )
-            }
+        dialogVisibleObserver = Observer {
+            if (dialog != null)
+                dialog?.dismiss()
+            dialog = showDialogWithoutActionInFragment(
+                this@HomeFragment,
+                it,
+                DialogConstants.FAIL.value
+            )
         }
 
         /* Live data observer to show/hide progress dialog */
@@ -144,23 +149,22 @@ class HomeFragment : Fragment() {
             }
         }
 
-        sharedViewModel.allFavourites.observe(requireActivity()) {
-            if (binding != null) {
-                if (it.isEmpty())
-                    binding!!.emptyImageView.visibility = View.VISIBLE
-                else
-                    binding!!.emptyImageView.visibility = View.GONE
-            }
-
-            repoListAdapter.setFavouriteList(it)
-        }
-
-
         /* Observer to catch list data
         * Update Recycle View Items using Diff Utils
         */
         viewModel.gitHubRepoList.observe(requireActivity()) {
+
+            if (it.isEmpty())
+                sharedViewModel.setEmptyDataImage(true)
+            else
+                sharedViewModel.setEmptyDataImage(false)
+
             repoListAdapter.submitList(it)
+        }
+
+        if (dialogVisibleObserver != null) {
+            // Observe the LiveData using a helper function observeOnce
+            viewModel.errorMessage.observeOnce(viewLifecycleOwner, dialogVisibleObserver!!)
         }
     }
 
@@ -179,5 +183,10 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+
+        if (dialogVisibleObserver != null) {
+            // Remove the observer when the Fragment is destroyed
+            viewModel.errorMessage.removeObserver(dialogVisibleObserver!!)
+        }
     }
 }

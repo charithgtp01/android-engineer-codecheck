@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.co.yumemi.android.code_check.SingleLiveEvent
 import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET_ERROR_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE
@@ -27,15 +28,13 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
     val gitHubRepoList: LiveData<List<GitHubRepoObject>> get() = _gitHubRepoList
 
     //Error Message Live Data
-    private val _errorMessage = MutableLiveData<String>()
+    private val _errorMessage = SingleLiveEvent<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
 
     //Dialog Visibility Live Data
     private val _isDialogVisible = MutableLiveData<Boolean>()
     val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
 
-    private val _isSearchResultsEmpty = MutableLiveData<Boolean>()
-    val isSearchResultsEmpty: LiveData<Boolean> get() = _isSearchResultsEmpty
 
     /**
      * Get Server Response and Set values to live data
@@ -51,7 +50,6 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
 
                 if (apiResponse.success) {
                     _gitHubRepoList.value = apiResponse.items
-                    _isSearchResultsEmpty.value = apiResponse.items.isEmpty()
                 } else
                     _errorMessage.value = apiResponse.message
 
@@ -71,7 +69,7 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
 
             val enteredValue = editeText?.text.toString()
 
-            if (enteredValue.isNullOrBlank()) {
+            if (enteredValue.isBlank()) {
                 //Empty value error Alert
                 _errorMessage.value =
                     MessageConstants.getMessage(SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE)
@@ -82,6 +80,4 @@ class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepo
         }
         return false
     }
-
-
 }

@@ -35,7 +35,7 @@ class CustomProgressDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext(), theme)
         //Remove dialog unwanted bg color in the corners
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         //Disable outside click dialog dismiss event
         dialog.setCanceledOnTouchOutside(false)
         return dialog
@@ -43,9 +43,9 @@ class CustomProgressDialogFragment : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         //Disable back button pressed dialog dismiss event
-        isCancelable = false;
+        isCancelable = false
         binding = FragmentCustomProgressDialogBinding.inflate(inflater, container, false)
 //        binding.vm = viewModel
         binding.lifecycleOwner = this

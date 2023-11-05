@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
-import androidx.preference.PreferenceManager
 import dagger.hilt.android.HiltAndroidApp
 import jp.co.yumemi.android.code_check.utils.NetworkUtils
 import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager

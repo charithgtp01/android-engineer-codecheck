@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="dialogMessage"
             type="String" />
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/transparent"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/dialogMainLayout"
             android:layout_width="match_parent"
@@ -32,10 +34,11 @@
                 android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/wait"
-                android:layout_gravity="center">
+                android:contentDescription="@string/progress_dialog_image">
 
             </ImageView>
 
@@ -54,7 +57,7 @@
                 android:id="@+id/tvMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="start"
                 android:text="@{dialogMessage}"
                 android:textColor="@color/black"
                 android:textSize="16sp" />

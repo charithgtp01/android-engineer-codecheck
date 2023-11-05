@@ -17,14 +17,15 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class UITestActivityTest{
+class UITestActivityTest {
     @Rule
     @JvmField
-    val activityScenarioRule = ActivityScenarioRule(UITestActivity::class.java)
+    val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setup() {
     }
+
     @Test
     fun testEditText() {
         // Find the EditText by its resource ID (R.id.your_edit_text_id)
@@ -34,6 +35,7 @@ class UITestActivityTest{
         // You can add assertions here to verify the text in the EditText
         onView(withId(R.id.editTextText)).check(matches(withText("New Text")))
     }
+
     @After
     fun tearDown() {
         //clean up code

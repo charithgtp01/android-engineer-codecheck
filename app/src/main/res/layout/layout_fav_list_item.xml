@@ -8,6 +8,10 @@
         <variable
             name="item"
             type="jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject" />
+
+        <variable
+            name="isExpanded"
+            type="Boolean" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -27,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            android:paddingLeft="@dimen/page_padding">
+            android:paddingStart="@dimen/page_padding"
+            android:paddingEnd="@dimen/page_padding">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -61,16 +66,16 @@
                     android:id="@+id/contextLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mini_vertical_margin"
+                    android:layout_marginBottom="@dimen/mini_vertical_margin"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/forwardArrowIcon"
                     app:layout_constraintStart_toEndOf="@+id/guideline1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/mini_vertical_margin"
-                    android:layout_marginBottom="@dimen/mini_vertical_margin"
-                    >
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <include
+                        android:id="@+id/nameLayout"
                         layout="@layout/content_with_label_large_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -99,11 +104,11 @@
                     android:layout_width="@dimen/forward_arrow_size"
                     android:layout_height="@dimen/forward_arrow_size"
                     android:layout_marginTop="@dimen/vertical_margin"
-                    android:layout_marginEnd="@dimen/horizontal_margin"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/next" />
+                    app:srcCompat="@mipmap/next"
+                    android:contentDescription="@string/forward_arrow_icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -112,10 +117,10 @@
                 android:id="@+id/expandedContent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/mini_vertical_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-                android:paddingBottom="@dimen/mini_vertical_margin">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
 
                 <!-- Delete button -->
@@ -123,6 +128,7 @@
                     android:id="@+id/deleteBtn"
                     android:layout_width="@dimen/image_button_size"
                     android:layout_height="@dimen/image_button_size"
+                    android:layout_marginTop="@dimen/mini_vertical_margin"
                     android:background="@drawable/image_button_bg"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/bin"
@@ -130,7 +136,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/mini_vertical_margin"/>
+                    android:contentDescription="@string/fav_delete_icon" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline"
@@ -147,6 +153,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout3"
                     android:layout_width="0dp"
@@ -154,7 +161,6 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/separator">
-
 
 
                     <include
@@ -233,21 +239,6 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/mini_horizontal_margin"
-                android:padding="@dimen/mini_vertical_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="parent">
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ import okhttp3.Response
 /**
  * Includes Network Request and Headers
  */
-class ServiceInterceptor() : Interceptor {
+class ServiceInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest: Request = chain.request()
