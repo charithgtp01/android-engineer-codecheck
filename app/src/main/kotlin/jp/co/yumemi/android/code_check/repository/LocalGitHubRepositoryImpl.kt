@@ -33,7 +33,7 @@ class LocalGitHubRepositoryImpl @Inject constructor(private val gitHubObjectDao:
 
     }
 
-    override fun getAllRepositories(): LiveData<List<LocalGitHubRepoObject>> {
+    override fun getAllRepositories(): LiveData<List<LocalGitHubRepoObject>>?{
         return gitHubObjectDao.getAllGitHubObjects()
     }
 

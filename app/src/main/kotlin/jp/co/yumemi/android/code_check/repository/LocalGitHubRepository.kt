@@ -8,7 +8,7 @@ import javax.inject.Singleton
 @Singleton
 interface LocalGitHubRepository {
     suspend fun insertGitHubObject(gitHubDataClass: LocalGitHubRepoObject): LocalDBQueryResponse
-    fun getAllRepositories(): LiveData<List<LocalGitHubRepoObject>>
+    fun getAllRepositories(): LiveData<List<LocalGitHubRepoObject>>?
 
     suspend fun deleteGitHubObjectDao(id: Long): LocalDBQueryResponse
 }

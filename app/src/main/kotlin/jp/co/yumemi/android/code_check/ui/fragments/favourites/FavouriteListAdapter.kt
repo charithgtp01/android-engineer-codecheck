@@ -82,9 +82,11 @@ class FavouriteListAdapter @Inject constructor(
 
     override fun getItemCount(): Int = items.size
 
-    fun submitList(newList: List<LocalGitHubRepoObject>) {
+    fun submitList(newList: List<LocalGitHubRepoObject>?) {
         items.clear()
-        items.addAll(newList)
+        if (newList != null) {
+            items.addAll(newList)
+        }
         notifyDataSetChanged()
     }
 

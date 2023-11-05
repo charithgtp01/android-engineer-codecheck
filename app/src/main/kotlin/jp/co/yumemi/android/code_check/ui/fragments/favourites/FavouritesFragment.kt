@@ -20,7 +20,7 @@ import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAl
 
 
 /**
- * Settings Page Fragment
+ * Favourites Page Fragment
  */
 
 class FavouritesFragment : Fragment() {
@@ -102,11 +102,13 @@ class FavouritesFragment : Fragment() {
         /* Observer to catch list data
         * Update Recycle View Items using Diff Utils
         */
-        viewModel.allFavourites.observe(requireActivity()) {
-            if (it.isEmpty())
-                sharedViewModel.setEmptyDataImage(true)
-            else
-                sharedViewModel.setEmptyDataImage(false)
+        viewModel.allFavourites?.observe(requireActivity()) {
+            if (it != null) {
+                if (it.isEmpty())
+                    sharedViewModel.setEmptyDataImage(true)
+                else
+                    sharedViewModel.setEmptyDataImage(false)
+            }
 
             favouriteListAdapter.submitList(it)
         }

@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavouritesViewModel @Inject constructor(val repository: LocalGitHubRepository) : ViewModel() {
 
-    val allFavourites: LiveData<List<LocalGitHubRepoObject>> = repository.getAllRepositories()
+    val allFavourites: LiveData<List<LocalGitHubRepoObject>>? = repository.getAllRepositories()
 
     /**
      * When click on delete button

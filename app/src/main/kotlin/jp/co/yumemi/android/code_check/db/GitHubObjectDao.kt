@@ -14,7 +14,7 @@ interface GitHubObjectDao {
     suspend fun insertGitHubObject(localGitHubRepoObject: LocalGitHubRepoObject): Long
 
     @Query("SELECT * FROM $ROOM_DB_REPO_TABLE")
-    fun getAllGitHubObjects(): LiveData<List<LocalGitHubRepoObject>>
+    fun getAllGitHubObjects(): LiveData<List<LocalGitHubRepoObject>>?
 
     @Update
     fun updateGitHubObject(gitHubRepoObject: LocalGitHubRepoObject)
