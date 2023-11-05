@@ -38,7 +38,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             bind:itemBackground='@{vm.shouldSelectEnglish}'
-            bind:label='@{"English"}' />
+            bind:label='@{"English"}'
+            android:focusable="true" />
 
 
         <include
@@ -52,7 +53,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/englishLayout"
             bind:itemBackground='@{vm.shouldSelectJapanese}'
-            bind:label='@{"日本語"}' />
+            bind:label='@{"日本語"}'
+            android:focusable="true" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

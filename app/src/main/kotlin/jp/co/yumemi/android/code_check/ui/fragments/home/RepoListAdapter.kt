@@ -43,7 +43,6 @@ class RepoListAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: RepoListViewHolder, position: Int) {
         val repoObject = getItem(position)
-
         var isFavorite: Boolean = favoriteItems?.any { it.id == repoObject.id } == true
         holder.bind(repoObject)
         holder.binding.root.setOnClickListener {
@@ -56,12 +55,6 @@ class RepoListAdapter @Inject constructor(
             holder.binding.favIcon.visibility = View.GONE
 
     }
-
-    fun setFavouriteList(it: List<LocalGitHubRepoObject>?) {
-        favoriteItems = it
-    }
-
-
 }
 
 /**

@@ -56,13 +56,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
 
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.4'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.5'
 
     //  ——— Dagger - Hilt ——— ++
     implementation 'com.google.dagger:hilt-android:2.48.1'
     implementation 'androidx.window:window:1.1.0'
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
     kapt 'com.google.dagger:hilt-android-compiler:2.48.1'
 
 
@@ -91,7 +91,7 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
     implementation "androidx.arch.core:core-testing:2.2.0"
-    androidTestImplementation 'androidx.fragment:fragment-testing:1.6.1'
+    androidTestImplementation 'androidx.fragment:fragment-testing:1.6.2'
 
     //-- ActivityTestRule --//
     androidTestImplementation 'androidx.test:rules:1.5.0'

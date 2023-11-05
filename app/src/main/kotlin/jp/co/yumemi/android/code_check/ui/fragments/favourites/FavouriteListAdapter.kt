@@ -1,5 +1,6 @@
 package jp.co.yumemi.android.code_check.ui.fragments.favourites
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.code_check.databinding.LayoutRepoListItemBinding
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import javax.inject.Inject
-import jp.co.yumemi.android.code_check.BR
 import jp.co.yumemi.android.code_check.databinding.LayoutFavListItemBinding
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
+import jp.co.yumemi.android.code_check.BR
 
 /**
  * Favorites Repo List Adapter
@@ -38,10 +39,19 @@ class FavouriteListAdapter @Inject constructor(
     inner class FavouriteListViewHolder(val binding: LayoutFavListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(obj: LocalGitHubRepoObject) {
+            val isExpanded = expandedStates[obj.id] == true
+
             binding.setVariable(BR.item, obj)
+            binding.setVariable(BR.isExpanded, isExpanded)
             binding.executePendingBindings()
 
-            val isExpanded = expandedStates[obj.id] == true
+            if (isExpanded) {
+                binding.nameLayout.tvContent.ellipsize = null
+                binding.nameLayout.tvContent.maxLines = Int.MAX_VALUE
+            } else {
+                binding.nameLayout.tvContent.ellipsize = TextUtils.TruncateAt.END
+                binding.nameLayout.tvContent.setLines(1)
+            }
 
             // Set the visibility of your expanded content based on the state
             binding.expandedContent.visibility = if (isExpanded) View.VISIBLE else View.GONE
