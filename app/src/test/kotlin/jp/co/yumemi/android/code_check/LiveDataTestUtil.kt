@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.ui.fragments.home
+package jp.co.yumemi.android.code_check
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
