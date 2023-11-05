@@ -9,6 +9,8 @@ import dagger.hilt.components.SingletonComponent
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.db.GitHubObjectDao
 import jp.co.yumemi.android.code_check.db.GitHubObjectsDatabase
+import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
+import jp.co.yumemi.android.code_check.repository.LocalGitHubRepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -25,7 +27,13 @@ object DatabaseModule {
     }
 
     @Provides
+    @Singleton
     fun provideGitHubObjectDao(database: GitHubObjectsDatabase): GitHubObjectDao {
         return database.gitHubObjectDao()
+    }
+
+    @Provides
+    fun provideLocalGitHubRepository(dao: GitHubObjectDao): LocalGitHubRepository {
+        return LocalGitHubRepositoryImpl(dao)
     }
 }

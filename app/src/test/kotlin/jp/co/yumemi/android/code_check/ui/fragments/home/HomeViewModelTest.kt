@@ -6,12 +6,13 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import jp.co.yumemi.android.code_check.MockObjects
 import jp.co.yumemi.android.code_check.constants.MessageConstants.NO_INTERNET_ERROR_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.SEARCH_VIEW_VALUE_EMPTY_ERROR_CODE
 import jp.co.yumemi.android.code_check.constants.MessageConstants.getMessage
+import jp.co.yumemi.android.code_check.getOrAwaitValue
 import jp.co.yumemi.android.code_check.models.ApiResponse
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import jp.co.yumemi.android.code_check.models.Owner
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import jp.co.yumemi.android.code_check.utils.NetworkUtils
 import junit.framework.TestCase.assertEquals
@@ -60,35 +61,13 @@ class HomeViewModelTest {
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var networkUtils: NetworkUtils
     private lateinit var networkInfo: NetworkInfo
-    private val mockOwnerObj =
-        Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
-    private val mockGitHubRepoObject = GitHubRepoObject(
-        id = 1,
-        name = "charithvin",
-        owner = mockOwnerObj,
-        nullableLanguage = "CSS",
-        stargazersCount = 10,
-        watchersCount = 15,
-        forksCount = 4,
-        openIssuesCount = 25
-    )
-    private val mockData = listOf(mockGitHubRepoObject)
 
-    private val expectedOwnerObj =
-        Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
-    private val expectedGitHubRepoObject = GitHubRepoObject(
-        id = 1,
-        name = "charithvin",
-        owner = expectedOwnerObj,
-        nullableLanguage = "CSS",
-        stargazersCount = 10,
-        watchersCount = 15,
-        forksCount = 4,
-        openIssuesCount = 25
-    )
-    private val expectedData = listOf(expectedGitHubRepoObject)
     private val successServerResponse =
-        ApiResponse(success = true, message = "Data fetched Successfully", items = mockData)
+        ApiResponse(
+            success = true,
+            message = "Data fetched Successfully",
+            items = MockObjects.mockData
+        )
 
     private val errorServerResponse =
         ApiResponse(success = false, message = "Error From Server", items = listOf())
@@ -149,7 +128,7 @@ class HomeViewModelTest {
 
         // Assert
         // Verify that the gitHubRepoList LiveData is updated with the expected data
-        verify(gitHubRepoObserver).onChanged(expectedData)
+        verify(gitHubRepoObserver).onChanged(MockObjects.expectedData)
         // Verify that the dialog visibility is updated
         verify(dialogObserver).onChanged(false)
     }
