@@ -22,6 +22,9 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     private val _shouldSelectEnglish = MutableLiveData<Boolean?>(null)
     val shouldSelectEnglish: LiveData<Boolean?> get() = _shouldSelectEnglish
 
+    private val _selectedLanguageLabel = MutableLiveData<String?>(null)
+    val selectedLanguageLabel: LiveData<String?> get() = _selectedLanguageLabel
+
 
     fun setSelectedLanguage(language: String?) {
         _selectedLanguage.value = language
@@ -32,6 +35,10 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
             _shouldSelectJapanese.value = false
             _shouldSelectEnglish.value = true
         }
+    }
+
+    fun setSelectedLanguageLabel(label: String?) {
+        _selectedLanguageLabel.value = label
     }
 
     fun onEnglishLayoutClicked() {

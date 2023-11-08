@@ -29,6 +29,8 @@
     <string name="forward_arrow_icon">Forward Arrow Icon</string>
     <string name="fav_delete_icon">Favourite Delete Icon</string>
     <string name="radio_button_custom_icon">Radio Button Icon</string>
+    <string name="search_input_empty_error">Please enter value before submit</string>
+    <string name="no_internet">No Internet</string>
 
 
 </resources>

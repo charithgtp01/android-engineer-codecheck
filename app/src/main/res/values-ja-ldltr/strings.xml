@@ -13,10 +13,6 @@
     <string name="menu_settings">設定</string>
     <string name="details">詳細</string>
     <string name="select_app_language">アプリの言語</string>
-    <string name="exit_confirmation_message">退出しますか?</string>
-    <string name="progress_dialog_message">待っている......</string>
-    <string name="add_fav_confirmation_message">お気に入りに追加しますか?</string>
-    <string name="remove_fav_confirmation_message">これをお気に入りから削除しますか?</string>
 
     <!-- Image content Descriptions -->
     <string name="app_logo">App Logo</string>
@@ -28,5 +24,13 @@
     <string name="forward_arrow_icon">Forward Arrow Icon</string>
     <string name="fav_delete_icon">Favourite Delete Icon</string>
     <string name="radio_button_custom_icon">Radio Button Icon</string>
+
+    <!-- Messages -->
+    <string name="search_input_empty_error">送信する前に値を入力してください</string>
+    <string name="no_internet">インターネットがない</string>
+    <string name="exit_confirmation_message">退出しますか?</string>
+    <string name="progress_dialog_message">待っている......</string>
+    <string name="add_fav_confirmation_message">お気に入りに追加しますか?</string>
+    <string name="remove_fav_confirmation_message">これをお気に入りから削除しますか?</string>
 
 </resources>

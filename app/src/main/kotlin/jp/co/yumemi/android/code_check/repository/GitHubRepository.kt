@@ -6,6 +6,6 @@ import javax.inject.Singleton
 @Singleton
 interface GitHubRepository {
     suspend fun getRepositories(
-        value: String
+        value: String?
     ): ApiResponse
 }

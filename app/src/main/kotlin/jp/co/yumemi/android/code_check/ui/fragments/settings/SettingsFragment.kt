@@ -23,7 +23,7 @@ import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager.Companion.
 
 class SettingsFragment : Fragment() {
 
-    private var binding: FragmentSettingsBinding? = null
+    private lateinit var binding: FragmentSettingsBinding
     private lateinit var viewModel: SettingsViewModel
 
     //Main Activity view model
@@ -40,10 +40,10 @@ class SettingsFragment : Fragment() {
         //This Shared view model is using to update Main Activity layout changes from this fragment
         sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
         sharedViewModel.setFragment(StringConstants.SETTINGS_FRAGMENT)
-        binding?.vm = viewModel
-        binding?.lifecycleOwner = this
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
 
-        return binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,16 +61,15 @@ class SettingsFragment : Fragment() {
         viewModel.selectedLanguage.observe(requireActivity()) {
             //Update selected value in the preference
             updateSelectedLanguage(it)
-            binding?.textView?.text =
-                LocalHelper.setLanguage(this.context, R.string.select_app_language)
+            viewModel.setSelectedLanguageLabel(
+                LocalHelper.setLanguage(
+                    requireActivity(),
+                    R.string.select_app_language
+                )
+            )
 
             //Update Main Activity bottom menu labels
             sharedViewModel.setUpdateBottomMenuStatus(true)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 }

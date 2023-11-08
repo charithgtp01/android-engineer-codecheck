@@ -20,7 +20,7 @@ class GitHubRepositoryImpl @Inject constructor(
      * Coroutines
      */
     override suspend fun getRepositories(
-        value: String
+        value: String?
     ): ApiResponse {
         return withContext(Dispatchers.IO) {
             return@withContext getRepositoriesFromRemoteService(value)
@@ -32,7 +32,7 @@ class GitHubRepositoryImpl @Inject constructor(
      * @return ServerResponse Object
      */
     private suspend fun getRepositoriesFromRemoteService(
-        value: String
+        value: String?
     ): ApiResponse {
 
         /* Get Server Response */
