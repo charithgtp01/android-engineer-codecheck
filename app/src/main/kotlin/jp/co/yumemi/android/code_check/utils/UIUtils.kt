@@ -21,11 +21,11 @@ class UIUtils {
             if (context != null && menu != null) {
                 //Localize according to the selected app language
                 menu.findItem(R.id.homeFragment)?.title =
-                    LocalHelper.setLanguage(context, R.string.menu_home)
+                    LocalHelper.getString(context, R.string.menu_home)
                 menu.findItem(R.id.favouritesFragment)?.title =
-                    LocalHelper.setLanguage(context, R.string.menu_favourites)
+                    LocalHelper.getString(context, R.string.menu_favourites)
                 menu.findItem(R.id.settingsFragment)?.title =
-                    LocalHelper.setLanguage(context, R.string.menu_settings)
+                    LocalHelper.getString(context, R.string.menu_settings)
             }
         }
 

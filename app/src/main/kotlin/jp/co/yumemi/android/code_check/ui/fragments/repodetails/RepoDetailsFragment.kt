@@ -28,20 +28,27 @@ import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDial
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
 
 /**
- * Details Page Fragment
+ * Fragment that displays details of a GitHub repository and allows users to mark it as a favorite.
+ *
+ * This fragment is responsible for showing detailed information about a selected GitHub repository,
+ * allowing users to mark it as a favorite, and handling back navigation to the Home Fragment. It
+ * communicates with the [RepoDetailsViewModel] to manage the repository data and favorite status.
+ *
+ * @property args Arguments received from the navigation component, including the GitHub repository item
+ * @property binding View binding for this fragment's layout
+ * @property viewModel View model for managing repository details and favorite status
+ * @property gitHubRepo The selected GitHub repository to be displayed
+ * @property isFavourite Flag indicating whether the repository is marked as a favorite
+ * @property sharedViewModel View model shared with the main activity
+ * @property localDBResponseObserver Observer for handling responses from local database operations
  */
-
 class RepoDetailsFragment : Fragment() {
-
     private val args: RepoDetailsFragmentArgs by navArgs()
-    private var binding: FragmentRepoDetailsBinding? = null
+    private lateinit var binding: FragmentRepoDetailsBinding
     lateinit var viewModel: RepoDetailsViewModel
     private lateinit var gitHubRepo: GitHubRepoObject
     private var isFavourite: Boolean = false
-
-    //Main Activity view model
     private lateinit var sharedViewModel: MainActivityViewModel
-
     private var localDBResponseObserver: Observer<LocalDBQueryResponse>? = null
 
     override fun onCreateView(
@@ -49,33 +56,30 @@ class RepoDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /* Safe Args */
+        // Safe Args: Retrieve the GitHub repository object
         gitHubRepo = args.item
-
-        /*
-         * Initiate Data Binding and View Model
-         * Retrieve the Github Object from GitHubRepoListFragment
-         */
         binding = FragmentRepoDetailsBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[RepoDetailsViewModel::class.java]
-
-        //This Shared view model is using to set selected git hub repo live data from this fragment
-        sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
-        sharedViewModel.setFragment(ACCOUNT_DETAILS_FRAGMENT)
-        binding?.vm = viewModel
-        binding?.lifecycleOwner = this
-
-        isFavourite = if (savedInstanceState == null) {
-            // If savedInstanceState is null, it means the fragment is being created for the first time.
-            // In this case, set isFavourite from the arguments.
-            args.isFavourite
-        } else {
-            // If savedInstanceState is not null, it means the fragment is being recreated.
-            // In this case, get isFavourite from the ViewModel or wherever you are storing it.
-            viewModel.favouriteStatus.value ?: false
+        ViewModelProvider(requireActivity())[RepoDetailsViewModel::class.java].apply {
+            viewModel = this
+            binding.vm = this
         }
+        binding.lifecycleOwner = this
 
-        return binding?.root
+        // Initialize the shared ViewModel with the main activity
+        sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
+
+
+        // If savedInstanceState is null, it means the fragment is being created for the first time.
+        // In this case, set isFavourite from the arguments.
+        // If savedInstanceState is not null, it means the fragment is being recreated.
+        // In this case, get isFavourite from the ViewModel or wherever you are storing it.
+        isFavourite =
+            when (savedInstanceState) {
+                null -> args.isFavourite
+                else -> viewModel.favouriteStatus.value ?: false
+            }
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,14 +93,14 @@ class RepoDetailsFragment : Fragment() {
 
         /* According to the response show alert dialog(Error or Success) */
         localDBResponseObserver = Observer { response ->
-            if (response.success) {
-                showAlertDialogWithoutAction(
+            when {
+                response.success -> showAlertDialogWithoutAction(
                     requireActivity(),
                     DialogConstants.SUCCESS.value,
                     response.message
                 )
-            } else {
-                showAlertDialogWithoutAction(
+
+                else -> showAlertDialogWithoutAction(
                     requireActivity(),
                     DialogConstants.FAIL.value, response.message
                 )
@@ -106,28 +110,28 @@ class RepoDetailsFragment : Fragment() {
         /**
          * Success dialog will only be shown once when the localDBResponse LiveData is triggered,
          * even if rotate the device. This ensures that the dialog doesn't reappear on device rotation.
+         * Observe the LiveData using a helper function observeOnce
          */
-        // Observe the LiveData using a helper function observeOnce
         viewModel.localDBResponse.observeOnce(viewLifecycleOwner, localDBResponseObserver!!)
     }
 
     private fun initView() {
-        binding?.btnFav?.setOnClickListener {
+        binding.btnFav.setOnClickListener {
 
             var confirmationMessage = R.string.add_fav_confirmation_message
 
-            if (viewModel.favouriteStatus.value == true)
+            if (viewModel.favouriteStatus.value!!)
                 confirmationMessage = R.string.remove_fav_confirmation_message
 
             showConfirmAlertDialog(
                 requireActivity(),
-                LocalHelper.setLanguage(requireActivity(), confirmationMessage),
+                LocalHelper.getString(requireActivity(), confirmationMessage),
                 object : ConfirmDialogButtonClickListener {
                     override fun onPositiveButtonClick() {
-                        if (viewModel.favouriteStatus.value == true)
-                            viewModel.deleteFavourite(gitHubRepo.id)
-                        else
-                            viewModel.addToFavourites()
+                        when (viewModel.favouriteStatus.value) {
+                            true -> viewModel.deleteFavourite(gitHubRepo.id)
+                            else -> viewModel.addToFavourites()
+                        }
                     }
 
                     override fun onNegativeButtonClick() {
@@ -153,18 +157,18 @@ class RepoDetailsFragment : Fragment() {
      * Set data to view
      */
     private fun setData() {
-        viewModel.setGitRepoData(gitHubRepo)
-        viewModel.checkFavStatus(isFavourite)
+        viewModel.run {
+            setGitRepoData(gitHubRepo)
+            checkFavStatus(isFavourite)
+        }
         sharedViewModel.setFragment(ACCOUNT_DETAILS_FRAGMENT)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
         if (localDBResponseObserver != null) {
             // Remove the observer when the Fragment is destroyed
             viewModel.localDBResponse.removeObserver(localDBResponseObserver!!)
         }
     }
-
 }

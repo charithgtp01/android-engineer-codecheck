@@ -45,15 +45,13 @@ object LocalHelper {
         }
     }
 
-    fun setLanguage(context: Context, input: Int): String {
+    fun getString(context: Context, input: Int): String {
         return when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> updateRes(context)!!.getString(
                 input
             )
             else -> updateResLegacy(context)!!.getString(input)
         }
-
-        return ""
     }
 
 

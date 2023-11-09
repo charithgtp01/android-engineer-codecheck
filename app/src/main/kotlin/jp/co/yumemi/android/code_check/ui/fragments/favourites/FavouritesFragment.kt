@@ -70,7 +70,7 @@ class FavouritesFragment : Fragment() {
                 override fun deleteIconClick(item: LocalGitHubRepoObject) {
                     showConfirmAlertDialog(
                         requireActivity(),
-                        LocalHelper.setLanguage(
+                        LocalHelper.getString(
                             requireActivity(),
                             R.string.remove_fav_confirmation_message
                         ),

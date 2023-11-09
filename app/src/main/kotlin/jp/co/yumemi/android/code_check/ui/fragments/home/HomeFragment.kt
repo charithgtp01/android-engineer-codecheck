@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
     private fun initView() {
 
         viewModel.setSearchViewHint(
-            LocalHelper.setLanguage(
+            LocalHelper.getString(
                 requireContext(),
                 R.string.searchInputText_hint
             )
@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
                     //Empty value error Alert
                     when {
                         enteredValue?.isBlank() == true -> viewModel.setErrorMessage(
-                            LocalHelper.setLanguage(
+                            LocalHelper.getString(
                                 requireActivity(), R.string.search_input_empty_error
                             )
                         )
@@ -93,7 +93,7 @@ class HomeFragment : Fragment() {
                         else -> when {
                             isNetworkAvailable() -> viewModel.getGitHubRepoList(enteredValue)
                             else -> viewModel.setErrorMessage(
-                                LocalHelper.setLanguage(
+                                LocalHelper.getString(
                                     requireActivity(), R.string.no_internet
                                 )
                             )
@@ -108,7 +108,7 @@ class HomeFragment : Fragment() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Handle back button press for Home Fragment
-                showConfirmAlertDialog(requireActivity(), LocalHelper.setLanguage(
+                showConfirmAlertDialog(requireActivity(), LocalHelper.getString(
                     requireActivity(), R.string.exit_confirmation_message
                 ), object : ConfirmDialogButtonClickListener {
                     override fun onPositiveButtonClick() {
@@ -145,7 +145,7 @@ class HomeFragment : Fragment() {
      * Observes LiveData updates from the ViewModel and updates the UI accordingly.
      */
     private fun viewModelObservers() {
-        val progressDialogMessage = LocalHelper.setLanguage(
+        val progressDialogMessage = LocalHelper.getString(
             requireContext(), R.string.progress_dialog_message
         )/* Show error message in the custom error dialog */
         dialogVisibleObserver = Observer {

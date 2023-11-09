@@ -62,7 +62,7 @@ class SettingsFragment : Fragment() {
             //Update selected value in the preference
             updateSelectedLanguage(it)
             viewModel.setSelectedLanguageLabel(
-                LocalHelper.setLanguage(
+                LocalHelper.getString(
                     requireActivity(),
                     R.string.select_app_language
                 )
