@@ -12,14 +12,26 @@ import jp.co.yumemi.android.code_check.databinding.FragmentCustomProgressDialogB
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.changeUiSize
 
 /**
- * Custom Alert Dialog Fragment
+ * CustomProgressDialogFragment is a custom implementation of a progress dialog as an
+ * Android DialogFragment.
+ *
+ * This dialog provides a customizable progress indicator with an optional message.
+ * It disables the dismiss event on back button press and offers the ability to set a custom message.
+ *
+ * @constructor Creates a new instance of [CustomProgressDialogFragment].
+ * @property binding The binding class responsible for inflating the dialog's layout.
  */
 class CustomProgressDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentCustomProgressDialogBinding
 
     companion object {
         private const val ARG_MESSAGE = "message"
-
+        /**
+         * Create a new instance of CustomProgressDialogFragment with an optional message.
+         *
+         * @param message The message to be displayed in the progress dialog.
+         * @return An instance of CustomProgressDialogFragment.
+         */
         fun newInstance(
             message: String?
         ): CustomProgressDialogFragment {
@@ -33,12 +45,10 @@ class CustomProgressDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = Dialog(requireContext(), theme)
-        //Remove dialog unwanted bg color in the corners
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        //Disable outside click dialog dismiss event
-        dialog.setCanceledOnTouchOutside(false)
-        return dialog
+        return Dialog(requireContext(), theme).apply {
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setCanceledOnTouchOutside(false)
+        }
     }
 
     override fun onCreateView(
@@ -46,23 +56,26 @@ class CustomProgressDialogFragment : DialogFragment() {
     ): View {
         //Disable back button pressed dialog dismiss event
         isCancelable = false
-        binding = FragmentCustomProgressDialogBinding.inflate(inflater, container, false)
-//        binding.vm = viewModel
-        binding.lifecycleOwner = this
+        binding =
+            FragmentCustomProgressDialogBinding.inflate(inflater, container, false).apply {
+                lifecycleOwner = this@CustomProgressDialogFragment
+            }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val message = arguments?.getString(ARG_MESSAGE)
-        //Dialog Width with horizontal margin
-        changeUiSize(context, binding.dialogMainLayout, 1, 1, 30)
-        //Icon width=(Device Width/3)
-        changeUiSize(context, binding.icon, 1, 5)
-        // Set data to the data binding variables
-        binding.dialogMessage = message
-
+        // Retrieve the message from arguments and set it to the data binding variables
+        arguments?.getString(ARG_MESSAGE).let { message ->
+            binding.apply {
+                //Dialog Width with horizontal margin
+                changeUiSize(context, dialogMainLayout, 1, 1, 30)
+                //Icon width=(Device Width/3)
+                changeUiSize(context, icon, 1, 5)
+                // Set data to the data binding variables
+                binding.dialogMessage = message
+            }
+        }
     }
-
 }
