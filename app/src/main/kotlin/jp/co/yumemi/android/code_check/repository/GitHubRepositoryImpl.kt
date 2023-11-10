@@ -42,7 +42,7 @@ class GitHubRepositoryImpl @Inject constructor(
             ApiResponse(
                 success = true,
                 message = "Data fetched Successfully",
-                items = response.body()!!.items
+                items = response.body()?.items
             )
         } else {
             val errorObject: ErrorBody = getErrorBodyFromResponse(response.errorBody())
