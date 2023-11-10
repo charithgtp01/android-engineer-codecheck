@@ -15,14 +15,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
- * Singleton Component Class for DI
+ * NetworkModule object class is responsible for providing Dependency Injection (DI) components
+ * related to network operations, including base URL, converters, HTTP client, Retrofit instance,
+ * and API service interfaces.
  */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
     /**
-     * Get Base Url of the Rest API
+     * Provides the base URL of the Rest API.
+     *
+     * @return Base URL as a String.
      */
     @Singleton
     @Provides
@@ -31,7 +35,9 @@ object NetworkModule {
     }
 
     /**
-     * Create Gson Convertor Factory
+     * Provides a Gson Converter Factory for JSON serialization and deserialization.
+     *
+     * @return Converter.Factory instance for Gson-based conversion.
      */
     @Singleton
     @Provides
@@ -40,8 +46,9 @@ object NetworkModule {
     }
 
     /**
-     * Create OkHttpClient
-     * Add Interceptor with Headers
+     * Provides an OkHttpClient instance with added interceptors for handling headers.
+     *
+     * @return OkHttpClient instance configured with interceptors.
      */
     @Singleton
     @Provides
@@ -52,7 +59,13 @@ object NetworkModule {
     }
 
     /**
-     * Create Retrofit Instance
+     * Provides a Retrofit instance for making network requests.
+     *
+     * @param baseUrl Base URL of the API.
+     * @param okHttpClient OkHttpClient with interceptors.
+     * @param converterFactory Converter Factory for JSON conversion.
+     *
+     * @return Retrofit instance configured for the given parameters.
      */
     @Singleton
     @Provides
@@ -69,8 +82,11 @@ object NetworkModule {
     }
 
     /**
-     *  Abstract the communication with the remote API
-     *  Create Api Service Interface
+     * Provides an API service interface for communicating with the remote API.
+     *
+     * @param retrofit Retrofit instance for API communication.
+     *
+     * @return GitRepoApiService for accessing remote GitHub repositories.
      */
     @Singleton
     @Provides
@@ -79,8 +95,11 @@ object NetworkModule {
     }
 
     /**
-     * Create abstraction layer
-     * GitHubRepoApiService provide to access remote data
+     * Provides a GitHubRepository that acts as an abstraction layer for accessing remote data.
+     *
+     * @param gitHubRepoApiService GitRepoApiService for accessing remote data.
+     *
+     * @return GitHubRepository for managing interactions with GitHub repositories.
      */
     @Singleton
     @Provides
