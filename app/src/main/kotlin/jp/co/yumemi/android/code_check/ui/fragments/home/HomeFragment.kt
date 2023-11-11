@@ -30,12 +30,22 @@ import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressD
 import jp.co.yumemi.android.code_check.utils.NetworkUtils.Companion.isNetworkAvailable
 
 /**
- * Home Fragment responsible for displaying a list of GitHub repositories and allowing users to search for repositories.
- * It handles user interactions, including searching, displaying details of a selected repository, and navigating to other fragments.
+ * HomeFragment for displaying a list of GitHub repositories and handling user interactions.
  *
- * This Fragment is part of the main navigation flow in the application.
+ * This fragment is responsible for initializing the user interface, setting up listeners,
+ * and observing LiveData updates from the associated [HomeViewModel]. Allows the user to search for
+ * repositories by entering a search term in a search view and displays a list of GitHub
+ * repositories and . Additionally, it handles the navigation to the [RepositoryFragment]
+ * when a repository item is clicked.
  *
- * @constructor Creates a new instance of HomeFragment.
+ * @constructor Creates an instance of [HomeFragment].
+ *
+ * @property binding Binding for the fragment layout
+ * @property viewModel ViewModel for the HomeFragment
+ * @property sharedViewModel Shared ViewModel for communication with the MainActivity
+ * @property repoListAdapter Adapter for the list of GitHub repositories
+ * @property dialog Dialog fragment for showing error messages and progress
+ * @property dialogVisibleObserver Observer for handling dialog visibility
  */
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -44,100 +54,112 @@ class HomeFragment : Fragment() {
     private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var repoListAdapter: RepoListAdapter
     private var dialog: DialogFragment? = null
-    private lateinit var dialogVisibleObserver: Observer<String>
+    private lateinit var dialogVisibleObserver: Observer<String?>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
-        sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
-        sharedViewModel.setFragment(StringConstants.HOME_FRAGMENT)
-
-        binding.vm = viewModel
-        binding.lifecycleOwner = this
+        // Inflating the layout using View Binding
+        FragmentHomeBinding.inflate(inflater, container, false).apply {
+            binding = this
+            // Initializing HomeViewModel using ViewModelProvider
+            ViewModelProvider(requireActivity())[HomeViewModel::class.java].apply {
+                viewModel = this
+                vm = this
+            }
+            // Setting the lifecycle owner for data binding
+            lifecycleOwner = this@HomeFragment
+        }
+        // Initializing and setting up MainActivityViewModel
+        ViewModelProvider(requireActivity())[MainActivityViewModel::class.java].apply {
+            sharedViewModel = this
+            setFragment(StringConstants.HOME_FRAGMENT)
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        initiateAdapter()
         viewModelObservers()
     }
 
     /**
-     * Initializes the user interface, sets up listeners, and performs language-specific configurations.
+     * Initializes the user interface, sets up listeners, and performs language-specific
+     * configurations.
      */
     private fun initView() {
-
-        viewModel.setSearchViewHint(
-            LocalHelper.getString(
-                requireContext(),
-                R.string.searchInputText_hint
+        // Setting the search view hint based on the localized string
+        viewModel.apply {
+            setSearchViewHint(
+                LocalHelper.getString(
+                    requireContext(),
+                    R.string.searchInputText_hint
+                )
             )
-        )
-
-        binding.searchInputText.setOnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_SEARCH -> {
-                    val enteredValue: String? = viewModel.searchViewText
-                    //Empty value error Alert
-                    when {
-                        enteredValue?.isBlank() == true -> viewModel.setErrorMessage(
-                            LocalHelper.getString(
-                                requireActivity(), R.string.search_input_empty_error
-                            )
-                        )
-
-                        else -> when {
-                            isNetworkAvailable() -> viewModel.getGitHubRepoList(enteredValue)
-                            else -> viewModel.setErrorMessage(
-                                LocalHelper.getString(
-                                    requireActivity(), R.string.no_internet
+            // Setting up the searchInputText's OnEditorActionListener
+            binding.apply {
+                searchInputText.setOnEditorActionListener { _, actionId, _ ->
+                    when (actionId) {
+                        EditorInfo.IME_ACTION_SEARCH -> {
+                            val enteredValue: String? = searchViewText
+                            //Empty value error Alert
+                            when {
+                                enteredValue?.isBlank() == true -> setErrorMessage(
+                                    LocalHelper.getString(
+                                        requireActivity(), R.string.search_input_empty_error
+                                    )
                                 )
-                            )
+
+                                else -> when {
+                                    isNetworkAvailable() -> getGitHubRepoList(enteredValue)
+                                    else -> setErrorMessage(
+                                        LocalHelper.getString(
+                                            requireActivity(), R.string.no_internet
+                                        )
+                                    )
+                                }
+                            }
+                            true
                         }
+
+                        else -> false
                     }
-                    true
                 }
 
-                else -> false
+                // Initializing RepoListAdapter and setting it to RecyclerView
+                RepoListAdapter(
+                    object : RepoListAdapter.OnItemClickListener {
+                        override fun itemClick(item: GitHubRepoObject, isFavorite: Boolean) {
+                            gotoRepositoryFragment(item, isFavorite)
+                        }
+                    }).apply {
+                    repoListAdapter = this
+                    /* Set Adapter to Recycle View */
+                    recyclerView.also { it2 ->
+                        it2.adapter = this
+                    }
+                }
             }
         }
-        val callback = object : OnBackPressedCallback(true) {
+
+        // Handle back button press for Home Fragment
+        object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Handle back button press for Home Fragment
-                showConfirmAlertDialog(requireActivity(), LocalHelper.getString(
-                    requireActivity(), R.string.exit_confirmation_message
-                ), object : ConfirmDialogButtonClickListener {
-                    override fun onPositiveButtonClick() {
-                        requireActivity().finish()
+                showConfirmAlertDialog(requireActivity(),
+                    LocalHelper.getString(requireActivity(), R.string.exit_confirmation_message),
+                    object : ConfirmDialogButtonClickListener {
+                        override fun onPositiveButtonClick() {
+                            requireActivity().finish()
+                        }
+
+                        override fun onNegativeButtonClick() {
+                        }
                     }
-
-                    override fun onNegativeButtonClick() {
-
-                    }
-                })
+                )
             }
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-    }
-
-    /**
-     * Initializes the RecyclerView adapter for displaying GitHub repositories.
-     */
-    private fun initiateAdapter() {/* Initiate Adapter */
-        repoListAdapter = RepoListAdapter(object : RepoListAdapter.OnItemClickListener {
-            override fun itemClick(item: GitHubRepoObject, isFavorite: Boolean) {
-                gotoRepositoryFragment(item, isFavorite)
-            }
-        })
-
-        /* Set Adapter to Recycle View */
-        binding.recyclerView.also { it2 ->
-            it2.adapter = repoListAdapter
+        }.apply {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, this)
         }
     }
 
@@ -147,44 +169,57 @@ class HomeFragment : Fragment() {
     private fun viewModelObservers() {
         val progressDialogMessage = LocalHelper.getString(
             requireContext(), R.string.progress_dialog_message
-        )/* Show error message in the custom error dialog */
+        )
+
+        /* Show error message in the custom error dialog */
         dialogVisibleObserver = Observer {
-            when {
-                dialog != null -> dialog?.dismiss()
-            }
-            dialog = showDialogWithoutActionInFragment(
-                this@HomeFragment, it, DialogConstants.FAIL.value
-            )
+            // Dismiss the dialog if it's not null
+            dialog?.dismiss()
+
+            // Show the dialog only if it's not null
+            dialog =
+                showDialogWithoutActionInFragment(
+                    this@HomeFragment,
+                    it,
+                    DialogConstants.FAIL.value
+                ).takeUnless { dialog -> dialog == null }
+
         }
 
         /* Live data observer to show/hide progress dialog */
-        viewModel.isDialogVisible.observe(requireActivity()) {
-            when {
-                it -> {
-                    when {
-                        dialog != null -> dialog?.dismiss()
-                    }/* Show dialog when calling the API */
-                    dialog = showProgressDialogInFragment(
-                        this@HomeFragment, progressDialogMessage
-                    )
+        viewModel.isDialogVisible.observe(requireActivity()) { isVisible ->
+            isVisible?.let { showDialog ->
+                when {
+                    // If the showDialog == true, show the dialog else dismiss the dialog
+                    showDialog -> {
+                        dialog?.dismiss()
+                        dialog = showProgressDialogInFragment(
+                            this@HomeFragment, progressDialogMessage
+                        )
+                    }
 
+                    else -> dialog?.dismiss()
                 }
-
-                else -> dialog?.dismiss()
-            }/* Dismiss dialog after updating the data list to recycle view */
+            }
         }
 
-        /* Observer to catch list data
-        * Update Recycle View Items using Diff Utils
-        */
-        viewModel.gitHubRepoList.observe(requireActivity()) {
+        // Observer to catch list data
+        // Update RecyclerView Items using DiffUtils
+        viewModel.gitHubRepoList.observe(requireActivity()) { repoList ->
+            repoList?.let {
+                when {
+                    it.isEmpty() -> sharedViewModel.setEmptyDataImage(true)
+                    else -> sharedViewModel.setEmptyDataImage(false)
+                }
 
-            when {
-                it.isEmpty() -> sharedViewModel.setEmptyDataImage(true)
-                else -> sharedViewModel.setEmptyDataImage(false)
+                repoListAdapter.submitList(it)
             }
+        }
 
-            repoListAdapter.submitList(it)
+        viewModel.allFavourites?.observe(requireActivity()){repoList ->
+            repoList?.let {
+                repoListAdapter.setFavourites(repoList)
+            }
         }
 
         dialogVisibleObserver.let {
@@ -196,7 +231,7 @@ class HomeFragment : Fragment() {
     }
 
     /**
-     * Navigates to the RepositoryDetailsFragment when a GitHub repository item is clicked.
+     * Navigates to the [RepositoryFragment] when a GitHub repository item is clicked.
      *
      * @param gitHubRepo The selected GitHub repository object.
      * @param isFavorite Indicates whether the repository is marked as a favorite.

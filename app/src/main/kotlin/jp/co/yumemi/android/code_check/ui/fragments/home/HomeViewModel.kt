@@ -1,6 +1,5 @@
 package jp.co.yumemi.android.code_check.ui.fragments.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.SingleLiveEvent
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
+import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,30 +17,39 @@ import javax.inject.Inject
  * This class provides methods and LiveData objects to interact with GitHub repository data and manage
  * the user interface state.
  *
- * @param gitHubRepository The repository responsible for fetching GitHub data.
+ * @param gitHubRepository The [GitHubRepository] responsible for fetching GitHub data.
+ * @param localGitHubRepository The [LocalGitHubRepository] responsible for handling local database operations.
  */
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val gitHubRepository: GitHubRepository) :
+class HomeViewModel @Inject constructor(
+    private val gitHubRepository: GitHubRepository,
+    private val localGitHubRepository: LocalGitHubRepository
+) :
     ViewModel() {
 
-    //Search View Hint Hint
+    //Search View Hint Text
     private val _searchViewHint = MutableLiveData<String>(null)
-    val searchViewHint: LiveData<String> get() = _searchViewHint
+    val searchViewHint get() = _searchViewHint
 
     //User entered text
     var searchViewText: String? = null
 
     //Git Hub Repo List from the server
-    private val _gitHubRepoList = MutableLiveData<List<GitHubRepoObject>>()
-    val gitHubRepoList: LiveData<List<GitHubRepoObject>> get() = _gitHubRepoList
+    private val _gitHubRepoList = MutableLiveData<List<GitHubRepoObject>?>()
+    val gitHubRepoList get() = _gitHubRepoList
 
     //Error Message Live Data
-    private val _errorMessage = SingleLiveEvent<String>()
-    val errorMessage: LiveData<String> get() = _errorMessage
+    private val _errorMessage = SingleLiveEvent<String?>()
+    val errorMessage get() = _errorMessage
 
     //Dialog Visibility Live Data
     private val _isDialogVisible = MutableLiveData<Boolean>()
-    val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
+    val isDialogVisible get() = _isDialogVisible
+
+    /**
+     * LiveData representing a list of all favourite GitHub repositories from the local database.
+     */
+    val allFavourites = localGitHubRepository.getAllRepositories()
 
 
     /**
