@@ -7,7 +7,7 @@ import jp.co.yumemi.android.code_check.models.Owner
 
 class MockObjects {
     companion object {
-        val mockOwnerObj =
+        private val mockOwnerObj =
             Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
         val mockGitHubRepoObject = GitHubRepoObject(
             id = 1,
@@ -19,9 +19,9 @@ class MockObjects {
             forksCount = 4,
             openIssuesCount = 25
         )
-        val mockData = listOf(mockGitHubRepoObject)
+        private val mockData = listOf(mockGitHubRepoObject)
 
-        val expectedOwnerObj =
+        private val expectedOwnerObj =
             Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
         val expectedGitHubRepoObject = GitHubRepoObject(
             id = 1,
@@ -33,10 +33,9 @@ class MockObjects {
             forksCount = 4,
             openIssuesCount = 25
         )
-        val expectedData = listOf(expectedGitHubRepoObject)
 
         //Local DB Data
-        val mockFavObject = LocalGitHubRepoObject(
+        private val mockFavObject = LocalGitHubRepoObject(
             id = 1,
             name = "charithvin",
             avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4",
@@ -49,7 +48,7 @@ class MockObjects {
         )
         val mockFavList = listOf(mockFavObject)
 
-        val expectedFavObject = LocalGitHubRepoObject(
+        private val expectedFavObject = LocalGitHubRepoObject(
             id = 1,
             name = "charithvin",
             avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4",
@@ -72,6 +71,6 @@ class MockObjects {
         val errorServerResponse =
             ApiResponse(success = false, message = "Error From Server", items = null)
 
-        val responseErrorMessage = "Error From Server"
+        const val responseErrorMessage = "Error From Server"
     }
 }

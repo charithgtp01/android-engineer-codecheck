@@ -45,7 +45,7 @@ import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAl
 class RepoDetailsFragment : Fragment() {
     private val args: RepoDetailsFragmentArgs by navArgs()
     private lateinit var binding: FragmentRepoDetailsBinding
-    lateinit var viewModel: RepoDetailsViewModel
+    private lateinit var viewModel: RepoDetailsViewModel
     private lateinit var gitHubRepo: GitHubRepoObject
     private var isFavourite: Boolean = false
     private lateinit var sharedViewModel: MainActivityViewModel

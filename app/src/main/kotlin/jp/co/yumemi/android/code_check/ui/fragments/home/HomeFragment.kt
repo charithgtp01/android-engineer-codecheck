@@ -35,7 +35,7 @@ import jp.co.yumemi.android.code_check.utils.NetworkUtils.Companion.isNetworkAva
  * This fragment is responsible for initializing the user interface, setting up listeners,
  * and observing LiveData updates from the associated [HomeViewModel]. Allows the user to search for
  * repositories by entering a search term in a search view and displays a list of GitHub
- * repositories and . Additionally, it handles the navigation to the [RepositoryFragment]
+ * repositories and . Additionally, it handles the navigation to the [RepoDetailsFragment]
  * when a repository item is clicked.
  *
  * @constructor Creates an instance of [HomeFragment].
@@ -231,7 +231,7 @@ class HomeFragment : Fragment() {
     }
 
     /**
-     * Navigates to the [RepositoryFragment] when a GitHub repository item is clicked.
+     * Navigates to the [RepoDetailsFragment] when a GitHub repository item is clicked.
      *
      * @param gitHubRepo The selected GitHub repository object.
      * @param isFavorite Indicates whether the repository is marked as a favorite.

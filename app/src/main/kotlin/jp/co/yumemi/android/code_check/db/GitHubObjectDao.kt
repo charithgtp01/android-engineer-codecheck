@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import jp.co.yumemi.android.code_check.constants.StringConstants.ROOM_DB_REPO_TABLE
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 

@@ -1,7 +1,6 @@
 package jp.co.yumemi.android.code_check.di
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -35,7 +34,7 @@ object DatabaseModule {
             application,
             GitHubObjectsDatabase::class.java,
             StringConstants.ROOM_DB_REPO_TABLE
-        ).fallbackToDestructiveMigration().build()
+        ).build()
     }
 
     /**

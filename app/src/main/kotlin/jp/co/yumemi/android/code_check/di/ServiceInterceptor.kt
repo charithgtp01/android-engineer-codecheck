@@ -8,8 +8,6 @@ import okhttp3.Response
 /**
  * An OkHttp Interceptor responsible for modifying network requests and headers before they are sent.
  * It adds custom headers, such as "Accept", to the outgoing requests.
- *
- * @property chain The OkHttp Interceptor Chain to proceed with the modified request.
  */
 class ServiceInterceptor : Interceptor {
 
