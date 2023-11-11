@@ -10,16 +10,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Settings Fragment View Model
+ * FavouritsViewModel class for managing favourite GitHub repositories.
+ *
+ * @param repository The [LocalGitHubRepository] responsible for handling local database operations.
  */
 @HiltViewModel
 class FavouritesViewModel @Inject constructor(val repository: LocalGitHubRepository) : ViewModel() {
 
-    val allFavourites: LiveData<List<LocalGitHubRepoObject>>? = repository.getAllRepositories()
+    /**
+     * LiveData representing a list of all favourite GitHub repositories from the local database.
+     */
+    val allFavourites = repository.getAllRepositories()
 
     /**
-     * When click on delete button
-     * Selected Git Hub account will delete to the fav local DB
+     * Deletes a favorited GitHub repository from the local database.
+     *
+     * @param id The unique identifier of the GitHub repository to be deleted.
      */
     fun deleteFavourite(id: Long) {
         viewModelScope.launch {

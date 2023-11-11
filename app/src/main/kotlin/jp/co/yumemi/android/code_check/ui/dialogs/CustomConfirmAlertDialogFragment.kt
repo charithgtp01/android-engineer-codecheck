@@ -79,28 +79,26 @@ class CustomConfirmAlertDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Retrieve the message from arguments and set it to the data binding variables
-        arguments?.getString(ARG_MESSAGE).let { message ->
-            {
-                binding.apply {
-                    //Dialog Width with horizontal margin
-                    changeUiSize(context, dialogMainLayout, 1, 1, 30)
-                    //Icon width=(Device Width/5)
-                    changeUiSize(context, icon, 1, 5)
+        arguments?.getString(ARG_MESSAGE).let {
 
-                    dialogMessage = message
+            binding.apply {
+                //Dialog Width with horizontal margin
+                changeUiSize(context, dialogMainLayout, 1, 1, 30)
+                //Icon width=(Device Width/5)
+                changeUiSize(context, icon, 1, 5)
 
-                    buttonYes.setOnClickListener {
-                        dialogButtonClickListener.onPositiveButtonClick()
-                        dismiss()
-                    }
+                dialogMessage = it
 
-                    buttonNo.setOnClickListener {
-                        dialogButtonClickListener.onNegativeButtonClick()
-                        dismiss()
-                    }
+                buttonYes.setOnClickListener {
+                    dialogButtonClickListener.onPositiveButtonClick()
+                    dismiss()
+                }
+
+                buttonNo.setOnClickListener {
+                    dialogButtonClickListener.onNegativeButtonClick()
+                    dismiss()
                 }
             }
         }
     }
-
 }
