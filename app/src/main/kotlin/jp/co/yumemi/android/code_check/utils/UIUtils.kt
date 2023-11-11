@@ -9,75 +9,91 @@ import jp.co.yumemi.android.code_check.R
 
 
 /**
- * Utils class for Common methods
+ * Utils class for common UI-related methods.
  */
 class UIUtils {
+    /**
+     * Companion object containing utility methods for UI-related operations.
+     */
     companion object {
 
         /**
-         * Set bottom menu label values according to the language
+         * Set bottom menu label values according to the language.
+         *
+         * @param context The context of the application.
+         * @param menu The menu to be updated with localized labels.
          */
         fun updateMenuValues(context: Context?, menu: Menu?) {
-            if (context != null && menu != null) {
-                //Localize according to the selected app language
-                menu.findItem(R.id.homeFragment)?.title =
-                    LocalHelper.getString(context, R.string.menu_home)
-                menu.findItem(R.id.favouritesFragment)?.title =
-                    LocalHelper.getString(context, R.string.menu_favourites)
-                menu.findItem(R.id.settingsFragment)?.title =
-                    LocalHelper.getString(context, R.string.menu_settings)
+            context?.let { ctx ->
+                menu?.let {
+                    //Localize according to the selected app language
+                    it.findItem(R.id.homeFragment)?.title =
+                        LocalHelper.getString(ctx, R.string.menu_home)
+                    it.findItem(R.id.favouritesFragment)?.title =
+                        LocalHelper.getString(ctx, R.string.menu_favourites)
+                    it.findItem(R.id.settingsFragment)?.title =
+                        LocalHelper.getString(ctx, R.string.menu_settings)
+                }
             }
         }
 
         /**
-         * Convert dp values to px
+         * Convert dp values to pixels.
+         *
+         * @param dp The value in dp to be converted to pixels.
+         * @param context The context of the application.
+         * @return The converted value in pixels.
          */
         private fun convertDpToPixel(dp: Float, context: Context?): Float {
-            if (context != null)
-                return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-            return 0.0f
+            return context?.run {
+                dp * (resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+            } ?: 0.0f
         }
 
         /**
-         * Change Element with according to the screen size
-         * @param context Context of the View
-         * @param view layout element
-         * @param widthRatio View width according to widthRatio*(display/width)
-         * @param width Screen divide in to (display/width)
-         * Ex: width=4 and widthRatio=3 means Actual element width= (Screen Width/4)*3
-         * @param margin Horizontal Margin
+         * Change the size of a UI element according to the screen size.
+         *
+         * @param context The context of the view.
+         * @param view The layout element to be resized.
+         * @param widthRatio View width according to widthRatio*(display/width).
+         * @param width Screen divide into (display/width).
+         * @param margin Horizontal margin.
+         * Ex: width=4 and widthRatio=3 means the actual element width= ((Screen Width/4)*3)-(2*margin).
+         *
          */
         fun changeUiSize(context: Context?, view: View, widthRatio: Int, width: Int, margin: Int) {
-            if (context != null) {
-                val display = context.resources.displayMetrics
-                val params = view.layoutParams
-                params.width = (display.widthPixels * widthRatio / width - convertDpToPixel(
-                    margin.toFloat(),
-                    context
-                ) * 2).toInt()
-                view.layoutParams = params
+            context?.let { ctx ->
+                val display = ctx.resources.displayMetrics
+                view.layoutParams?.let { params ->
+                    params.width =
+                        ((display.widthPixels * widthRatio) / width - convertDpToPixel(
+                            margin.toFloat(),
+                            ctx
+                        ) * 2).toInt()
+                    view.layoutParams = params
+                }
             }
         }
 
         /**
-         * Change Element with according to the screen size
-         * Element has no margin
-         * @param context Context of the View
-         * @param view layout element
-         * @param widthRatio View width according to widthRatio*(display/width)
-         * @param width Screen divide in to (display/width)
-         * Ex: width=4 and widthRatio=3 means Actual element width= (Screen Width/4)*3
+         * Change the size of a UI element according to the screen size.
+         * Element has no margin.
+         *
+         * @param context The context of the view.
+         * @param view The layout element to be resized.
+         * @param widthRatio View width according to widthRatio*(display/width).
+         * @param width Screen divide into (display/width).
+         * Ex: width=4 and widthRatio=3 means the actual element width= (Screen Width/4)*3.
          */
         fun changeUiSize(context: Context?, view: View, widthRatio: Int, width: Int) {
-            if (context != null) {
-                val display = context.resources.displayMetrics
-                val params = view.layoutParams
-                params.width = display.widthPixels * widthRatio / width
-                view.layoutParams = params
+            context?.let { ctx ->
+                val display = ctx.resources.displayMetrics
+                view.layoutParams?.let { params ->
+                    params.width =
+                        display.widthPixels * widthRatio / width
+                    view.layoutParams = params
+                }
             }
         }
-
-
     }
-
 }
