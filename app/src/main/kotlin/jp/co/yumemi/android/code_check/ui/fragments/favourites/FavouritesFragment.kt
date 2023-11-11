@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.FragmentFavouritesBinding
@@ -17,6 +16,7 @@ import jp.co.yumemi.android.code_check.interfaces.ConfirmDialogButtonClickListen
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 
 
 /**
@@ -129,11 +129,10 @@ class FavouritesFragment : Fragment() {
         viewModel.allFavourites?.observe(requireActivity()) { list ->
             sharedViewModel.apply {
                 list?.let {
-                    if (it.isEmpty()) {
-                        setEmptyDataImage(true)
-                    } else {
-                        setEmptyDataImage(false)
-                        favouriteListAdapter.submitList(it)
+                    favouriteListAdapter.submitList(it)
+                    when {
+                        it.isEmpty() -> setEmptyDataImage(true)
+                        else -> setEmptyDataImage(false)
                     }
                 }
             }
