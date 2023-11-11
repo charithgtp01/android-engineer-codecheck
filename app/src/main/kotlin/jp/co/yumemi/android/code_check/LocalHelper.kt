@@ -14,8 +14,8 @@ object LocalHelper {
         return if (context == null) {
             null
         } else {
-            val lang =
-                getLocalLangFromSelectedLang(SharedPreferencesManager.getSelectedLanguage()!!)
+            val lang = SharedPreferencesManager.getSelectedLanguage()
+                ?.let { getLocalLangFromSelectedLang(it) }
             val locale = Locale(lang)
             Locale.setDefault(locale)
             val configuration = context.resources.configuration.apply {
@@ -30,8 +30,8 @@ object LocalHelper {
         return when (context) {
             null -> null
             else -> {
-                val lang =
-                    getLocalLangFromSelectedLang(SharedPreferencesManager.getSelectedLanguage()!!)
+                val lang = SharedPreferencesManager.getSelectedLanguage()
+                    ?.let { getLocalLangFromSelectedLang(it) }
                 val locale = Locale(lang)
                 Locale.setDefault(locale)
                 val resources = context.resources
@@ -47,10 +47,10 @@ object LocalHelper {
 
     fun getString(context: Context, input: Int): String {
         return when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> updateRes(context)!!.getString(
-                input
-            )
-            else -> updateResLegacy(context)!!.getString(input)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> updateRes(context)?.getString(input)
+                ?: throw IllegalStateException("updateRes is null")
+
+            else -> updateResLegacy(context)?.getString(input) ?: throw IllegalStateException("updateResLegacy is null")
         }
     }
 

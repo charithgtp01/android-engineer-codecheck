@@ -102,8 +102,10 @@ class FavouritesViewModelTest {
 
     @After
     fun tearDown() {
-        if (savedFavouritesObserver != null)
-            viewModel.allFavourites?.removeObserver(savedFavouritesObserver!!)
+        savedFavouritesObserver.let {
+            observer ->
+            viewModel.allFavourites?.removeObserver(observer)
+        }
         Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()
     }

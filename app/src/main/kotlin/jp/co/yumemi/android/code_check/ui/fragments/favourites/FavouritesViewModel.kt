@@ -23,7 +23,7 @@ class FavouritesViewModel @Inject constructor(val repository: LocalGitHubReposit
     val allFavourites = repository.getAllRepositories()
 
     /**
-     * Deletes a favorited GitHub repository from the local database.
+     * Deletes a favourite GitHub repository from the local database.
      *
      * @param id The unique identifier of the GitHub repository to be deleted.
      */
