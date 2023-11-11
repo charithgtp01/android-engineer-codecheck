@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.View
-import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
 
 

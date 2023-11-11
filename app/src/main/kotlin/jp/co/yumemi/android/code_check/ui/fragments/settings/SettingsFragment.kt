@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import jp.co.yumemi.android.code_check.LocalHelper
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding

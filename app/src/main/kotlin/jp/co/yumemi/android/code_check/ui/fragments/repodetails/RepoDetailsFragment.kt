@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import jp.co.yumemi.android.code_check.LocalHelper
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.SingleLiveEvent.Companion.observeOnce
 import jp.co.yumemi.android.code_check.constants.DialogConstants

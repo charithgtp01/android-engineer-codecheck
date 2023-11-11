@@ -1,9 +1,8 @@
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.utils
 
 import android.content.Context
 import android.os.Build
 import jp.co.yumemi.android.code_check.constants.StringConstants
-import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 import java.util.Locale
 import java.util.Locale.setDefault
 
@@ -82,7 +81,7 @@ object LocalHelper {
                 ?: throw IllegalStateException("updateResLegacy is null")
         }
     }
-    
+
     /**
      * Maps the selected language to its corresponding language code.
      *
