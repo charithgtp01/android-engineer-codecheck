@@ -46,12 +46,6 @@ class DialogUtilsTest {
         // Act
         showConfirmAlertDialog(context, message, dialogButtonClickListener)
 
-        // Assert
-//        verify(fragmentManager).executePendingTransactions() // You might need to call executePendingTransactions() if needed.
-//        verify(fragmentManager).beginTransaction()
-//        verify(fragmentManager).add(any(), anyString())
-//        verify(fragmentManager).commit()
-
         // Optionally, you can verify that newInstance was called with the correct parameters
         verify(CustomConfirmAlertDialogFragment).newInstance(
             eq(message),

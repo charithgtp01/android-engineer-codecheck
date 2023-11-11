@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager.Companion.updateSelectedLanguage
 
@@ -62,11 +62,11 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Get selected language form preference and set to live data
-       SharedPreferencesManager.getSelectedLanguage().apply {
-           viewModel.setSelectedLanguage(
-               this
-           )
-       }
+        SharedPreferencesManager.getSelectedLanguage().apply {
+            viewModel.setSelectedLanguage(
+                this
+            )
+        }
 
         // When clicking on the languages layout, change the live selected language live data value
         // The updated value should be saved in the preference
@@ -82,6 +82,12 @@ class SettingsFragment : Fragment() {
                 )
                 //Update Main Activity bottom menu labels
                 sharedViewModel.setUpdateBottomMenuStatus(true)
+                sharedViewModel.setFragmentName(
+                    LocalHelper.getString(
+                        requireContext(),
+                        R.string.menu_settings
+                    )
+                )
             }
         }
 

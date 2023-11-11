@@ -89,29 +89,6 @@ class HomeViewModelTest {
 
     }
 
-//    @Test
-//    fun `test get repo list success response`() = runBlocking {
-//        val inputText = "charithvin"
-//
-//        //--
-//        /**
-//         * Mock the behavior of the activeNetworkInfo.
-//         * This will make 'NetworkUtils.isNetworkAvailable() == true'
-//         */
-//        Mockito.`when`(networkInfo.isConnected).thenReturn(true)
-//        Mockito.`when`(connectivityManager.activeNetworkInfo).thenReturn(networkInfo)
-//        //--
-//        Mockito.`when`(gitHubRepository.getRepositories(inputText))
-//            .thenReturn(successServerResponse)
-//
-//        // Act
-//        viewModel.getGitHubRepoList(inputText)
-//
-//        val result = viewModel.gitHubRepoList.getOrAwaitValue()
-//
-//        assertEquals(expectedData, result)
-//    }
-
     @Test
     fun `test get repo list success response`() = runBlocking {
         // Arrange
@@ -147,7 +124,6 @@ class HomeViewModelTest {
 
         // Wait for LiveData changes
         val result = viewModel.errorMessage.getOrAwaitValue()
-//        assertEquals(errorServerResponse.message, result)
         verify(errorMessageObserver).onChanged(responseErrorMessage)
         // Verify that the dialog visibility is updated
         verify(dialogObserver).onChanged(false)

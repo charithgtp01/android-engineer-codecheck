@@ -16,6 +16,8 @@ import javax.inject.Inject
  *
  * @property _fragment The MutableLiveData that stores the currently displayed fragment.
  * @property fragment The LiveData property for accessing the currently displayed fragment.
+ * @property _fragmentName The MutableLiveData that stores the currently page header.
+ * @property fragmentName The LiveData property for accessing the currently displayed page header.
  * @property _updateBottomMenuStatus The MutableLiveData for updating the status of the bottom menu.
  * @property updateBottomMenuStatus The LiveData property for observing changes in the bottom menu status.
  * @property expandedStates A mutable map that stores the expanded states of items with unique IDs.
@@ -28,6 +30,9 @@ class MainActivityViewModel @Inject constructor() :
 
     private val _fragment = MutableLiveData(HOME_FRAGMENT)
     val fragment get() = _fragment
+
+    private val _fragmentName = MutableLiveData<String?>(null)
+    val fragmentName get() = _fragmentName
 
     private val _updateBottomMenuStatus = MutableLiveData<Boolean?>(null)
     val updateBottomMenuStatus: LiveData<Boolean?> get() = _updateBottomMenuStatus
@@ -44,6 +49,15 @@ class MainActivityViewModel @Inject constructor() :
      */
     fun setUpdateBottomMenuStatus(isUpdateStatus: Boolean) {
         _updateBottomMenuStatus.value = isUpdateStatus
+    }
+
+    /**
+     * Sets the currently displayed fragment name.
+     *
+     * @param fragmentName The string identifier of the fragment name.
+     */
+    fun setFragmentName(fragmentName: String) {
+        _fragmentName.value = fragmentName
     }
 
     /**

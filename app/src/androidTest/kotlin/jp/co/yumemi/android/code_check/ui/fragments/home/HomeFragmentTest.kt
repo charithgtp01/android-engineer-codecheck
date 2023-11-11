@@ -85,40 +85,17 @@ class HomeFragmentTest {
 
     @Test
     fun searchAndReceiveData() {
-        // Launch the activity
-//        val scenario = activityScenarioRule.scenario
-//
-//        // Enter a search query in the EditText
+        // Enter a search query in the EditText
         onView(withId(R.id.searchInputText)).perform(typeText("charit"))
-//
-//        // Submit the search query using IME_ACTION_SEARCH
-        onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
 
-        // For example, if you expect to see a specific item in the RecyclerView with text "Dummy Item":
-//        onView(withId(R.id.recyclerView)).check(matches(hasDescendant(withText("Dummy Item"))))
-//        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        // Submit the search query using IME_ACTION_SEARCH
+        onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
     }
 
     // A method to launch the HomeFragment
     private fun launchHomeFragment() {
         onView(withId(R.id.homeFragment)).perform(click()) // Replace with the appropriate view ID for your HomeFragment
     }
-
-//    @Test
-//    fun testViewModelObservers() {
-//        // Mock LiveData objects and data from the ViewModel
-//        `when`(viewModel.errorMessage).thenReturn(Mockito.mock(MutableLiveData::class.java) as MutableLiveData<String>)
-//        `when`(viewModel.isDialogVisible).thenReturn(Mockito.mock(MutableLiveData::class.java) as MutableLiveData<Boolean>)
-//        `when`(viewModel.gitHubRepoList).thenReturn(Mockito.mock(MutableLiveData::class.java) as MutableLiveData<List<GitHubRepoObject>>)
-//
-//// Set the LiveData values to trigger observers
-//        viewModel.errorMessage.postValue("Test error message")
-//        viewModel.isDialogVisible.postValue(true)
-//        viewModel.gitHubRepoList.postValue(mockData)
-//
-//        verify(dialogUtils.showErrorDialogInFragment()).showErrorDialogInFragment(eq("Test error message"))
-//
-//    }
 
     @After
     fun tearDown() {

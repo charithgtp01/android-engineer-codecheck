@@ -49,13 +49,9 @@ class CustomConfirmAlertDialogFragmentTest {
 
         // Simulate a click on the "Yes" button and verify that the positive button click callback is invoked
         onView(withId(R.id.buttonYes)).perform(click())
-        // Set the IdlingResource to ready when the view is ready
-//        idlingResource.setReady()
-//        verify(mockListener).onPositiveButtonClick()
 
         // Simulate a click on the "No" button and verify that the negative button click callback is invoked
         onView(withId(R.id.buttonNo)).perform(click())
-//        verify(mockListener).onNegativeButtonClick()
     }
 
     @Before

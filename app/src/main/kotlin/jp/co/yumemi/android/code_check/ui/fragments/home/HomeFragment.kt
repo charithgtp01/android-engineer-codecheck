@@ -131,7 +131,7 @@ class HomeFragment : Fragment() {
                 RepoListAdapter(
                     object : RepoListAdapter.OnItemClickListener {
                         override fun itemClick(item: GitHubRepoObject, isFavorite: Boolean) {
-                            gotoRepositoryFragment(item, isFavorite)
+                            navigateToRepositoryFragment(item, isFavorite)
                         }
                     }).apply {
                     repoListAdapter = this
@@ -236,7 +236,7 @@ class HomeFragment : Fragment() {
      * @param gitHubRepo The selected GitHub repository object.
      * @param isFavorite Indicates whether the repository is marked as a favorite.
      */
-    fun gotoRepositoryFragment(gitHubRepo: GitHubRepoObject, isFavorite: Boolean) {
+    fun navigateToRepositoryFragment(gitHubRepo: GitHubRepoObject, isFavorite: Boolean) {
         findNavController().navigate(
             HomeFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(
                 gitHubRepo, isFavorite

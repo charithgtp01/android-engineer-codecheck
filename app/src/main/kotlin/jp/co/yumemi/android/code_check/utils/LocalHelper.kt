@@ -16,6 +16,7 @@ object LocalHelper {
     // Constants representing language codes
     private var JAPANESE = "ja"
     private var ENGLISH = "en"
+
     /**
      * Updates the app's resources configuration based on the selected language using AndroidX.
      *
@@ -23,20 +24,17 @@ object LocalHelper {
      * @return A new context with the updated configuration, or null if the update fails.
      */
     private fun updateRes(context: Context?): Context? {
-        return context?.let { ctx ->
-            SharedPreferencesManager.getSelectedLanguage()
-                ?.let { selectedLang ->
-                    getLocalLangFromSelectedLang(selectedLang)
-                    Locale(selectedLang).let { l ->
-                        setDefault(l)
-                        ctx.createConfigurationContext(
-                            ctx.resources.configuration.apply {
-                                setLocale(locale)
-                                setLayoutDirection(locale)
-                            }
-                        )
+        return context?.let {
+            SharedPreferencesManager.getSelectedLanguage()?.let {
+                val configuration = context.resources.configuration.apply {
+                    Locale(getLocalLangFromSelectedLang(it)).apply {
+                        setDefault(this)
+                        setLocale(this)
+                        setLayoutDirection(this)
                     }
                 }
+                context.createConfigurationContext(configuration)
+            }
         }
     }
 
@@ -48,21 +46,20 @@ object LocalHelper {
      */
     private fun updateResLegacy(context: Context?): Context? {
         return context?.let { ctx ->
-            SharedPreferencesManager.getSelectedLanguage()
-                ?.let { lang ->
-                    getLocalLangFromSelectedLang(lang)
-                    Locale(lang).let { l ->
-                        setDefault(l)
-                        ctx.resources.apply {
-                            configuration.setLocale(l)
-                            configuration.setLayoutDirection(l)
-                            updateConfiguration(configuration, displayMetrics)
-                        }
+            SharedPreferencesManager.getSelectedLanguage()?.let { lang ->
+                val configuration = ctx.resources.configuration.apply {
+                    Locale(getLocalLangFromSelectedLang(lang)).apply {
+                        setDefault(this)
+                        setLocale(this)
+                        setLayoutDirection(this)
                     }
                 }
-            ctx
+                ctx.resources.updateConfiguration(configuration, ctx.resources.displayMetrics)
+                ctx
+            }
         }
     }
+
 
     /**
      * Gets the localized string for the given resource ID based on the user's selected language.

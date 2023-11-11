@@ -20,6 +20,7 @@ import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGM
 import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.SETTINGS_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 
 
@@ -46,28 +47,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialize the app and set up the UI
-        setDataBinding()
-        viewModelObservers()
         initView()
+        viewModelObservers()
     }
 
     /**
      * Initialize the UI components and setup navigation.
      */
     private fun initView() {
-        setupNavController()
-        setSupportActionBar(binding.toolbar)
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
-    }
+        DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main).apply {
+            binding = this
+            setupNavController()
+            setSupportActionBar(toolbar)
+            ViewModelProvider(this@MainActivity)[MainActivityViewModel::class.java].apply {
+                sharedViewModel = this
+                setFragmentName(LocalHelper.getString(this@MainActivity, R.string.menu_home))
+            }
 
-    /**
-     * Set up data binding for the activity and initialize the shared view model.
-     */
-    private fun setDataBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        sharedViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+            btnBack.setOnClickListener {
+                onBackPressed()
+            }
+        }
+
     }
 
 
@@ -97,23 +98,32 @@ class MainActivity : AppCompatActivity() {
          */
         sharedViewModel.fragment.observe(this@MainActivity) {
             // Set the title text based on the observed fragment
-            binding.title.text = it
             when (it) {
                 HOME_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
                     sharedViewModel.setEmptyDataImage(true)
+                    sharedViewModel.setFragmentName(LocalHelper.getString(this, R.string.menu_home))
                 }
 
                 ACCOUNT_DETAILS_FRAGMENT -> {
                     binding.btnBack.visibility = View.VISIBLE
                     bottomNavView.visibility = View.GONE
+                    sharedViewModel.setFragmentName(LocalHelper.getString(this, R.string.details))
+
                 }
 
                 FAVOURITE_FRAGMENT -> {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
                     sharedViewModel.setEmptyDataImage(true)
+                    sharedViewModel.setFragmentName(
+                        LocalHelper.getString(
+                            this,
+                            R.string.menu_favourites
+                        )
+                    )
+
                 }
 
                 SETTINGS_FRAGMENT -> {
@@ -121,6 +131,12 @@ class MainActivity : AppCompatActivity() {
                     binding.btnBack.visibility = View.GONE
                     bottomNavView.visibility = View.VISIBLE
                     sharedViewModel.setEmptyDataImage(false)
+                    sharedViewModel.setFragmentName(
+                        LocalHelper.getString(
+                            this,
+                            R.string.menu_settings
+                        )
+                    )
                 }
             }
         }
@@ -172,14 +188,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         /**
-         * This code snippet is used to observe changes in a LiveData and update the bottom menu of
-         * the MainActivity accordingly.
+         * Observe changes in a LiveData and update the bottom menu of the MainActivity accordingly.
          *
          * @param this@MainActivity The current MainActivity instance where this code is executed.
          * @param menu The bottom menu that needs to be updated.
          */
         sharedViewModel.updateBottomMenuStatus.observe(this) {
             updateMenuValues(this@MainActivity, menu)
+        }
+
+        /**
+         * Observe changes in a LiveData and update the action bar title of the MainActivity accordingly.
+         * Set live data value when the navigate through fragments
+         */
+        sharedViewModel.fragmentName.observe(this) {
+            binding.title.text = it
         }
     }
 }
