@@ -18,6 +18,9 @@
     <string name="progress_dialog_message">Processing......</string>
     <string name="add_fav_confirmation_message">Do you want to add to favourites?</string>
     <string name="remove_fav_confirmation_message">Do you want to remove this from favourites?</string>
+    <string name="data_already_exist">Data already exists</string>
+    <string name="add_fav_success_message">The account was added to favourites successfully</string>
+    <string name="delete_fav_success_message">The account was deleted from favourites successfully</string>
 
     <!-- Image content Descriptions -->
     <string name="app_logo">App Logo</string>

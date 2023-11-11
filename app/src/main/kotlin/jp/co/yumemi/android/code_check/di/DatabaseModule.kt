@@ -1,6 +1,7 @@
 package jp.co.yumemi.android.code_check.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -56,7 +57,11 @@ object DatabaseModule {
      * @return An implementation of the local repository for accessing GitHub data.
      */
     @Provides
-    fun provideLocalGitHubRepository(dao: GitHubObjectDao): LocalGitHubRepository {
-        return LocalGitHubRepositoryImpl(dao)
+    @Singleton
+    fun provideLocalGitHubRepository(
+        application: Application,
+        dao: GitHubObjectDao
+    ): LocalGitHubRepository {
+        return LocalGitHubRepositoryImpl(application,dao)
     }
 }

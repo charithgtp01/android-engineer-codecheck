@@ -1,6 +1,6 @@
 package jp.co.yumemi.android.code_check
 
-import androidx.lifecycle.MutableLiveData
+import jp.co.yumemi.android.code_check.models.ApiResponse
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.models.Owner
@@ -62,5 +62,16 @@ class MockObjects {
         )
         val expectedFavList = listOf(expectedFavObject)
 
+        val successServerResponse =
+            ApiResponse(
+                success = true,
+                message = "Data fetched Successfully",
+                items = mockData
+            )
+
+        val errorServerResponse =
+            ApiResponse(success = false, message = "Error From Server", items = null)
+
+        val responseErrorMessage = "Error From Server"
     }
 }

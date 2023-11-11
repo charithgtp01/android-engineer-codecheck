@@ -32,5 +32,7 @@
     <string name="progress_dialog_message">待っている......</string>
     <string name="add_fav_confirmation_message">お気に入りに追加しますか?</string>
     <string name="remove_fav_confirmation_message">これをお気に入りから削除しますか?</string>
-
+    <string name="data_already_exist">データはすでに存在します</string>
+    <string name="add_fav_success_message">アカウントがお気に入りに追加されました</string>
+    <string name="delete_fav_success_message">アカウントがお気に入りから削除されました</string>
 </resources>
