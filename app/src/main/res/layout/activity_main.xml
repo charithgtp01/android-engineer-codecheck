@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.activities.MainActivity">
-
+        <!-- The toolbar at the top of the activity, which may contain the app title and navigation
+        elements -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/TransparentToolbar"
@@ -32,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- The app title displayed on the toolbar -->
                 <TextView
                     android:id="@+id/title"
                     style="@style/actionBarTitleStyle"
@@ -39,26 +41,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/page_padding"
                     android:gravity="start"
-                    android:text="@string/app_name"
                     android:textAllCaps="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/logo"
                     app:layout_constraintStart_toEndOf="@+id/btnBack"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!-- A back button icon on the toolbar for navigation -->
                 <ImageButton
                     android:id="@+id/btnBack"
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@drawable/image_button_bg"
+                    android:contentDescription="@string/back_button_image"
                     android:padding="@dimen/action_bar_image_button_icon_padding"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/left_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/back_button_image" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <!-- The app logo on the toolbar -->
                 <ImageView
                     android:id="@+id/logo"
                     android:layout_width="?attr/actionBarSize"
@@ -74,7 +77,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
-
+        <!-- The FragmentContainerView used for displaying fragments in the main activity -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
@@ -87,6 +90,7 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:navGraph="@navigation/nav_graph" />
 
+        <!-- ImageView for displaying an image below the toolbar -->
         <ImageView
             android:id="@+id/emptyImageView"
             android:layout_width="0dp"
@@ -99,6 +103,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+        <!-- The BottomNavigationView for navigation within the main activity. -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_menu"
             android:layout_width="match_parent"

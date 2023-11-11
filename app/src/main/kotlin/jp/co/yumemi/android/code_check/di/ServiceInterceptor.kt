@@ -6,10 +6,17 @@ import okhttp3.Request
 import okhttp3.Response
 
 /**
- * Includes Network Request and Headers
+ * An OkHttp Interceptor responsible for modifying network requests and headers before they are sent.
+ * It adds custom headers, such as "Accept", to the outgoing requests.
  */
 class ServiceInterceptor : Interceptor {
 
+    /**
+     * Intercepts the network request, modifies headers, and proceeds with the request.
+     *
+     * @param chain The OkHttp Interceptor Chain for handling the request.
+     * @return The response received after processing the modified request.
+     */
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest: Request = chain.request()
 

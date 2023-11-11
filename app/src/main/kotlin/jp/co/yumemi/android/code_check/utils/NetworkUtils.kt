@@ -1,6 +1,7 @@
 package jp.co.yumemi.android.code_check.utils
 
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import javax.inject.Inject
 
 /**
@@ -22,8 +23,13 @@ class NetworkUtils @Inject constructor() {
          * connectivity without passing a Context
          */
         fun isNetworkAvailable(): Boolean {
-            val activeNetworkInfo = connectivityManager?.activeNetworkInfo
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected
+            return connectivityManager?.let { manager ->
+                manager.getNetworkCapabilities(manager.activeNetwork)?.run {
+                    hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                            hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                            hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                } ?: false
+            } ?: false
         }
     }
 

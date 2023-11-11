@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import jp.co.yumemi.android.code_check.MockObjects.Companion.expectedGitHubRepoObject
 import jp.co.yumemi.android.code_check.MockObjects.Companion.mockGitHubRepoObject
-import jp.co.yumemi.android.code_check.constants.MessageConstants
 import jp.co.yumemi.android.code_check.getOrAwaitValue
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
@@ -89,7 +88,7 @@ class RepoDetailsViewModelTest {
         `when`(localGitHubRepository.insertGitHubObject(mockLocalGitHubRepoObject)).thenReturn(
             LocalDBQueryResponse(
                 true,
-                MessageConstants.getMessage(MessageConstants.FAV_ADDED_SUCCESS_CODE)
+                "Added Success"
             )
         ) // Adjust based on your data classes and response structure.
 
@@ -100,7 +99,7 @@ class RepoDetailsViewModelTest {
         verify(localDBResponseObserver).onChanged(
             LocalDBQueryResponse(
                 true,
-                MessageConstants.getMessage(MessageConstants.FAV_ADDED_SUCCESS_CODE)
+                "Added Success"
             )
         )
         assertEquals(true, viewModel.favouriteStatus.value)
@@ -113,7 +112,8 @@ class RepoDetailsViewModelTest {
         `when`(localGitHubRepository.deleteGitHubObjectDao(1)).thenReturn(
             LocalDBQueryResponse(
                 true,
-                MessageConstants.getMessage(MessageConstants.FAV_DELETE_SUCCESS_CODE)
+                "Delete Success"
+
             )
         ) // Adjust based on your data classes and response structure.
 
@@ -124,7 +124,7 @@ class RepoDetailsViewModelTest {
         verify(localDBResponseObserver).onChanged(
             LocalDBQueryResponse(
                 true,
-                MessageConstants.getMessage(MessageConstants.FAV_DELETE_SUCCESS_CODE)
+                "Delete Success"
             )
         )
         assertEquals(false, viewModel.favouriteStatus.value)

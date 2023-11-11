@@ -9,21 +9,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import jp.co.yumemi.android.code_check.LocalHelper
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentSettingsBinding
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager
 import jp.co.yumemi.android.code_check.utils.SharedPreferencesManager.Companion.updateSelectedLanguage
 
 /**
- * Settings Page Fragment
+ * SettingsFragment responsible for handling the Settings page.
+ *
+ * This fragment allows users to configure app settings such as language preferences.
+ *
+ * @property binding View Binding instance for the fragment's layout
+ * @property viewModel View model for handling settings logic
+ * @property sharedViewModel Shared view model with the MainActivity for updating layout changes
+ *
  */
-
 class SettingsFragment : Fragment() {
 
-    private var binding: FragmentSettingsBinding? = null
+    private lateinit var binding: FragmentSettingsBinding
     private lateinit var viewModel: SettingsViewModel
 
     //Main Activity view model
@@ -33,44 +39,57 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[SettingsViewModel::class.java]
+    ): View {
+        FragmentSettingsBinding.inflate(inflater, container, false).apply {
+            binding = this
+            ViewModelProvider(requireActivity())[SettingsViewModel::class.java].apply {
+                viewModel = this
+                vm = this
+            }
+            lifecycleOwner = this@SettingsFragment
+        }
 
         //This Shared view model is using to update Main Activity layout changes from this fragment
-        sharedViewModel = ViewModelProvider(requireActivity())[MainActivityViewModel::class.java]
-        sharedViewModel.setFragment(StringConstants.SETTINGS_FRAGMENT)
-        binding?.vm = viewModel
-        binding?.lifecycleOwner = this
+        ViewModelProvider(requireActivity())[MainActivityViewModel::class.java].apply {
+            sharedViewModel = this
+            setFragment(StringConstants.SETTINGS_FRAGMENT)
+        }
 
-        return binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //Get selected language form preference and set to live data
-        val language = SharedPreferencesManager.getSelectedLanguage()
-
-        viewModel.setSelectedLanguage(
-            language
-        )
-
-        //When click on the languages layout changing the live selected language live data value
-        //Updated value should save in the preference
-        viewModel.selectedLanguage.observe(requireActivity()) {
-            //Update selected value in the preference
-            updateSelectedLanguage(it)
-            binding?.textView?.text =
-                LocalHelper.setLanguage(this.context, R.string.select_app_language)
-
-            //Update Main Activity bottom menu labels
-            sharedViewModel.setUpdateBottomMenuStatus(true)
+        SharedPreferencesManager.getSelectedLanguage().apply {
+            viewModel.setSelectedLanguage(
+                this
+            )
         }
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
+        // When clicking on the languages layout, change the live selected language live data value
+        // The updated value should be saved in the preference
+        viewModel.apply {
+            selectedLanguage.observe(viewLifecycleOwner) {
+                // Update the selected value in the preference
+                updateSelectedLanguage(it)
+                setSelectedLanguageLabel(
+                    LocalHelper.getString(
+                        requireContext(),
+                        R.string.select_app_language
+                    )
+                )
+                //Update Main Activity bottom menu labels
+                sharedViewModel.setUpdateBottomMenuStatus(true)
+                sharedViewModel.setFragmentName(
+                    LocalHelper.getString(
+                        requireContext(),
+                        R.string.menu_settings
+                    )
+                )
+            }
+        }
+
     }
 }
