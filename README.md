@@ -4,6 +4,8 @@
 
 The app utilizes Kotlin, follows a single activity architecture with MVVM using data binding, and incorporates a Room database for handling favorites. It provides functionality to search GitHub repositories by name, view details, and manage favorites.
 
+<img src="https://yumimi-code-test.s3.amazonaws.com/demo.gif" width="320">
+
 ## Features
 1) ### GitHub Repository Search:
 - Search GitHub repositories by name using the free GitHub API.
