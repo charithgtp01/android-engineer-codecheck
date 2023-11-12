@@ -91,7 +91,7 @@ class HomeFragmentTest {
             )
         )
         // Verify that the RepositoryFragment is launched
-        onView(withId(R.id.mainLayout)).check(matches(isDisplayed()))
+        onView(withId(R.id.ownerIconView)).check(matches(isDisplayed()))
 
         // Verify that the correct data is passed to the RepositoryFragment
         onView(withId(R.id.nameView)).check(matches(withText("Android")))
