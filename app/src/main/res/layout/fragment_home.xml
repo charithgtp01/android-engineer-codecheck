@@ -50,9 +50,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
+                    android:hint="@{vm.searchViewHint}"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
-                    android:onEditorAction="@{(view,actionId,event) -> vm.onEditorAction(view,actionId)}" />
+                    android:text="@={vm.searchViewText}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

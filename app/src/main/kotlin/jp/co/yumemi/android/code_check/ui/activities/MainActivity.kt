@@ -5,8 +5,8 @@ package jp.co.yumemi.android.code_check.ui.activities
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -20,11 +20,20 @@ import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGM
 import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.SETTINGS_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
 
 
 /**
- * Main Activity Page
+ * The main activity of the app, responsible for managing the UI and navigation.
+ * This activity hosts various fragments and handles user interactions.
+ *
+ * This activity serves as the entry point to the app and handles the display of various
+ * fragments and navigation through the bottom navigation menu.
+ *
+ * @property sharedViewModel The shared view model for communicating data and state between fragments.
+ * @property binding The data binding object that allows for easy interaction with the layout XML.
+ * @property bottomNavView The bottom navigation view for navigating between app sections.
  */
 
 @AndroidEntryPoint
@@ -32,115 +41,176 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavView: BottomNavigationView
+    private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // add the default theme here which we want
-        // to display after the splash screen is shown
 
-        setDataBinding()
-        viewModelObservers()
+        // Initialize the app and set up the UI
         initView()
-    }
-
-    private fun initView() {
-        setupNavController()
-        setSupportActionBar(binding.toolbar)
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
-    }
-
-    private fun setDataBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        sharedViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-    }
-
-    private lateinit var menu: Menu
-
-    private fun setupNavController() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        bottomNavView = findViewById(R.id.bottom_navigation_menu)
-        menu = bottomNavView.menu
-        updateMenuValues(this@MainActivity, menu)
-        bottomNavView.setupWithNavController(navController)
+        viewModelObservers()
     }
 
     /**
-     * Live Data Observer
+     * Initialize the UI components and setup navigation.
      */
-    private fun viewModelObservers() {
+    private fun initView() {
+        DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main).apply {
+            binding = this
+            setupNavController()
+            setSupportActionBar(toolbar)
+            ViewModelProvider(this@MainActivity)[MainActivityViewModel::class.java].apply {
+                sharedViewModel = this
+                setFragmentName(LocalHelper.getString(this@MainActivity, R.string.menu_home))
+            }
 
-        //Can write fragment related changes here(UI changes, Device Rotation status, etc)
-        //When moving to out from the Favourite Fragment
-        //Need to remove saved expanded status by calling sharedViewModel.expandedStates.clear()
-        //No need to do call sharedViewModel.expandedStates.clear() in Favourite Fragment.
-        //It will keep expanded status and show expanded items by getting it from sharedView model
-        sharedViewModel.fragment.observe(this@MainActivity) {
-            binding.title.text = it
-            when (it) {
-                HOME_FRAGMENT -> {
-                    binding.btnBack.visibility = View.GONE
-                    bottomNavView.visibility = View.VISIBLE
-                    sharedViewModel.setEmptyDataImage(true)
-                }
-
-                ACCOUNT_DETAILS_FRAGMENT -> {
-                    binding.btnBack.visibility = View.VISIBLE
-                    bottomNavView.visibility = View.GONE
-                }
-
-                FAVOURITE_FRAGMENT -> {
-                    binding.btnBack.visibility = View.GONE
-                    bottomNavView.visibility = View.VISIBLE
-                    sharedViewModel.setEmptyDataImage(true)
-                }
-
-                SETTINGS_FRAGMENT -> {
-                    sharedViewModel.expandedStates.clear()
-                    binding.btnBack.visibility = View.GONE
-                    bottomNavView.visibility = View.VISIBLE
-                    sharedViewModel.setEmptyDataImage(false)
-                }
+            btnBack.setOnClickListener {
+                onBackPressed()
             }
         }
 
-        sharedViewModel.isSearchResultsEmpty.observe(
-            this
-        ) { isSearchResultsEmpty ->
-            if (isSearchResultsEmpty == null) {
-                binding.emptyImageView.visibility = View.VISIBLE
-                binding.emptyImageView.setImageResource(R.mipmap.search_account)
-            } else {
-                if (isSearchResultsEmpty) {
-                    // Data is empty, show the emptyImageView
-                    binding.emptyImageView.visibility = View.VISIBLE
-                    if (sharedViewModel.fragment.value == HOME_FRAGMENT) {
-                        //In Home Fragment showing Account Search Image
-                        binding.emptyImageView.setImageResource(
-                            ImageResources.getImageResources(
-                                ImageResources.GIT_ACCOUNT_SEARCH_IMAGE_CODE
-                            )
-                        )
-                    } else {
-                        //Other Fragments showing No Data Image according to the language
-                        binding.emptyImageView.setImageResource(
-                            ImageResources.getImageResources(
-                                ImageResources.NO_DATA_IMAGE_CODE
+    }
+
+
+    /**
+     * Set up the navigation controller for the bottom navigation menu.
+     */
+    private fun setupNavController() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+        navHostFragment.navController.let { navController ->
+            binding.bottomNavigationMenu.apply {
+                bottomNavView = this
+                this@MainActivity.menu = this.menu
+                updateMenuValues(this@MainActivity, menu)
+                setupWithNavController(navController)
+            }
+        }
+    }
+
+    /**
+     * Observers for LiveData changes in the shared view model.
+     */
+    private fun viewModelObservers() {
+        sharedViewModel.apply {
+            /**
+             * Observes changes in the sharedViewModel's fragment LiveData and updates the UI elements
+             * in the MainActivity accordingly.
+             *
+             * @param fragment The LiveData that represents the current fragment.
+             */
+
+            fragment.observe(this@MainActivity) {
+                // Set the title text based on the observed fragment
+                when (it) {
+                    HOME_FRAGMENT -> {
+                        binding.btnBack.isVisible = false
+                        bottomNavView.isVisible = true
+                        setEmptyDataImage(true)
+                        setFragmentName(
+                            LocalHelper.getString(
+                                this@MainActivity,
+                                R.string.menu_home
                             )
                         )
                     }
-                } else {
-                    // Data is not empty, hide the emptyImageView
-                    binding.emptyImageView.visibility = View.GONE
+
+                    ACCOUNT_DETAILS_FRAGMENT -> {
+                        binding.btnBack.isVisible = true
+                        bottomNavView.isVisible = false
+                        setFragmentName(
+                            LocalHelper.getString(
+                                this@MainActivity,
+                                R.string.details
+                            )
+                        )
+
+                    }
+
+                    FAVOURITE_FRAGMENT -> {
+                        binding.btnBack.isVisible = false
+                        bottomNavView.isVisible = true
+                        setEmptyDataImage(true)
+                        setFragmentName(
+                            LocalHelper.getString(
+                                this@MainActivity,
+                                R.string.menu_favourites
+                            )
+                        )
+
+                    }
+
+                    SETTINGS_FRAGMENT -> {
+                        expandedStates.clear()
+                        binding.btnBack.isVisible = false
+                        bottomNavView.isVisible = true
+                        setEmptyDataImage(false)
+                        setFragmentName(
+                            LocalHelper.getString(
+                                this@MainActivity,
+                                R.string.menu_settings
+                            )
+                        )
+                    }
                 }
             }
-        }
 
-        sharedViewModel.updateBottomMenuStatus.observe(this) {
-            updateMenuValues(this@MainActivity, menu)
+
+            /**
+             * Observes the [sharedViewModel.isSearchResultsEmpty] LiveData to handle changes in the
+             * search results' emptiness.
+             *
+             * This method observes the LiveData and updates the visibility and image resource of
+             * an [ImageView] based on whether the search results are empty or not.
+             *
+             * @param isSearchResultsEmpty The LiveData indicating whether the search results are empty.
+             *   - If `null`, the [ImageView] is shown with a default search account image.
+             *   - If `true`, the [ImageView] is shown with an image specific to the fragment,
+             *     or a default no data image for other fragments.
+             *   - If `false`, the [ImageView] is hidden.
+             */
+            isSearchResultsEmpty.observe(this@MainActivity) { isSearchResultsEmpty ->
+                isSearchResultsEmpty?.let { isEmpty ->
+                    binding.emptyImageView.isVisible = isEmpty
+                    if (isEmpty) {
+                        binding.emptyImageView.setImageResource(
+                            when (fragment.value) {
+                                // In the Home Fragment, show an account search image
+                                HOME_FRAGMENT -> ImageResources.getImageResources(
+                                    ImageResources.GIT_ACCOUNT_SEARCH_IMAGE_CODE
+                                )
+                                // For other Fragments, show a no data image according to the language
+                                else -> ImageResources.getImageResources(
+                                    ImageResources.NO_DATA_IMAGE_CODE
+                                )
+                            }
+                        )
+                    }
+                } ?: run {
+                    // If the LiveData value is null, show the ImageView with a search account image
+                    binding.emptyImageView.isVisible = true
+                    binding.emptyImageView.setImageResource(R.mipmap.search_account)
+                }
+            }
+
+            /**
+             * Observe changes in a LiveData and update the bottom menu of the MainActivity accordingly.
+             *
+             * @param this@MainActivity The current MainActivity instance where this code is executed.
+             * @param menu The bottom menu that needs to be updated.
+             */
+            updateBottomMenuStatus.observe(this@MainActivity) {
+                updateMenuValues(this@MainActivity, menu)
+            }
+
+            /**
+             * Observe changes in a LiveData and update the action bar title of the MainActivity accordingly.
+             * Set live data value when the navigate through fragments
+             */
+            fragmentName.observe(this@MainActivity) {
+                binding.title.text = it
+            }
         }
     }
 }

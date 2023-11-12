@@ -1,133 +1,105 @@
 package jp.co.yumemi.android.code_check.ui.fragments.home
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
 import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import jp.co.yumemi.android.code_check.models.Owner
-import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import jp.co.yumemi.android.code_check.ui.activities.MainActivity
-import jp.co.yumemi.android.code_check.utils.DialogUtils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 
 @RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
+
     @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
-
-    private val testDispatcher = TestCoroutineDispatcher()
-    private lateinit var viewModel: HomeViewModel
-    private lateinit var dialogUtils: DialogUtils
-
-    @Mock
-    private lateinit var gitHubRepository: GitHubRepository
-    private val mockOwnerObj =
-        Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
-    private val mockGitHubRepoObject = GitHubRepoObject(
-        id = 1,
-        name = "charithvin",
-        owner = mockOwnerObj,
-        nullableLanguage = "CSS",
-        stargazersCount = 10,
-        watchersCount = 15,
-        forksCount = 4,
-        openIssuesCount = 25
-    )
-    private val mockData = listOf(mockGitHubRepoObject)
-
-    @Rule
-    @JvmField
-    val activityRule = ActivityTestRule(MainActivity::class.java)
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
-    fun setup() {
-        MockitoAnnotations.initMocks(this)
-
-        Dispatchers.setMain(testDispatcher)
-        viewModel = HomeViewModel(gitHubRepository)
-        dialogUtils = DialogUtils()
-        launchHomeFragment()
+    fun setUp() {
+        // Navigate to HomeFragment before each test
+        onView(withId(R.id.homeFragment)).perform(click())
     }
 
     @Test
-    fun testSearchBar() {
-        // Find the search EditText by its ID (replace R.id.searchEditText with your actual ID)
-        val searchEditText = onView(withId(R.id.searchInputText))
+    fun testSearchWithValidInput() {
+        // Type a valid search query in the search view
+        onView(withId(R.id.searchInputText)).perform(typeText("android"))
 
-        // Type a query into the search EditText
-        val query = "YourSearchQuery"
-        searchEditText.perform(typeText(query))
-
-        // Submit the query using IME_ACTION_SEARCH
-        searchEditText.perform(pressImeActionButton())
-
-        // Add assertions as needed to verify the search results or any other behavior
-        // For example, you can check if the search results are displayed on the screen.
-//        onView(withId(R.id.searchResults)).check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun searchAndReceiveData() {
-        // Launch the activity
-//        val scenario = activityScenarioRule.scenario
-//
-//        // Enter a search query in the EditText
-        onView(withId(R.id.searchInputText)).perform(typeText("charit"))
-//
-//        // Submit the search query using IME_ACTION_SEARCH
+        // Click on the search button
         onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
 
-        // For example, if you expect to see a specific item in the RecyclerView with text "Dummy Item":
-//        onView(withId(R.id.recyclerView)).check(matches(hasDescendant(withText("Dummy Item"))))
-//        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        Thread.sleep(5000)
+
+        // Check if the RecyclerView is displayed
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
     }
 
-    // A method to launch the HomeFragment
-    private fun launchHomeFragment() {
-        onView(withId(R.id.homeFragment)).perform(click()) // Replace with the appropriate view ID for your HomeFragment
+    @Test
+    fun testSearchWithEmptyInput() {
+        // Type an empty search query in the search view
+        onView(withId(R.id.searchInputText)).perform(typeText(""))
+
+        // Click on the search button
+        onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
+
+        // Check if an error message is displayed
+        onView(withText(R.string.search_input_empty_error)).check(matches(isDisplayed()))
     }
 
-//    @Test
-//    fun testViewModelObservers() {
-//        // Mock LiveData objects and data from the ViewModel
-//        `when`(viewModel.errorMessage).thenReturn(Mockito.mock(MutableLiveData::class.java) as MutableLiveData<String>)
-//        `when`(viewModel.isDialogVisible).thenReturn(Mockito.mock(MutableLiveData::class.java) as MutableLiveData<Boolean>)
-//        `when`(viewModel.gitHubRepoList).thenReturn(Mockito.mock(MutableLiveData::class.java) as MutableLiveData<List<GitHubRepoObject>>)
-//
-//// Set the LiveData values to trigger observers
-//        viewModel.errorMessage.postValue("Test error message")
-//        viewModel.isDialogVisible.postValue(true)
-//        viewModel.gitHubRepoList.postValue(mockData)
-//
-//        verify(dialogUtils.showErrorDialogInFragment()).showErrorDialogInFragment(eq("Test error message"))
-//
-//    }
+    @Test
+    fun testSearchWithNoInternet() {
+        // Simulate no internet connection
+        // You may want to use a testing library or framework to simulate network conditions
+
+        // Type a valid search query in the search view
+        onView(withId(R.id.searchInputText)).perform(typeText("android"))
+
+        // Click on the search button
+        onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
+
+        // Check if an error message for no internet is displayed
+        onView(withText(R.string.no_internet)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun testNavigateToRepositoryFragment() {
+        // Type a valid search query in the search view
+        onView(withId(R.id.searchInputText)).perform(typeText("Android"))
+
+        // Click on the search button
+        onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
+
+        Thread.sleep(5000)
+
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed())).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RepoListAdapter.RepoListViewHolder>(
+                0,
+                click()
+            )
+        )
+        // Verify that the RepositoryFragment is launched
+        onView(withId(R.id.ownerIconView)).check(matches(isDisplayed()))
+
+        // Verify that the correct data is passed to the RepositoryFragment
+        onView(withId(R.id.nameView)).check(matches(withText("Android")))
+    }
 
     @After
     fun tearDown() {
-        //clean up code
-    }
-
-    @After
-    fun cleanup() {
+        // Clean up after each test if needed
         Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 }

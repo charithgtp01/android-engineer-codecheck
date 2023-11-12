@@ -11,23 +11,26 @@ import jp.co.yumemi.android.code_check.ui.dialogs.CustomConfirmAlertDialogFragme
 import jp.co.yumemi.android.code_check.ui.dialogs.CustomProgressDialogFragment
 
 /**
- * Utils class for Dialogs and Alerts
+ * Utility class for managing custom dialogs in application.
+ * This class provides methods to show custom alert dialogs and progress dialogs.
  */
 class DialogUtils {
+    /**
+     * A companion object to provide static methods for creating custom dialogs.
+     */
     companion object {
         /**
-         * Custom Alert Dialog without button click event
-         * @param message Message body
-         * @param type Type of the Dialog Success,Fail or Warn Alert
+         * Show a custom alert dialog without any button click event.
+         *
+         * @param context The context in which the dialog should be shown.
+         * @param type The type of the dialog (Success, Fail, or Warn Alert).
+         * @param message The message body to be displayed in the dialog.
          */
         fun showAlertDialogWithoutAction(
             context: Context, type: String, message: String?
         ) {
-            val fragmentManager = (context as? AppCompatActivity)?.supportFragmentManager
-            if (fragmentManager != null) {
-                val dialogFragment =
-                    CustomAlertDialogFragment.newInstance(message, type)
-                dialogFragment.show(
+            (context as? AppCompatActivity)?.supportFragmentManager?.let { fragmentManager ->
+                CustomAlertDialogFragment.newInstance(message, type).show(
                     fragmentManager,
                     DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value
                 )
@@ -36,66 +39,59 @@ class DialogUtils {
 
 
         /**
-         * Custom Alert Dialog with icon Inside Fragment
-         * @param message Message body
-         * @param type Type of the Dialog Success,Fail or Warn Alert
+         * Show a custom alert dialog with an icon inside a fragment.
+         *
+         * @param fragment The fragment in which the dialog should be shown.
+         * @param message The message body to be displayed in the dialog.
+         * @param type The type of the dialog (Success, Fail, or Warn Alert).
+         * @return The created dialog fragment.
          */
         fun showDialogWithoutActionInFragment(
             fragment: Fragment, message: String?, type: String
-        ): DialogFragment? {
-            var dialogFragment: DialogFragment? = null
-            val fragmentManager = fragment.fragmentManager
-            if (fragmentManager != null) {
-                dialogFragment = CustomAlertDialogFragment.newInstance(message, type)
-                dialogFragment.show(
-                    fragmentManager,
-                    DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value
-                )
-            }
+        ): DialogFragment {
 
-            return dialogFragment
+            return fragment.parentFragmentManager.let { fragmentManager ->
+                CustomAlertDialogFragment.newInstance(message, type).apply {
+                    show(fragmentManager, DialogConstants.ALERT_DIALOG_FRAGMENT_TAG.value)
+                }
+            }
         }
 
         /**
-         * Custom Confirm Alert Dialog with icon Inside Activity
-         * @param message Message body
-         * @param dialogButtonClickListener Dialog Button Click event listener
+         * Show a custom confirm alert dialog with an icon inside an activity.
          *
+         * @param context The context in which the dialog should be shown.
+         * @param message The message body to be displayed in the dialog.
+         * @param dialogButtonClickListener The listener for dialog button click events.
          */
         fun showConfirmAlertDialog(
             context: Context,
             message: String?,
             dialogButtonClickListener: ConfirmDialogButtonClickListener
         ) {
-            val fragmentManager = (context as? AppCompatActivity)?.supportFragmentManager
-            if (fragmentManager != null) {
-                val dialogFragment =
-                    CustomConfirmAlertDialogFragment.newInstance(message, dialogButtonClickListener)
-                dialogFragment.show(
-                    fragmentManager,
-                    DialogConstants.CONFIRM_DIALOG_FRAGMENT_TAG.value
-                )
+
+            (context as? AppCompatActivity)?.supportFragmentManager?.let { fragmentManager ->
+                CustomConfirmAlertDialogFragment.newInstance(message, dialogButtonClickListener)
+                    .show(
+                        fragmentManager,
+                        DialogConstants.CONFIRM_DIALOG_FRAGMENT_TAG.value
+                    )
             }
         }
 
         /**
-         * Progress Dialog in Fragment
-         * @param message progress message
+         * Show a progress dialog inside a fragment.
+         *
+         * @param activity The fragment in which the progress dialog should be shown.
+         * @param message The progress message to be displayed.
+         * @return The created progress dialog fragment.
          */
         fun showProgressDialogInFragment(activity: Fragment?, message: String?): DialogFragment? {
-            var dialogFragment: DialogFragment? = null
-            if (activity != null) {
-                val fragmentManager = activity.fragmentManager
-                if (fragmentManager != null) {
-                    dialogFragment =
-                        CustomProgressDialogFragment.newInstance(message)
-                    dialogFragment.show(
-                        fragmentManager,
-                        DialogConstants.PROGRESS_DIALOG_FRAGMENT_TAG.value
-                    )
+            return activity?.parentFragmentManager?.let { fragmentManager ->
+                CustomProgressDialogFragment.newInstance(message).apply {
+                    show(fragmentManager, DialogConstants.PROGRESS_DIALOG_FRAGMENT_TAG.value)
                 }
             }
-            return dialogFragment
         }
     }
 }

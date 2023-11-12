@@ -4,7 +4,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.fragments.settings.SettingsViewModel" />
@@ -22,7 +21,7 @@
             style="@style/settingsLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/select_app_language"
+            android:text="@{vm.selectedLanguageLabel}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -91,3 +91,9 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore Android Studio project files
+.idea/

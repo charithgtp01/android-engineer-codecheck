@@ -13,9 +13,20 @@ import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
 import jp.co.yumemi.android.code_check.repository.LocalGitHubRepositoryImpl
 import javax.inject.Singleton
 
+/**
+ * DatabaseModule object class is responsible for providing dependencies related to the local database setup.
+ * This module provides the necessary dependencies for creating and accessing a local database
+ * for storing GitHub-related objects and data.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
+    /**
+     * Provides a singleton instance of the [GitHubObjectsDatabase] using Room Database.
+     *
+     * @param application The Android Application instance.
+     * @return A Room database instance for storing GitHub-related data.
+     */
     @Provides
     @Singleton
     fun provideGitHubObjectDatabase(application: Application): GitHubObjectsDatabase {
@@ -23,17 +34,33 @@ object DatabaseModule {
             application,
             GitHubObjectsDatabase::class.java,
             StringConstants.ROOM_DB_REPO_TABLE
-        ).fallbackToDestructiveMigration().build()
+        ).build()
     }
 
+    /**
+     * Provides a singleton instance of the [GitHubObjectDao] for database operations.
+     *
+     * @param database The Room database instance.
+     * @return A data access object for interacting with the GitHub-related data.
+     */
     @Provides
     @Singleton
     fun provideGitHubObjectDao(database: GitHubObjectsDatabase): GitHubObjectDao {
         return database.gitHubObjectDao()
     }
 
+    /**
+     * Provides an implementation of the [LocalGitHubRepository] using the [GitHubObjectDao].
+     *
+     * @param dao The data access object for GitHub-related data.
+     * @return An implementation of the local repository for accessing GitHub data.
+     */
     @Provides
-    fun provideLocalGitHubRepository(dao: GitHubObjectDao): LocalGitHubRepository {
-        return LocalGitHubRepositoryImpl(dao)
+    @Singleton
+    fun provideLocalGitHubRepository(
+        application: Application,
+        dao: GitHubObjectDao
+    ): LocalGitHubRepository {
+        return LocalGitHubRepositoryImpl(application,dao)
     }
 }
