@@ -2,9 +2,9 @@ package jp.co.yumemi.android.code_check.ui.fragments.repodetails
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import jp.co.yumemi.android.code_check.MockObjects.Companion.expectedGitHubRepoObject
-import jp.co.yumemi.android.code_check.MockObjects.Companion.mockGitHubRepoObject
-import jp.co.yumemi.android.code_check.getOrAwaitValue
+import jp.co.yumemi.android.code_check.models.MockObjects.Companion.expectedGitHubRepoObject
+import jp.co.yumemi.android.code_check.models.MockObjects.Companion.mockGitHubRepoObject
+import jp.co.yumemi.android.code_check.utils.getOrAwaitValue
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.models.toGitHubDataClass
