@@ -107,6 +107,7 @@ class HomeFragmentTest {
 
         // Click on the search button
         onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
+        Thread.sleep(2000)
 
         // Check if an error message is displayed
         onView(
