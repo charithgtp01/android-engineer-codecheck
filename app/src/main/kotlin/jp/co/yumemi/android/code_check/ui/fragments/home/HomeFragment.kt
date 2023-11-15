@@ -105,7 +105,7 @@ class HomeFragment : Fragment() {
                             val enteredValue: String? = searchViewText
                             //Empty value error Alert
                             when {
-                                enteredValue.isNullOrBlank() -> setErrorMessage(
+                                enteredValue.isNullOrEmpty() -> setErrorMessage(
                                     LocalHelper.getString(
                                         requireActivity(), R.string.search_input_empty_error
                                     )

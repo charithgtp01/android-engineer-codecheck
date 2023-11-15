@@ -9,20 +9,18 @@ import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.idling.CountingIdlingResource
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.ui.activities.MainActivity
-import jp.co.yumemi.android.code_check.utils.NetworkUtils
 import jp.co.yumemi.android.code_check.utils.NetworkUtils.Companion.isNetworkAvailable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.resetMain
 import org.junit.After
-import org.junit.Assume.assumeFalse
 import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
@@ -34,7 +32,7 @@ class HomeFragmentTest {
 
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
-    private val networkIdlingResource = NetworkIdlingResource()
+    private val myIdlingResource = MyIdlingResource()
 
     @Before
     fun setUp() {
@@ -45,7 +43,7 @@ class HomeFragmentTest {
     @Test
     fun testSearchWithValidInput() {
         // Register the NetworkIdlingResource before initiating network-related actions
-        IdlingRegistry.getInstance().register(getNetworkIdlingResource())
+        IdlingRegistry.getInstance().register(getMyIdlingResource())
 
         // Check if the network is available before proceeding
         assumeTrue(isNetworkAvailable())
@@ -56,13 +54,11 @@ class HomeFragmentTest {
         // Click on the search button
         onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
 
-        // Unregister the NetworkIdlingResource after network-related actions
-        IdlingRegistry.getInstance().unregister(getNetworkIdlingResource())
-
         Thread.sleep(5000)
-
-        // Check if the RecyclerView is displayed
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+
+        // Unregister the NetworkIdlingResource after network-related actions
+        IdlingRegistry.getInstance().unregister(getMyIdlingResource())
     }
 
     @Test
@@ -155,12 +151,14 @@ class HomeFragmentTest {
     }
 
     // Expose the IdlingResource
-    fun getNetworkIdlingResource(): IdlingResource {
-        return networkIdlingResource
+    private fun getMyIdlingResource(): IdlingResource {
+        return myIdlingResource
     }
 
+
+
     // Custom IdlingResource to wait for network availability
-    private inner class NetworkIdlingResource : IdlingResource {
+    private inner class MyIdlingResource : IdlingResource {
         private var resourceCallback: IdlingResource.ResourceCallback? = null
 
         override fun getName(): String {
