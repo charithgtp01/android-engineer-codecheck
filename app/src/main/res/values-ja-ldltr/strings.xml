@@ -36,4 +36,5 @@
     <string name="add_fav_success_message">アカウントがお気に入りに追加されました</string>
     <string name="delete_fav_success_message">アカウントがお気に入りから削除されました</string>
     <string name="view_more">もっと見る</string>
+    <string name="web_profile_view_details">ウェブプロフィール</string>
 </resources>

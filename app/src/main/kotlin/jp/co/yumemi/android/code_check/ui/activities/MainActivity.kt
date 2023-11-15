@@ -19,6 +19,7 @@ import jp.co.yumemi.android.code_check.constants.StringConstants.ACCOUNT_DETAILS
 import jp.co.yumemi.android.code_check.constants.StringConstants.FAVOURITE_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.HOME_FRAGMENT
 import jp.co.yumemi.android.code_check.constants.StringConstants.SETTINGS_FRAGMENT
+import jp.co.yumemi.android.code_check.constants.StringConstants.WEB_PROFILE_VIEW_FRAGMENT
 import jp.co.yumemi.android.code_check.databinding.ActivityMainBinding
 import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.utils.UIUtils.Companion.updateMenuValues
@@ -123,6 +124,18 @@ class MainActivity : AppCompatActivity() {
                             LocalHelper.getString(
                                 this@MainActivity,
                                 R.string.details
+                            )
+                        )
+
+                    }
+
+                    WEB_PROFILE_VIEW_FRAGMENT -> {
+                        binding.btnBack.isVisible = true
+                        bottomNavView.isVisible = false
+                        setFragmentName(
+                            LocalHelper.getString(
+                                this@MainActivity,
+                                R.string.web_profile_view_details
                             )
                         )
 
