@@ -53,7 +53,8 @@ fun GitHubRepoObject.toGitHubDataClass(): LocalGitHubRepoObject {
         forksCount = forksCount,
         openIssuesCount = openIssuesCount,
         avatarUrl = owner?.avatarUrl,
-        ownerType = owner?.type
+        ownerType = owner?.type,
+        htmlUrl = owner?.htmlUrl,
     )
 }
 
