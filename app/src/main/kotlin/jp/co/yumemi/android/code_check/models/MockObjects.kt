@@ -3,7 +3,11 @@ package jp.co.yumemi.android.code_check.models
 class MockObjects {
     companion object {
         private val mockOwnerObj =
-            Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
+            Owner(
+                avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4",
+                htmlUrl = "https://github.com/charithvithanage",
+                type = "User"
+            )
         val mockGitHubRepoObject = GitHubRepoObject(
             id = 1,
             name = "charithvin",
@@ -17,7 +21,11 @@ class MockObjects {
         private val mockData = listOf(mockGitHubRepoObject)
 
         private val expectedOwnerObj =
-            Owner(avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4", type = "User")
+            Owner(
+                avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4",
+                htmlUrl = "https://github.com/charithvithanage",
+                type = "User"
+            )
         val expectedGitHubRepoObject = GitHubRepoObject(
             id = 1,
             name = "charithvin",
@@ -34,6 +42,7 @@ class MockObjects {
             id = 1,
             name = "charithvin",
             avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4",
+            htmlUrl = "https://github.com/charithvithanage",
             ownerType = "User",
             language = "CSS",
             stargazersCount = 10,
@@ -47,6 +56,7 @@ class MockObjects {
             id = 1,
             name = "charithvin",
             avatarUrl = "https://avatars.githubusercontent.com/u/22025488?v=4",
+            htmlUrl = "https://github.com/charithvithanage",
             ownerType = "User",
             language = "CSS",
             stargazersCount = 10,

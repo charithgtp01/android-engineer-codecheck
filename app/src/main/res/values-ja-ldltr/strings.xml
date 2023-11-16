@@ -35,4 +35,11 @@
     <string name="data_already_exist">データはすでに存在します</string>
     <string name="add_fav_success_message">アカウントがお気に入りに追加されました</string>
     <string name="delete_fav_success_message">アカウントがお気に入りから削除されました</string>
+    <string name="view_more">もっと見る</string>
+    <string name="web_profile_view_details">ウェブプロフィール</string>
+    <string name="starts">スタート</string>
+    <string name="forks">フォーク</string>
+    <string name="watchers">監視者</string>
+    <string name="open_issues">公開されていない問題</string>
+    <string name="language">プログラミング言語</string>
 </resources>
