@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.SingleLiveEvent
+import jp.co.yumemi.android.code_check.utils.SingleLiveEvent
 import jp.co.yumemi.android.code_check.models.GitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository

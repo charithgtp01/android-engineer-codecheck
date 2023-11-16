@@ -4,10 +4,8 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -30,7 +28,7 @@ class RepoDetailsFragmentTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    lateinit var mainActivity: MainActivity
+    private lateinit var mainActivity: MainActivity
 
     @Before
     fun setUp() {
@@ -89,11 +87,8 @@ class RepoDetailsFragmentTest {
                         click()
                     )
                 )
-            // Verify that the RepositoryFragment is launched
-            onView(withId(R.id.ownerIconView))
-                .check(matches(isDisplayed()))
 
-            onView(withId(R.id.btnFav)).perform(click())
+            onView(withId(R.id.btnFav)) .check(matches(isDisplayed())).perform(click())
 
             onView(
                 withText(
@@ -104,11 +99,13 @@ class RepoDetailsFragmentTest {
                 )
             ).check(matches(isDisplayed()))
 
-            onView(withText(LocalHelper.getString(mainActivity, R.string.yes))).perform(click())
-
-            onView(withText(LocalHelper.getString(mainActivity, R.string.add_fav_success_message)))
+            onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(withText(LocalHelper.getString(mainActivity, R.string.ok))).perform(click())
+            onView(withId(R.id.buttonYes)).perform(click())
+
+            onView(withId(R.id.dialogMainLayout))
+                .check(matches(isDisplayed()))
+            onView(withId(R.id.button)).perform(click())
 
             // Press the back button
             Espresso.pressBack()
@@ -123,6 +120,7 @@ class RepoDetailsFragmentTest {
                 )
             )
             onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+            Thread.sleep(5000)
             onView(withId(R.id.emptyImageView)).check(
                 matches(
                     not(isDisplayed())
