@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.SingleLiveEvent.Companion.observeOnce
+import jp.co.yumemi.android.code_check.utils.SingleLiveEvent.Companion.observeOnce
 import jp.co.yumemi.android.code_check.constants.DialogConstants
 import jp.co.yumemi.android.code_check.constants.StringConstants
 import jp.co.yumemi.android.code_check.databinding.FragmentHomeBinding

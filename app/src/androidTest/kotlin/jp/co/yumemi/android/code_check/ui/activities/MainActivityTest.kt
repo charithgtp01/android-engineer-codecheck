@@ -14,6 +14,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.*
@@ -28,6 +29,7 @@ class MainActivityTest {
 
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    private lateinit var mainActivity: MainActivity
 
     @Before
     fun setUp() {
@@ -42,6 +44,10 @@ class MainActivityTest {
             }
             throw error
         }
+
+        activityRule.scenario.onActivity { activity ->
+            mainActivity = activity
+        }
     }
 
     @Test
@@ -51,13 +57,22 @@ class MainActivityTest {
         onView(withId(R.id.bottom_navigation_menu)).check(matches(isDisplayed()))
 
         // Verify the initial fragment is HOME_FRAGMENT
-        onView(withId(R.id.title)).check(matches(withText(R.string.menu_home)))
+        onView(withId(R.id.title)).check(
+            matches(
+                withText(
+                    LocalHelper.getString(
+                        mainActivity,
+                        R.string.menu_home
+                    )
+                )
+            )
+        )
 
         // Click on an item in the bottom navigation menu (e.g., Favourites)
         onView(
             allOf(
                 withId(R.id.bottom_navigation_menu),
-                hasDescendant(withText(R.string.menu_favourites))
+                hasDescendant(withText(LocalHelper.getString(mainActivity,R.string.menu_favourites)))
             )
         )
             .perform(click())
@@ -65,7 +80,16 @@ class MainActivityTest {
         // Verify the UI after navigating to Favourites fragment
         onView(withId(R.id.btnBack)).check(matches(not(isDisplayed())))
         onView(withId(R.id.bottom_navigation_menu)).check(matches(isDisplayed()))
-        onView(withId(R.id.title)).check(matches(withText(R.string.menu_favourites)))
+        onView(withId(R.id.title)).check(
+            matches(
+                withText(
+                    LocalHelper.getString(
+                        mainActivity,
+                        R.string.menu_favourites
+                    )
+                )
+            )
+        )
 
         onView(withId(R.id.btnBack)).check(matches(allOf(isClickable()))).perform(click())
 
@@ -73,6 +97,17 @@ class MainActivityTest {
         onView(withId(R.id.btnBack)).check(matches(not(isDisplayed())))
         onView(withId(R.id.bottom_navigation_menu)).check(matches(isDisplayed()))
         onView(withId(R.id.title)).check(matches(isDisplayed()))
-        onView(allOf(withId(R.id.title), hasDescendant(withText(R.string.menu_home))))
+        onView(
+            allOf(
+                withId(R.id.title), hasDescendant(
+                    withText(
+                        LocalHelper.getString(
+                            mainActivity,
+                            R.string.menu_home
+                        )
+                    )
+                )
+            )
+        )
     }
 }

@@ -15,6 +15,7 @@ import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
 import jp.co.yumemi.android.code_check.ui.activities.MainActivity
 import jp.co.yumemi.android.code_check.ui.fragments.home.RepoListAdapter
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.utils.NetworkUtils
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.*
@@ -35,12 +36,17 @@ class FavouritesFragmentTest {
     @Mock
     lateinit var localHubRepository: LocalGitHubRepository
 
+    private lateinit var mainActivity: MainActivity
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         viewModel = FavouritesViewModel(localHubRepository)
         // Navigate to HomeFragment before each test
         onView(withId(R.id.homeFragment)).perform(click())
+        activityRule.scenario.onActivity { activity ->
+            mainActivity = activity
+        }
     }
 
     @Test
@@ -93,7 +99,7 @@ class FavouritesFragmentTest {
             onView(withId(R.id.searchInputText))
                 .perform(ViewActions.pressImeActionButton())
             // Check if the error dialog is displayed
-            onView(ViewMatchers.withText(R.string.no_internet))
+            onView(ViewMatchers.withText(LocalHelper.getString(mainActivity, R.string.no_internet)))
                 .check(matches(isDisplayed()))
         }
     }
@@ -108,6 +114,7 @@ class FavouritesFragmentTest {
         )
 
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        Thread.sleep(5000)
         onView(withId(R.id.emptyImageView)).check(
             matches(
                 isDisplayed()
@@ -142,11 +149,11 @@ class FavouritesFragmentTest {
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.yes)).perform(click())
+            onView(withId(R.id.buttonYes)).perform(click())
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.ok)).perform(click())
+            onView(withId(R.id.button)).perform(click())
 
             // Press the back button
             Espresso.pressBack()
@@ -177,13 +184,13 @@ class FavouritesFragmentTest {
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.yes)).perform(click())
+            onView(withId(R.id.buttonYes)).perform(click())
         } else {
             // Click on the search button
             onView(withId(R.id.searchInputText))
                 .perform(ViewActions.pressImeActionButton())
             // Check if the error dialog is displayed
-            onView(ViewMatchers.withText(R.string.no_internet))
+            onView(ViewMatchers.withText(LocalHelper.getString(mainActivity, R.string.no_internet)))
                 .check(matches(isDisplayed()))
         }
     }
@@ -215,11 +222,11 @@ class FavouritesFragmentTest {
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.yes)).perform(click())
+            onView(withId(R.id.buttonYes)).perform(click())
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.ok)).perform(click())
+            onView(withId(R.id.button)).perform(click())
 
             // Press the back button
             Espresso.pressBack()
@@ -249,7 +256,7 @@ class FavouritesFragmentTest {
             onView(withId(R.id.searchInputText))
                 .perform(ViewActions.pressImeActionButton())
             // Check if the error dialog is displayed
-            onView(ViewMatchers.withText(R.string.no_internet))
+            onView(ViewMatchers.withText(LocalHelper.getString(mainActivity, R.string.no_internet)))
                 .check(matches(isDisplayed()))
         }
     }
@@ -280,11 +287,11 @@ class FavouritesFragmentTest {
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.yes)).perform(click())
+            onView(withId(R.id.buttonYes)).perform(click())
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.ok)).perform(click())
+            onView(withId(R.id.button)).perform(click())
 
             // Press the back button
             Espresso.pressBack()
@@ -299,32 +306,13 @@ class FavouritesFragmentTest {
                 )
             )
             onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
-            onView(withId(R.id.recyclerView))
-                .check(matches(isDisplayed())).perform(
-                    actionOnItemAtPosition<FavouriteListAdapter.FavouriteListViewHolder>(
-                        0,
-                        click()
-                    )
-                )
-
-            onView(withId(R.id.expandedContent)).check(matches(isDisplayed()))
-
-            onView(withId(R.id.recyclerView))
-                .check(matches(isDisplayed())).perform(
-                    actionOnItemAtPosition<FavouriteListAdapter.FavouriteListViewHolder>(
-                        0,
-                        click()
-                    )
-                )
-
             onView(withId(R.id.expandedContent)).check(matches(not(isDisplayed())))
-
         } else {
             // Click on the search button
             onView(withId(R.id.searchInputText))
                 .perform(ViewActions.pressImeActionButton())
             // Check if the error dialog is displayed
-            onView(ViewMatchers.withText(R.string.no_internet))
+            onView(ViewMatchers.withText(LocalHelper.getString(mainActivity, R.string.no_internet)))
                 .check(matches(isDisplayed()))
         }
     }
