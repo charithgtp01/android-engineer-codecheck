@@ -36,22 +36,35 @@
                 android:id="@+id/ownerIconView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="50dp"
+                android:layout_marginTop="@dimen/page_padding"
                 android:contentDescription="@null"
                 app:imageUrl="@{vm.gitRepoData.owner.avatarUrl}"
                 app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@+id/imageSectionHorizontalGuide"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnFav"
+                app:layout_constraintEnd_toStartOf="@+id/imageSectionHorizontalGuide2"
+                app:layout_constraintStart_toStartOf="@+id/imageSectionHorizontalGuide1"
+                app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imageSectionHorizontalGuide1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.10" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/imageSectionHorizontalGuide2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.30" />
 
             <TextView
                 android:id="@+id/nameView"
                 style="@style/nameTextViewStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/vertical_margin"
+                android:layout_marginTop="@dimen/content_margin_top"
                 android:gravity="center"
                 android:text='@{vm.gitRepoData.name}'
                 app:layout_constraintEnd_toEndOf="@+id/ownerIconView"
@@ -64,11 +77,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/content_margin_top"
-                android:paddingBottom="@dimen/page_padding"
-                android:text='@{"Language : "+vm.gitRepoData.language}'
+                android:text='@{vm.languageString}'
                 app:layout_constraintEnd_toEndOf="@+id/nameView"
                 app:layout_constraintStart_toStartOf="@+id/nameView"
                 app:layout_constraintTop_toBottomOf="@+id/nameView" />
+
+            <Button
+                android:id="@+id/btnMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin_top"
+                android:text="@{vm.btnValue}"
+                app:layout_constraintEnd_toEndOf="@+id/languageView"
+                app:layout_constraintStart_toStartOf="@+id/languageView"
+                app:layout_constraintTop_toBottomOf="@+id/languageView" />
 
 
             <LinearLayout
@@ -92,7 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        bind:label='@{"Starts"}'
+                        bind:label='@{vm.startsLabel}'
                         bind:value="@{vm.gitRepoData.stargazersCount.toString()}" />
 
                     <include
@@ -101,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        bind:label='@{"Watchers"}'
+                        bind:label='@{vm.watchersLabel}'
                         bind:value="@{vm.gitRepoData.watchersCount.toString()}" />
                 </LinearLayout>
 
@@ -117,7 +139,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        bind:label='@{"Forks"}'
+                        bind:label='@{vm.forksLabel}'
                         bind:value="@{vm.gitRepoData.forksCount.toString()}" />
 
 
@@ -127,7 +149,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        bind:label='@{"Open Issues"}'
+                        bind:label='@{vm.openIssuesLabel}'
                         bind:value="@{vm.gitRepoData.openIssuesCount.toString()}" />
                 </LinearLayout>
             </LinearLayout>
@@ -138,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.30" />
+                app:layout_constraintGuide_percent="0.40" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/centerHorizontalGuid"
@@ -147,12 +169,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.50" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/contentVerticalCenterGuid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.7" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

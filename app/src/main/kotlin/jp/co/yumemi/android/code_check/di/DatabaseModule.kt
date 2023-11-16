@@ -34,7 +34,7 @@ object DatabaseModule {
             application,
             GitHubObjectsDatabase::class.java,
             StringConstants.ROOM_DB_REPO_TABLE
-        ).build()
+        ).addMigrations(GitHubObjectsDatabase.MIGRATION_2_TO_3).build()
     }
 
     /**
@@ -61,6 +61,6 @@ object DatabaseModule {
         application: Application,
         dao: GitHubObjectDao
     ): LocalGitHubRepository {
-        return LocalGitHubRepositoryImpl(application,dao)
+        return LocalGitHubRepositoryImpl(application, dao)
     }
 }

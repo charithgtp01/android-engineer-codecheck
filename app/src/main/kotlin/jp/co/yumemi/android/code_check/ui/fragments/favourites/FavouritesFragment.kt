@@ -35,9 +35,9 @@ import jp.co.yumemi.android.code_check.utils.LocalHelper
  */
 class FavouritesFragment : Fragment() {
 
-    private lateinit var binding: FragmentFavouritesBinding
-    private lateinit var viewModel: FavouritesViewModel
-    private lateinit var sharedViewModel: MainActivityViewModel
+    lateinit var binding: FragmentFavouritesBinding
+    lateinit var viewModel: FavouritesViewModel
+    lateinit var sharedViewModel: MainActivityViewModel
     private lateinit var favouriteListAdapter: FavouriteListAdapter
 
     override fun onCreateView(

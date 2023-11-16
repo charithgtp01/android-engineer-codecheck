@@ -3,9 +3,9 @@ package jp.co.yumemi.android.code_check.ui.fragments.favourites
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import jp.co.yumemi.android.code_check.MockObjects
-import jp.co.yumemi.android.code_check.MockObjects.Companion.expectedFavList
-import jp.co.yumemi.android.code_check.getOrAwaitValue
+import jp.co.yumemi.android.code_check.models.MockObjects
+import jp.co.yumemi.android.code_check.models.MockObjects.Companion.expectedFavList
+import jp.co.yumemi.android.code_check.utils.getOrAwaitValue
 import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
 import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository

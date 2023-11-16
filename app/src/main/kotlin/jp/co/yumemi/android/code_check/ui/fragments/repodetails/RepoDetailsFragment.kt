@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.SingleLiveEvent.Companion.observeOnce
 import jp.co.yumemi.android.code_check.constants.DialogConstants
@@ -26,6 +25,7 @@ import jp.co.yumemi.android.code_check.models.LocalDBQueryResponse
 import jp.co.yumemi.android.code_check.ui.activities.MainActivityViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showAlertDialogWithoutAction
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showConfirmAlertDialog
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 
 /**
  * Fragment that displays details of a GitHub repository and allows users to mark it as a favorite.
@@ -125,6 +125,20 @@ class RepoDetailsFragment : Fragment() {
     private fun initView() {
         viewModel.apply {
             binding.apply {
+
+                requireActivity().apply {
+                    //Update Report Details Resource values with localization
+                    updateUI(
+                        LocalHelper.getString(this, R.string.view_more),
+                        LocalHelper.getString(this, R.string.starts),
+                        LocalHelper.getString(this, R.string.forks),
+                        LocalHelper.getString(this, R.string.watchers),
+                        LocalHelper.getString(this, R.string.open_issues),
+                        LocalHelper.getString(this, R.string.language)
+                    )
+                }
+
+
                 btnFav.setOnClickListener {
                     val confirmationMessage = favouriteStatus.value?.let {
                         if (it) {
@@ -151,6 +165,10 @@ class RepoDetailsFragment : Fragment() {
                     )
                 }
 
+                btnMore.setOnClickListener {
+                    navigateToWebProfileFragment()
+                }
+
             }
 
             setGitRepoData(gitHubRepo)
@@ -159,15 +177,30 @@ class RepoDetailsFragment : Fragment() {
         }
 
         //Handle back pressed event
-         object : OnBackPressedCallback(true) {
+        object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 findNavController().navigate(R.id.homeFragment)
                 // Handle back button press for Home Fragment
                 sharedViewModel.setFragment(HOME_FRAGMENT)
             }
         }.apply {
-             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, this)
-         }
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, this)
+        }
+    }
+
+    /**
+     * Navigates to the WebProfileViewFragment using the Navigation Component.
+     * If the owner's HTML URL is available, it constructs the appropriate navigation action.
+     * If the HTML URL is null, the navigation will not be performed.
+     */
+    private fun navigateToWebProfileFragment() {
+        findNavController().navigate(
+            gitHubRepo.owner?.htmlUrl.let {
+                RepoDetailsFragmentDirections.actionRepoDetailsFragmentToWebProfileViewFragment(
+                    it
+                )
+            }
+        )
     }
 
     /**

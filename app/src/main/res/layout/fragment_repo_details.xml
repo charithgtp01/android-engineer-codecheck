@@ -20,7 +20,7 @@
             android:layout_margin="@dimen/avatar_margin"
             android:contentDescription="@null"
             app:imageUrl="@{vm.gitRepoData.owner.avatarUrl}"
-            app:layout_constraintBottom_toBottomOf="@id/imageSectionGuide"
+            app:layout_constraintBottom_toTopOf="@id/nameView"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,10 +49,9 @@
             android:layout_marginEnd="@dimen/page_padding"
             android:gravity="center"
             android:text='@{vm.gitRepoData.name}'
-            app:layout_constraintBottom_toTopOf="@+id/centerHorizontalGuid"
+            app:layout_constraintBottom_toTopOf="@+id/languageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ownerIconView" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/languageView"
@@ -62,10 +61,19 @@
             android:layout_marginHorizontal="@dimen/horizontal_margin"
             android:layout_marginStart="@dimen/page_padding"
             android:layout_marginEnd="@dimen/page_padding"
-            android:text='@{"Language : "+vm.gitRepoData.language}'
+            android:text='@{vm.languageString}'
+            app:layout_constraintBottom_toTopOf="@+id/btnMore"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameView" />
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{vm.btnValue}"
+            app:layout_constraintBottom_toTopOf="@+id/centerHorizontalGuid"
+            app:layout_constraintEnd_toEndOf="@+id/languageView"
+            app:layout_constraintStart_toStartOf="@+id/languageView" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/centerVerticalGuid"
@@ -84,7 +92,7 @@
             app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuid"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/centerHorizontalGuid"
-            bind:label='@{"Starts"}'
+            bind:label='@{vm.startsLabel}'
             bind:value="@{vm.gitRepoData.stargazersCount.toString()}" />
 
         <include
@@ -95,7 +103,7 @@
             app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuid"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include2"
-            bind:label='@{"Forks"}'
+            bind:label='@{vm.forksLabel}'
             bind:value="@{vm.gitRepoData.forksCount.toString()}" />
 
         <include
@@ -108,7 +116,7 @@
             app:layout_constraintStart_toStartOf="@+id/centerVerticalGuid"
             app:layout_constraintTop_toBottomOf="@+id/include2"
             app:layout_constraintTop_toTopOf="@+id/include2"
-            bind:label='@{"Watchers"}'
+            bind:label='@{vm.watchersLabel}'
             bind:value="@{vm.gitRepoData.watchersCount.toString()}" />
 
         <include
@@ -119,16 +127,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/centerVerticalGuid"
             app:layout_constraintTop_toBottomOf="@+id/include"
-            bind:label='@{"Open Issues"}'
+            bind:label='@{vm.openIssuesLabel}'
             bind:value="@{vm.gitRepoData.openIssuesCount.toString()}" />
 
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/imageSectionGuide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.40" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/centerHorizontalGuid"

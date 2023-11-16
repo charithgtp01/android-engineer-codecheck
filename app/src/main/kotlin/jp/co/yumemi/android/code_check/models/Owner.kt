@@ -9,9 +9,11 @@ import kotlinx.android.parcel.Parcelize
  *
  * @property avatarUrl The URL of the owner's avatar image.
  * @property type The type of the owner, e.g., "User" or "Organization."
+ * @property htmlUrl Owner's profile web link.
  */
 @Parcelize
 data class Owner(
     @SerializedName("avatar_url") val avatarUrl: String?,
+    @SerializedName("html_url") val htmlUrl: String?,
     val type: String?
 ) : Parcelable
