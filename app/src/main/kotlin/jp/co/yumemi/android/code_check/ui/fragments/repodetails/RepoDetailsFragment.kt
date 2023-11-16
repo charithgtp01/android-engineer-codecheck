@@ -125,6 +125,20 @@ class RepoDetailsFragment : Fragment() {
     private fun initView() {
         viewModel.apply {
             binding.apply {
+
+                requireActivity().apply {
+                    //Update Report Details Resource values with localization
+                    updateUI(
+                        LocalHelper.getString(this, R.string.view_more),
+                        LocalHelper.getString(this, R.string.starts),
+                        LocalHelper.getString(this, R.string.forks),
+                        LocalHelper.getString(this, R.string.watchers),
+                        LocalHelper.getString(this, R.string.open_issues),
+                        LocalHelper.getString(this, R.string.language)
+                    )
+                }
+
+
                 btnFav.setOnClickListener {
                     val confirmationMessage = favouriteStatus.value?.let {
                         if (it) {
@@ -151,7 +165,6 @@ class RepoDetailsFragment : Fragment() {
                     )
                 }
 
-                btnMore.text = LocalHelper.getString(requireActivity(), R.string.view_more)
                 btnMore.setOnClickListener {
                     navigateToWebProfileFragment()
                 }
