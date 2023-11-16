@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.ui.activities.MainActivity
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
 import org.junit.Before
@@ -27,6 +28,7 @@ class SettingsFragmentTest{
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     private lateinit var viewModel: SettingsViewModel
+    private lateinit var mainActivity: MainActivity
 
     @Before
     fun setUp() {
@@ -34,6 +36,9 @@ class SettingsFragmentTest{
         viewModel = SettingsViewModel()
         // Navigate to HomeFragment before each test
         onView(withId(R.id.homeFragment)).perform(click())
+        activityRule.scenario.onActivity { activity ->
+            mainActivity = activity
+        }
     }
 
     @Test
@@ -64,7 +69,7 @@ class SettingsFragmentTest{
     }
 
     @Test
-    fun testDefaultLanguageIsEnglish(){
+    fun testDefaultLanguage(){
         onView(withId(R.id.settingsFragment)).perform(click())
         onView(withId(R.id.settingsFragment)).check(
             matches(
@@ -74,7 +79,7 @@ class SettingsFragmentTest{
 
         // You can also check the specific TextView by its ID if available
         // Replace R.id.appLanguageTextView with the actual ID of your TextView
-        onView(withId(R.id.textView)).check(matches(withText("App Language")))
+        onView(withId(R.id.textView)).check(matches(withText(LocalHelper.getString(mainActivity,R.string.select_app_language))))
     }
 
     @Test

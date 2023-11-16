@@ -3,13 +3,14 @@ package jp.co.yumemi.android.code_check.ui.fragments.home
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.idling.CountingIdlingResource
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -17,6 +18,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.ui.activities.MainActivity
+import jp.co.yumemi.android.code_check.utils.LocalHelper
 import jp.co.yumemi.android.code_check.utils.NetworkUtils.Companion.isNetworkAvailable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.resetMain
@@ -33,11 +35,15 @@ class HomeFragmentTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
     private val myIdlingResource = MyIdlingResource()
+    private lateinit var mainActivity: MainActivity
 
     @Before
     fun setUp() {
         // Navigate to HomeFragment before each test
         onView(withId(R.id.homeFragment)).perform(click())
+        activityRule.scenario.onActivity { activity ->
+            mainActivity = activity
+        }
     }
 
     @Test
@@ -112,7 +118,7 @@ class HomeFragmentTest {
         // Check if an error message is displayed
         onView(
             withText(
-                R.string.search_input_empty_error
+                LocalHelper.getString(mainActivity, R.string.search_input_empty_error)
             )
         ).check(matches(isDisplayed()))
     }
@@ -139,9 +145,11 @@ class HomeFragmentTest {
             onView(withId(R.id.nameView)).check(matches(withText("Android")))
         } else {
             // Click on the search button
-            onView(withId(R.id.searchInputText)).perform(pressImeActionButton())
+            onView(withId(R.id.searchInputText))
+                .perform(pressImeActionButton())
             // Check if the error dialog is displayed
-            onView(withText(R.string.no_internet)).check(matches(isDisplayed()))
+            onView(withText(LocalHelper.getString(mainActivity, R.string.no_internet)))
+                .check(matches(isDisplayed()))
         }
     }
 
@@ -155,7 +163,6 @@ class HomeFragmentTest {
     private fun getMyIdlingResource(): IdlingResource {
         return myIdlingResource
     }
-
 
 
     // Custom IdlingResource to wait for network availability
