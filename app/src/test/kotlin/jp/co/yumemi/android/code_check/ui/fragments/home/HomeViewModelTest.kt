@@ -1,10 +1,10 @@
 package jp.co.yumemi.android.code_check.ui.fragments.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import jp.co.yumemi.android.code_check.MockObjects.Companion.errorServerResponse
-import jp.co.yumemi.android.code_check.MockObjects.Companion.responseErrorMessage
-import jp.co.yumemi.android.code_check.MockObjects.Companion.successServerResponse
-import jp.co.yumemi.android.code_check.getOrAwaitValue
+import jp.co.yumemi.android.code_check.models.MockObjects.Companion.errorServerResponse
+import jp.co.yumemi.android.code_check.models.MockObjects.Companion.responseErrorMessage
+import jp.co.yumemi.android.code_check.models.MockObjects.Companion.successServerResponse
+import jp.co.yumemi.android.code_check.utils.getOrAwaitValue
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import jp.co.yumemi.android.code_check.repository.LocalGitHubRepository
 import kotlinx.coroutines.Dispatchers

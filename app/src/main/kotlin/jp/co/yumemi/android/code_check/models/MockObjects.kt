@@ -1,9 +1,4 @@
-package jp.co.yumemi.android.code_check
-
-import jp.co.yumemi.android.code_check.models.ApiResponse
-import jp.co.yumemi.android.code_check.models.GitHubRepoObject
-import jp.co.yumemi.android.code_check.models.LocalGitHubRepoObject
-import jp.co.yumemi.android.code_check.models.Owner
+package jp.co.yumemi.android.code_check.models
 
 class MockObjects {
     companion object {
