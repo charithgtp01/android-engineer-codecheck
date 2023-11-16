@@ -33,12 +33,12 @@ class SettingsFragmentTest{
         MockitoAnnotations.initMocks(this)
         viewModel = SettingsViewModel()
         // Navigate to HomeFragment before each test
-        onView(withId(R.id.homeFragment)).perform(ViewActions.click())
+        onView(withId(R.id.homeFragment)).perform(click())
     }
 
     @Test
     fun testNavigateToSettingsPage(){
-        onView(withId(R.id.settingsFragment)).perform(ViewActions.click())
+        onView(withId(R.id.settingsFragment)).perform(click())
         onView(withId(R.id.settingsFragment)).check(
             matches(
                 isDisplayed()
@@ -48,7 +48,7 @@ class SettingsFragmentTest{
 
     @Test
     fun testAllElementsAvailable(){
-        onView(withId(R.id.settingsFragment)).perform(ViewActions.click())
+        onView(withId(R.id.settingsFragment)).perform(click())
         onView(withId(R.id.settingsFragment)).check(
             matches(
                 isDisplayed()
@@ -65,7 +65,7 @@ class SettingsFragmentTest{
 
     @Test
     fun testDefaultLanguageIsEnglish(){
-        onView(withId(R.id.settingsFragment)).perform(ViewActions.click())
+        onView(withId(R.id.settingsFragment)).perform(click())
         onView(withId(R.id.settingsFragment)).check(
             matches(
                 isDisplayed()
@@ -79,7 +79,7 @@ class SettingsFragmentTest{
 
     @Test
     fun testEnglishSelected(){
-        onView(withId(R.id.settingsFragment)).perform(ViewActions.click())
+        onView(withId(R.id.settingsFragment)).perform(click())
         onView(withId(R.id.settingsFragment)).check(
             matches(
                 isDisplayed()
@@ -110,7 +110,7 @@ class SettingsFragmentTest{
 
     @Test
     fun testJapaneseSelected(){
-        onView(withId(R.id.settingsFragment)).perform(ViewActions.click())
+        onView(withId(R.id.settingsFragment)).perform(click())
         onView(withId(R.id.settingsFragment)).check(
             matches(
                 isDisplayed()
@@ -140,7 +140,7 @@ class SettingsFragmentTest{
 
     @Test
     fun testSetRadioButtonsAccordingToSelectedLanguage(){
-        onView(withId(R.id.settingsFragment)).perform(ViewActions.click())
+        onView(withId(R.id.settingsFragment)).perform(click())
         onView(withId(R.id.settingsFragment)).check(
             matches(
                 isDisplayed()

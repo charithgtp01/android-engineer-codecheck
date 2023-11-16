@@ -69,11 +69,11 @@ class FavouritesFragmentTest {
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.yes)).perform(click())
+            onView(withId(R.id.buttonYes)).perform(click())
 
             onView(withId(R.id.dialogMainLayout))
                 .check(matches(isDisplayed()))
-            onView(ViewMatchers.withText(R.string.ok)).perform(click())
+            onView(withId(R.id.button)).perform(click())
 
             // Press the back button
             Espresso.pressBack()
